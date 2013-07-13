@@ -4,17 +4,17 @@ all: main heap
 main: main.cpp
 	g++ -c -o main.o main.cpp
 
-heap: heap_obj.hh
-	g++ -c -o heap.o heap_obj.hh
+heap: memory_heap.cpp
+	g++ -c -o heap.o memory_heap.cpp
 
 debug: maind heapd
-	g++ -g -o rund maind.o heapd.o
+	g++ -o rund maind.o heapd.o
 
 maind: main.cpp
 	g++ -g -c -o maind.o main.cpp
 
-heapd: heap_obj.hh
-	g++ -g -c -o heapd.o heap_obj.hh
+heapd: memory_heap.cpp
+	g++ -g -c -o heapd.o memory_heap.cpp
 
 clean:
 	rm ./*.o

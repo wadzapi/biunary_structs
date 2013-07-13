@@ -3,7 +3,7 @@
 #include <cstddef>
 
 template <class Tp>
-class Heap {
+class MemoryHeap {
     private:
         size_t capacity_;
         Tp* values_;
@@ -14,8 +14,8 @@ class Heap {
         void CheckItem(Tp* item);
 
     public:
-        Heap();
-        ~Heap();
+        MemoryHeap();
+        ~MemoryHeap();
         size_t Capacity() const;
         Tp& operator[](size_t i);
         const Tp& operator[](size_t i) const;
@@ -37,7 +37,7 @@ class Heap {
 #include <stdexcept>
 
 template <class Tp>
-Heap<Tp>::Heap() : 
+MemoryHeap<Tp>::MemoryHeap() : 
     capacity_(0),
     values_(NULL),
     counters_(NULL),
@@ -46,43 +46,43 @@ Heap<Tp>::Heap() :
 }
 
 template <class Tp>
-Heap<Tp>::~Heap() {
+MemoryHeap<Tp>::~MemoryHeap() {
     Free();
 }
 
 template <class Tp>
-size_t Heap<Tp>::Capacity() const {
+size_t MemoryHeap<Tp>::Capacity() const {
    return capacity_; 
 }
 
 template <class Tp>
-Tp& Heap<Tp>::operator[](size_t i) {
+Tp& MemoryHeap<Tp>::operator[](size_t i) {
     CheckRange();
     return *(values_ + i);
 }
 
 template <class Tp>
-const Tp& Heap<Tp>::operator[](size_t i) const {
+const Tp& MemoryHeap<Tp>::operator[](size_t i) const {
     CheckRange();
     return *(values_ + i);
 }
 
 template <class Tp>
-void Heap<Tp>::Allocate(size_t capacity) {
+void MemoryHeap<Tp>::Allocate(size_t capacity) {
     values_ = new Tp[capacity];
     counters_ = new long[capacity];
     capacity_ = capacity;
 }
 
 template <class Tp>
-void Heap<Tp>::Free() {
+void MemoryHeap<Tp>::Free() {
     delete[] values_;
     delete[] counters_;
     capacity_ = 0;
 }
 
 template <class Tp>
-Tp* Heap<Tp>::GetVacant() {
+Tp* MemoryHeap<Tp>::GetVacant() {
     Tp* vacant = NULL;
     while (search_counter_++ <= capacity_) {
         search_idx_ = (search_idx_ + 1) % capacity_;
@@ -97,21 +97,21 @@ Tp* Heap<Tp>::GetVacant() {
 
 
 template <class Tp>
-void Heap<Tp>::Reserve(Tp* item) {
+void MemoryHeap<Tp>::Reserve(Tp* item) {
     CheckItem(item);
     size_t item_idx = (item - values_) / sizeof(Tp);
     ++counters_[item_idx];
 }
 
 template <class Tp>
-void Heap<Tp>::Unreserve(Tp* item) {
+void MemoryHeap<Tp>::Unreserve(Tp* item) {
     CheckItem(item);
     size_t item_idx = (item - values_) / sizeof(Tp);
     --counters_[item_idx];
 }
 
 template <class Tp>
-void Heap<Tp>::Resize(size_t new_size) {
+void MemoryHeap<Tp>::Resize(size_t new_size) {
     //save old params
     Tp* old_values = values_;
     long* old_counters = counters_;
@@ -125,48 +125,48 @@ void Heap<Tp>::Resize(size_t new_size) {
 }
 
 template <class Tp>
-Tp& Heap<Tp>::At(size_t i) {
+Tp& MemoryHeap<Tp>::At(size_t i) {
     CheckRange(i);
     return (*this)[i];
 }
 
 template <class Tp>
-const Tp& Heap<Tp>::At(size_t i)  const {
+const Tp& MemoryHeap<Tp>::At(size_t i)  const {
     CheckRange(i);
     return (*this)[i];
 }
 
 template <class Tp>
-void Heap<Tp>::CheckRange(size_t i) {
+void MemoryHeap<Tp>::CheckRange(size_t i) {
     if (i >= capacity_) {
         throw std::range_error("heap");
     }
 }
 
 template <class Tp>
-void Heap<Tp>::CheckItem(Tp* item) {
+void MemoryHeap<Tp>::CheckItem(Tp* item) {
     if (item < Begin() || item > End()) {
         throw std::range_error("heap");
     }
 }
 
 template <class Tp>
-Tp* Heap<Tp>::Begin() {
+Tp* MemoryHeap<Tp>::Begin() {
     return values_;
 }
 
 template <class Tp>
-const Tp* Heap<Tp>::Begin() const {
+const Tp* MemoryHeap<Tp>::Begin() const {
     return values_;
 }
 
 template <class Tp>
-Tp* Heap<Tp>::End() {
+Tp* MemoryHeap<Tp>::End() {
     return (values_ + capacity_);
 }
 
 template <class Tp>
-const Tp* Heap<Tp>::End() const {
+const Tp* MemoryHeap<Tp>::End() const {
     return (values_ + capacity_);
 }
 #endif // HEAP_MEM_H_
