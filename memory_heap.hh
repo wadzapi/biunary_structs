@@ -31,6 +31,7 @@ class MemoryHeap {
         const Tp* Begin() const;
         Tp* End();
         const Tp* End() const;
+        Tp* AddItem(const Tp& val, bool reserve);
 };
 
 #include <cstring>
@@ -169,4 +170,20 @@ template <class Tp>
 const Tp* MemoryHeap<Tp>::End() const {
     return (values_ + capacity_);
 }
+
+template <class Tp>
+Tp* MemoryHeap<Tp>::AddItem(const Tp& val, bool reserve) {
+    Tp* newItem = GetVacant();
+    if (newItem != NULL) {
+        //copy object data to physical storage
+        //new(newItem) Tp(val);///???
+        //memcpy(newItem, val, sizeof(Tp);
+        //*newItem = val;
+        if (reserve) {
+            Reserve(newItem);            
+        }
+    }
+    return newItem;
+}
+
 #endif // HEAP_MEM_H_
