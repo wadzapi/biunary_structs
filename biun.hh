@@ -9,7 +9,7 @@ struct tree_node_base {
 
 template <class Value>
 struct tree_node : public tree_node_base {
-    Value value_;
+    Value* value_;
 };
 
 #endif //BIUN_H_

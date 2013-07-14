@@ -175,9 +175,9 @@ template <class Tp>
 Tp* MemoryHeap<Tp>::AddItem(const Tp& val, bool reserve) {
     Tp* newItem = GetVacant();
     if (newItem != NULL) {
-        //copy object data to physical storage
-        //new(newItem) Tp(val);///???
-        //memcpy(newItem, val, sizeof(Tp);
+        //write object data to physical storage
+        new (newItem) Tp(val);///create obj under the pointer
+        //memcpy(newItem, val, sizeof(Tp));
         //*newItem = val;
         if (reserve) {
             Reserve(newItem);            
