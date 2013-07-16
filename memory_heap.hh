@@ -11,7 +11,7 @@ class MemoryHeap {
         size_t search_idx_;
         size_t search_counter_;
         void CheckRange(size_t i);
-        void CheckItem(Tp* item);
+        bool CheckItem(Tp* item);
 
     public:
         MemoryHeap();
@@ -31,7 +31,7 @@ class MemoryHeap {
         const Tp* Begin() const;
         Tp* End();
         const Tp* End() const;
-        Tp* AddItem(const Tp& val, bool reserve);
+        Tp* AddItem(const Tp& val);
 };
 
 #include <cstring>
@@ -99,16 +99,18 @@ Tp* MemoryHeap<Tp>::GetVacant() {
 
 template <class Tp>
 void MemoryHeap<Tp>::Reserve(Tp* item) {
-    CheckItem(item);
-    size_t item_idx = (item - values_) / sizeof(Tp);
-    ++counters_[item_idx];
+    if (CheckItem(item)) {
+        size_t item_idx = (item - values_) / sizeof(Tp);
+        ++counters_[item_idx];
+    }
 }
 
 template <class Tp>
 void MemoryHeap<Tp>::Unreserve(Tp* item) {
-    CheckItem(item);
-    size_t item_idx = (item - values_) / sizeof(Tp);
-    --counters_[item_idx];
+    if (CheckItem(item)) {
+        size_t item_idx = (item - values_) / sizeof(Tp);
+        --counters_[item_idx];
+    }
 }
 
 template <class Tp>
@@ -145,10 +147,11 @@ void MemoryHeap<Tp>::CheckRange(size_t i) {
 }
 
 template <class Tp>
-void MemoryHeap<Tp>::CheckItem(Tp* item) {
+bool MemoryHeap<Tp>::CheckItem(Tp* item) {
     if (item < Begin() || item > End()) {
-        throw std::range_error("heap");
+        return false;
     }
+    return true;
 }
 
 template <class Tp>
@@ -172,16 +175,13 @@ const Tp* MemoryHeap<Tp>::End() const {
 }
 
 template <class Tp>
-Tp* MemoryHeap<Tp>::AddItem(const Tp& val, bool reserve) {
+Tp* MemoryHeap<Tp>::AddItem(const Tp& val) {
     Tp* newItem = GetVacant();
     if (newItem != NULL) {
         //write object data to physical storage
         new (newItem) Tp(val);///create obj under the pointer
         //memcpy(newItem, val, sizeof(Tp));
         //*newItem = val;
-        if (reserve) {
-            Reserve(newItem);            
-        }
     }
     return newItem;
 }
