@@ -31,7 +31,6 @@ class MemoryHeap {
         const Tp* Begin() const;
         Tp* End();
         const Tp* End() const;
-        Tp* AddItem(const Tp& val);
 };
 
 #include <cstring>
@@ -172,18 +171,6 @@ Tp* MemoryHeap<Tp>::End() {
 template <class Tp>
 const Tp* MemoryHeap<Tp>::End() const {
     return (values_ + capacity_);
-}
-
-template <class Tp>
-Tp* MemoryHeap<Tp>::AddItem(const Tp& val) {
-    Tp* newItem = GetVacant();
-    if (newItem != NULL) {
-        //write object data to physical storage
-        new (newItem) Tp(val);///create obj under the pointer
-        //memcpy(newItem, val, sizeof(Tp));
-        //*newItem = val;
-    }
-    return newItem;
 }
 
 #endif // HEAP_MEM_H_

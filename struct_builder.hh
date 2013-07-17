@@ -4,28 +4,26 @@
 
 template <class Tp>
 class StructBuilderBase {
+    private:
+    protected:
     public:
         StructBuilderBase();
         virtual ~StructBuilderBase();
-    private:
-        
-    protected:
-        virtual void AddNode(tree_node<Tp> root_node, DataStruct<Tp>* struct);
-        virtual void ConnectNode(tree_node<Tp> root_node, tree_node<Tp> new_node);
+        virtual tree_node<Tp> *AddNode(DataStruct<Tp> *_struct) = 0;
+        virtual void ConnectNode(DataStruct<Tp> *_struct, tree_node<Tp> *root_node, tree_node<Tp> *new_node) = 0;
 };
 
 template <class Tp>
 class StructDirectorBase {
     private:
     protected:
-        DataStruct<Tp> struct_;
-        virtural tree_node<Tp>* ConstructNew(StructBuilder* builder);
-        virtural void Construct(StructBuilder* builder, tree_node<Tp> root_node);
+        DataStruct<Tp>* struct_;
+        void SetStruct(DataStruct<Tp> *_struct) { struct_ = _struct; }
     public:
-        StructDirectorBase(size_t phys_size, size_t logic_size) {
-            struct_.Allocate(phys_size, logic_size);
-        }   
+        StructDirectorBase() : struct_(NULL) {}
+        StructDirectorBase(DataStruct<Tp> *_struct): struct_(_struct) {}
         virtual ~StructDirectorBase();
+        virtual tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes) = 0;
 };
 
 #endif //STRUCT_BUILDER_H_

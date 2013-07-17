@@ -1,21 +1,27 @@
 #ifndef SEQUENCE_H_
 #define SEQUENCE_H_
-#include "data_struct.h"
+
+#include "sequence_builder.hh"
+#include "struct_director.hh"
 
 template <class Tp>
 class Sequence {
     private:
-        DataStruct struct_;
-        tree_node<Tp> curr_node_;
+        DataStruct<Tp>* struct_;
+        SequenceBuilder<Tp>* builder_;
+        StructDirector<Tp>* director_;
+        tree_node<Tp>* root_node_;
+        bool is_built_;
 
     public:
+        Sequence();
         Sequence(size_t max_capacity);
         ~Sequence();
+        Construct(size_t max_capacity, bool prebuilt);
         bool Empty();
         Tp* Front();
         const Tp* Front() const;
         Tp* Back();
-        tree_node<Tp>* AddNode(const Tp& val);
         const Tp* Back() const;
         void PushBack(const Tp& val);
         void PushFront(const Tp& val);
@@ -23,92 +29,76 @@ class Sequence {
         void PopFront();
 };
 
-#endif
-        
-
 template <class Tp>
-Sequence::Sequence(size_t max_capacity) {
-    struct_.Allocate(max_capacity, max_capacity + 1);
-    ///Allocate root logical node
-    ///left root subtree - is back, right - front
-    root_node_ = struct_.AddLogic();
-    struct_.Reserve(root_node_);
-    root_node_->left = curr_node_;
-    root_node_->right = curr_node_;
-    root_node_->value = NULL;
+Sequence<Tp>::Sequence() : is_built_(false) {
 }
 
 template <class Tp>
-Sequence::~Sequence() {
+Sequence<Tp>::Sequence(size_t max_capacity) : is_built_(false) {
+    Construct(max_capacity, false);
 }
 
 template <class Tp>
-bool Sequence::Empty() {
-    if (curr_node_->value = NULL) {
-        if (curr_node_->left == curr_node) {
-            if (curr_node_->right == curr_node) {
-                return true;
-            }
-        }
+Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
+    struct_ = new DataStruct(max_capacity, max_capacity + 1);
+    builder_ = new SequenceBuilder(struct_);
+    director_ = new StructDirector(struct_);
+    if (prebuilt) {
+        director_->Construct(builder_, max_capacity);
     }
+    is_built_ = true;
+}
+
+template <class Tp>
+Sequence<Tp>::~Sequence() {
+    if (is_built_) {
+        delete director_;
+        delete builder_;
+        delete struct_;
+    }
+}
+
+template <class Tp>
+bool Sequence<Tp>::Empty() {
     return false;
 }
 
 template <class Tp>
-Tp* Sequence::Front() {
+Tp* Sequence<Tp>::Front() {
     return (root_node_->right)->value;
 }
 
 template <class Tp>
-const Tp* Sequence::Front() const {
+const Tp* Sequence<Tp>::Front() const {
     return (root_node_->right)->value;
 }
 
 template <class Tp>
-Tp* Sequence::Back() {
+Tp* Sequence<Tp>::Back() {
     return (root_node_->left)->value;
 }
 
 template <class Tp>
-const Tp* Sequence::Back() const {
+const Tp* Sequence<Tp>::Back() const {
     return (root_node_->left)->value;
 }
 
 template <class Tp>
-tree_node<Tp>* Sequence::AddNode(const Tp& val) {
-    tree_node<Tp>* new_node = NULL;
-    Tp* new_val = struct_.AddData(val);
-    if (new_val == NULL) {
-        throw "Physical storage overflow!";
-    } else {
-        struct.Reserve(new_val);
-        new_node = struct_.AddLogic();
-        if (new_node == NULL) {
-            throw "Logical storage overflow!";
-        } else {
-            struct_.Reserve(new_node);
-            new_node->value = new_val;
-            new_node->left = new_node;
-            new_node->right = new_node;
-        }
-    }
-    return new_node;
+void Sequence<Tp>::PushBack(const Tp& val) {
 }
 
 template <class Tp>
-void Sequence::PushBack(const Tp& val) {
-}
-
-template <class Tp>
-void Sequence::PushFront(const Tp& val) {
+void Sequence<Tp>::PushFront(const Tp& val) {
     
 }
 
 template <class Tp>
-void Sequence::PopBack() {
+void Sequence<Tp>::PopBack() {
     
 }
 
 template <class Tp>
-void Sequence::PopFront() {
+void Sequence<Tp>::PopFront() {
 }
+
+#endif // SEQUENCE_H_
