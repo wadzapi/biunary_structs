@@ -17,7 +17,7 @@ class Sequence {
         Sequence();
         Sequence(size_t max_capacity);
         ~Sequence();
-        Construct(size_t max_capacity, bool prebuilt);
+        void Construct(size_t max_capacity, bool prebuilt);
         bool Empty();
         Tp* Front();
         const Tp* Front() const;
@@ -39,10 +39,10 @@ Sequence<Tp>::Sequence(size_t max_capacity) : is_built_(false) {
 }
 
 template <class Tp>
-Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
-    struct_ = new DataStruct(max_capacity, max_capacity + 1);
-    builder_ = new SequenceBuilder(struct_);
-    director_ = new StructDirector(struct_);
+void Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
+    struct_ = new DataStruct<Tp>(max_capacity, max_capacity + 1);
+    builder_ = new SequenceBuilder<Tp>(struct_);
+    director_ = new StructDirector<Tp>(struct_);
     if (prebuilt) {
         director_->Construct(builder_, max_capacity);
     }
