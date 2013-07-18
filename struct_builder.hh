@@ -8,7 +8,7 @@ class StructBuilderBase {
     protected:
     public:
         StructBuilderBase();
-        virtual ~StructBuilderBase();
+        virtual ~StructBuilderBase() {};
         virtual tree_node<Tp> *AddNode(DataStruct<Tp> *_struct) = 0;
         virtual void ConnectNode(DataStruct<Tp> *_struct, tree_node<Tp> *root_node, tree_node<Tp> *new_node) = 0;
 };
@@ -22,7 +22,7 @@ class StructDirectorBase {
     public:
         StructDirectorBase() : struct_(NULL) {}
         StructDirectorBase(DataStruct<Tp> *_struct): struct_(_struct) {}
-        virtual ~StructDirectorBase();
+        virtual ~StructDirectorBase() {};
         virtual tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes) = 0;
 };
 

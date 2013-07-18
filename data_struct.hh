@@ -14,6 +14,7 @@ class DataStruct {
         MemoryHeap<tree_node<Tp> > logical_data_;
     public:
         DataStruct();
+        DataStruct(size_t phys_size, size_t logic_size);
         ~DataStruct();
         void Allocate(size_t phys_size, size_t logic_size);
         void Free();
@@ -37,7 +38,13 @@ DataStruct<Tp>::DataStruct() {
 }
 
 template <class Tp>
+DataStruct<Tp>::DataStruct(size_t phys_size, size_t logic_size) {
+    Allocate(phys_size, logic_size);
+}
+
+template <class Tp>
 DataStruct<Tp>::~DataStruct() {
+    Free();
 }
 
 template <class Tp>

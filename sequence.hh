@@ -41,7 +41,7 @@ Sequence<Tp>::Sequence(size_t max_capacity) : is_built_(false) {
 template <class Tp>
 void Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
     struct_ = new DataStruct<Tp>(max_capacity, max_capacity + 1);
-    builder_ = new SequenceBuilder<Tp>(struct_);
+    builder_ = new SequenceBuilder<Tp>();
     director_ = new StructDirector<Tp>(struct_);
     if (prebuilt) {
         director_->Construct(builder_, max_capacity);

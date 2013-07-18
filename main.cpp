@@ -2,9 +2,11 @@
 #include <cstdlib>
 #include <cstdio>
 #include <unistd.h>
+#include "sequence.hh"
+
 
 int main(int argc, char** argv) {
-    FILE *inputFile = stdin;
+    /*FILE *inputFile = stdin;
     FILE *outputFile = stdout;
     char oFilename[128] = { "" };
     char iFilename[128] = { "" };
@@ -30,6 +32,7 @@ int main(int argc, char** argv) {
             fprintf(stderr, "Cannot open output file %s\n", oFilename);
             exit(1);
         }
-    }
+    }*/
+    Sequence<int>(10);
     return 0;
 }

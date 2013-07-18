@@ -1,20 +1,21 @@
-all: main heap
-	g++ -o run main.o heap.o
+all: main
+	g++ -o run main.o
 
-main: main.cpp
-	g++ -c -o main.o main.cpp
+main: sequence main.cpp
+	g++ -c -o main.o
 
-heap: memory_heap.cpp
-	g++ -c -o heap.o memory_heap.cpp
+sequence: sequence.hh
+	g++ -c -o sequence.gch sequence.hh
 
-debug: maind heapd
-	g++ -o rund maind.o heapd.o
+debug: maind 
+	g++ -o run maind.o
 
-maind: main.cpp
+maind: sequenced main.cpp
 	g++ -g -c -o maind.o main.cpp
 
-heapd: memory_heap.cpp
-	g++ -g -c -o heapd.o memory_heap.cpp
+sequenced: sequence.hh
+	g++ -g -c -o sequenced.gch sequence.hh
 
 clean:
+	rm ./*.gch
 	rm ./*.o
