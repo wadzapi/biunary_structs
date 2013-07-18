@@ -40,7 +40,7 @@ Sequence<Tp>::Sequence(size_t max_capacity) : is_built_(false) {
 
 template <class Tp>
 void Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
-    struct_ = new DataStruct<Tp>(max_capacity, max_capacity + 1);
+    struct_ = new DataStruct<Tp>(max_capacity, max_capacity + 2);
     builder_ = new SequenceBuilder<Tp>();
     director_ = new StructDirector<Tp>(struct_);
     if (prebuilt) {
@@ -60,6 +60,11 @@ Sequence<Tp>::~Sequence() {
 
 template <class Tp>
 bool Sequence<Tp>::Empty() {
+    if (root_node_->left == root_node_->right) {
+        if (root_node_->value == NULL) {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -85,20 +90,28 @@ const Tp* Sequence<Tp>::Back() const {
 
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
+    tree_node<Tp>* new_node = director_->Construct(struct_, val, 1);
+    director_->ConnectSeq(struct_, root_node_, new_node);
 }
 
 template <class Tp>
 void Sequence<Tp>::PushFront(const Tp& val) {
-    
+    tree_node<Tp>* new_node = director_->Construct(struct_, val, 1);
+    director_->ConnectSeq(struct_, new_node, root_node_);
 }
 
 template <class Tp>
 void Sequence<Tp>::PopBack() {
-    
+    tree_node<Tp>* old_node = root_node_->left;
+    root_node_->left = old_node->right;
+    struct_->Unreserve(old_node);
 }
 
 template <class Tp>
 void Sequence<Tp>::PopFront() {
+    tree_node<Tp>* old_node = root_node_->right;
+    root_node_->right = old_node->left;
+    struct_->Unreserve(old_node);
 }
 
 #endif // SEQUENCE_H_
