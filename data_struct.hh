@@ -44,7 +44,6 @@ DataStruct<Tp>::DataStruct(size_t phys_size, size_t logic_size) {
 
 template <class Tp>
 DataStruct<Tp>::~DataStruct() {
-    Free();
 }
 
 template <class Tp>

@@ -77,7 +77,9 @@ void MemoryHeap<Tp>::Allocate(size_t capacity) {
 template <class Tp>
 void MemoryHeap<Tp>::Free() {
     delete[] values_;
+    values_ = NULL;
     delete[] counters_;
+    counters_ = NULL;
     capacity_ = 0;
 }
 
