@@ -7,7 +7,7 @@ class StructBuilderBase {
     private:
     protected:
     public:
-        StructBuilderBase();
+        StructBuilderBase() {};
         virtual ~StructBuilderBase() {};
         virtual tree_node<Tp> *AddNode(DataStruct<Tp> *_struct) = 0;
         virtual void ConnectNode(DataStruct<Tp> *_struct, tree_node<Tp> *root_node, tree_node<Tp> *new_node) = 0;
