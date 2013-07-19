@@ -28,6 +28,7 @@ class StructDirectorBase {
         virtual tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes) = 0;
         virtual tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes) = 0;
         virtual void Connect(tree_node<Tp>* root_node, tree_node<Tp>* new_node) = 0;
+        virtual void DeleteNode(tree_node<Tp>* node) = 0;
 };
 
 #endif //STRUCT_BUILDER_H_

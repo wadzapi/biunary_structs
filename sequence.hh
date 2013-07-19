@@ -2,14 +2,14 @@
 #define SEQUENCE_H_
 
 #include "sequence_builder.hh"
-#include "struct_director.hh"
+#include "sequence_director.hh"
 
 template <class Tp>
 class Sequence {
     private:
         DataStruct<Tp>* struct_;
         SequenceBuilder<Tp>* builder_;
-        StructDirector<Tp>* director_;
+        SequenceDirector<Tp>* director_;
         tree_node<Tp>* root_node_;
         bool is_built_;
 
@@ -42,9 +42,11 @@ template <class Tp>
 void Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
     struct_ = new DataStruct<Tp>(max_capacity, max_capacity + 2);
     builder_ = new SequenceBuilder<Tp>();
-    director_ = new StructDirector<Tp>(struct_);
+    director_ = new SequenceDirector<Tp>(struct_);
     if (prebuilt) {
-        director_->Construct(builder_, max_capacity);
+        root_node_ = director_->Construct(builder_, max_capacity);
+    } else {
+        root_node_ = director_->Construct(builder_, 0);
     }
     is_built_ = true;
 }
@@ -90,28 +92,28 @@ const Tp* Sequence<Tp>::Back() const {
 
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
-    tree_node<Tp>* new_node = director_->Construct(struct_, val, 1);
-    director_->ConnectSeq(struct_, root_node_, new_node);
+    tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
+    director_->Connect(root_node_, new_node);
 }
 
 template <class Tp>
 void Sequence<Tp>::PushFront(const Tp& val) {
-    tree_node<Tp>* new_node = director_->Construct(struct_, val, 1);
-    director_->ConnectSeq(struct_, new_node, root_node_);
+    tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
+    director_->Connect(new_node, root_node_);
 }
 
 template <class Tp>
 void Sequence<Tp>::PopBack() {
     tree_node<Tp>* old_node = root_node_->left;
-    root_node_->left = old_node->right;
-    struct_->Unreserve(old_node);
+    struct_->SetLeft(root_node_, old_node->right);
+    director_->DeleteNode(old_node);
 }
 
 template <class Tp>
 void Sequence<Tp>::PopFront() {
     tree_node<Tp>* old_node = root_node_->right;
-    root_node_->right = old_node->left;
-    struct_->Unreserve(old_node);
+    struct_->SetRight(root_node_, old_node->left);
+    director_->DeleteNode(old_node);
 }
 
 #endif // SEQUENCE_H_
