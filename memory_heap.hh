@@ -25,8 +25,8 @@ class MemoryHeap {
         void Resize(size_t new_size);
         Tp& At(size_t i);
         const Tp& At(size_t i) const;
-        void Reserve(Tp* item);
-        void Unreserve(Tp* item);
+        bool Reserve(Tp* item);
+        bool Unreserve(Tp* item);
         Tp* Begin();
         const Tp* Begin() const;
         Tp* End();
@@ -99,19 +99,21 @@ Tp* MemoryHeap<Tp>::GetVacant() {
 
 
 template <class Tp>
-void MemoryHeap<Tp>::Reserve(Tp* item) {
-    if (CheckItem(item)) {
-        size_t item_idx = (item - values_) / sizeof(Tp);
-        ++counters_[item_idx];
-    }
+bool MemoryHeap<Tp>::Reserve(Tp* item) {
+    if (!CheckItem(item))
+        return false; 
+    size_t item_idx = (item - values_) / sizeof(Tp);
+    ++counters_[item_idx];
+    return true;
 }
 
 template <class Tp>
-void MemoryHeap<Tp>::Unreserve(Tp* item) {
-    if (CheckItem(item)) {
-        size_t item_idx = (item - values_) / sizeof(Tp);
-        --counters_[item_idx];
-    }
+bool MemoryHeap<Tp>::Unreserve(Tp* item) {
+    if (!CheckItem(item))
+        return false;
+    size_t item_idx = (item - values_) / sizeof(Tp);
+    --counters_[item_idx];
+    return true;
 }
 
 template <class Tp>

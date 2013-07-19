@@ -104,8 +104,9 @@ void DataStruct<Tp>::SetRight(tree_node<Tp>* source_node, tree_node<Tp>* dest_no
 
 template <class Tp>
 void DataStruct<Tp>::Reserve(tree_node<Tp>* logical_node) {
-    logical_data_.Reserve(logical_node);
-    physical_data_.Reserve(logical_node->value);
+    if (logical_data_.Reserve(logical_node)) {
+        physical_data_.Reserve(logical_node->value);
+    }
 }
 
 template <class Tp>
@@ -115,8 +116,9 @@ void DataStruct<Tp>::Reserve(Tp* physical_node) {
 
 template <class Tp>
 void DataStruct<Tp>::Unreserve(tree_node<Tp>* logical_node) {
-    logical_data_.Unreserve(logical_node);
-    physical_data_.Unreserve(logical_node->value);
+    if (logical_data_.Unreserve(logical_node)) {
+        physical_data_.Unreserve(logical_node->value);
+    }
 }
 
 template <class Tp>
