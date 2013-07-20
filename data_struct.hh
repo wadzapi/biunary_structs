@@ -20,7 +20,6 @@ class DataStruct {
         void Free();
         Tp* AddData(const Tp& val);
         tree_node<Tp>* AddLogic();
-        tree_node<Tp>* AddRoot();
         void SetData(tree_node<Tp>* node, Tp* value);
         void SetLeft(tree_node<Tp>* source_node, tree_node<Tp>* dest_node);
         void SetRight(tree_node<Tp>* source_node, tree_node<Tp>* dest_node);
@@ -73,12 +72,6 @@ tree_node<Tp>* DataStruct<Tp>::AddLogic() {
     SetRight(logic, logic);
     logic->value = NULL;
     return logic;
-}
-
-template <class Tp>
-tree_node<Tp>* DataStruct<Tp>::AddRoot() {
-    tree_node<Tp>* new_root = AddLogic();
-    Reserve(new_root);
 }
 
 template <class Tp>

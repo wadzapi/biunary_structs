@@ -9,7 +9,6 @@ class MemoryHeap {
         Tp* values_;
         long* counters_;
         size_t search_idx_;
-        size_t search_counter_;
         void CheckRange(size_t i);
         bool CheckItem(Tp* item);
 
@@ -41,8 +40,7 @@ MemoryHeap<Tp>::MemoryHeap() :
     capacity_(0),
     values_(NULL),
     counters_(NULL),
-    search_idx_(0),
-    search_counter_(0) {
+    search_idx_(0) {
 }
 
 template <class Tp>
@@ -86,14 +84,14 @@ void MemoryHeap<Tp>::Free() {
 template <class Tp>
 Tp* MemoryHeap<Tp>::GetVacant() {
     Tp* vacant = NULL;
+    size_t search_counter_ = 0;
     while (search_counter_++ <= capacity_) {
         search_idx_ = (search_idx_ + 1) % capacity_;
         if (counters_[search_idx_] < 1) {
             vacant = (values_ + search_idx_);
+            break;
         }
-        
     }
-    search_counter_ = 0;
     return vacant;
 }
 
@@ -101,8 +99,8 @@ Tp* MemoryHeap<Tp>::GetVacant() {
 template <class Tp>
 bool MemoryHeap<Tp>::Reserve(Tp* item) {
     if (!CheckItem(item))
-        return false; 
-    size_t item_idx = (item - values_) / sizeof(Tp);
+        return false;
+    size_t item_idx = item - values_;
     ++counters_[item_idx];
     return true;
 }
