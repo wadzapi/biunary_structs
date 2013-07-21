@@ -12,7 +12,7 @@ class SequenceBuilder : public StructBuilderBase<Tp> {
         tree_node<Tp> *AddNode(DataStruct<Tp> *_struct, const Tp& value);
         tree_node<Tp> *AddRoot(DataStruct<Tp> *_struct);
         void SetNodeValue(DataStruct<Tp> *_struct, tree_node<Tp>* node, const Tp& value);
-        void ConnectNode(DataStruct<Tp> *_struct, tree_node<Tp> *root_node, tree_node<Tp> *new_node);
+        void ConnectNode(DataStruct<Tp> *_struct, tree_node<Tp> *node1, tree_node<Tp> *node2);
         SequenceBuilder();
         ~SequenceBuilder(); 
 };
@@ -54,12 +54,10 @@ void SequenceBuilder<Tp>::SetNodeValue(DataStruct<Tp> *_struct, tree_node<Tp>* n
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::ConnectNode(DataStruct<Tp> *_struct, tree_node<Tp>* root_node, tree_node<Tp>* new_node) {
+void SequenceBuilder<Tp>::ConnectNode(DataStruct<Tp> *_struct, tree_node<Tp> *node1, tree_node<Tp> *node2) {
     //connect to the right side of other nodes in sequence 
-    _struct->SetRight(root_node, new_node);
-    _struct->SetLeft(new_node, root_node);
-    //update root node
-    _struct->SetRight(root_node, new_node);
+    _struct->SetRight(node1, node2);
+    _struct->SetLeft(node2, node1);
 }
 
 #endif //SEQUENCE_BUILDER_H_

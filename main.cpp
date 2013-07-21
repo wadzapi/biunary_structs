@@ -33,11 +33,11 @@ int main(int argc, char** argv) {
             exit(1);
         }
     }*/
+    ///like stack
     Sequence<int> q(10);
     for (int i = 1; i < 11; i++) {
         q.PushFront(i);
     }
-    ///like stack
     for (int i = 1; i < 11; i++) {
         int k = *(q.Front());
         q.PopFront();
