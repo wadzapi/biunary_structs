@@ -8,7 +8,7 @@ sequence: sequence.hh
 	g++ -c -o sequence.gch sequence.hh
 
 debug: maind 
-	g++ -o run maind.o
+	g++ -o rund maind.o
 
 maind: sequenced main.cpp
 	g++ -g -c -o maind.o main.cpp

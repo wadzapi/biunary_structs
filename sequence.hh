@@ -40,13 +40,15 @@ Sequence<Tp>::Sequence(size_t max_capacity) : is_built_(false) {
 
 template <class Tp>
 void Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
-    struct_ = new DataStruct<Tp>(max_capacity, max_capacity + 2);
+    struct_ = new DataStruct<Tp>(max_capacity, max_capacity + 3);
     builder_ = new SequenceBuilder<Tp>();
     director_ = new SequenceDirector<Tp>(struct_);
-    if (prebuilt) {
+    if (prebuilt && max_capacity > 0) {
         root_node_ = director_->Construct(builder_, max_capacity);
     } else {
-        root_node_ = director_->Construct(builder_, 0);
+        root_node_ = director_->Construct(builder_, 1);
+        struct_->Unreserve((root_node_->left)->value);
+        (root_node_->left)->value = NULL;
     }
     is_built_ = true;
 }

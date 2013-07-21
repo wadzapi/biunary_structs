@@ -35,10 +35,10 @@ int main(int argc, char** argv) {
     }*/
     ///like stack
     Sequence<int> q(10);
-    for (int i = 1; i < 11; i++) {
+    for (int i = 1; i < 5; i++) {
         q.PushFront(i);
     }
-    for (int i = 1; i < 11; i++) {
+    for (int i = 1; i < 5; i++) {
         int k = *(q.Front());
         q.PopFront();
     }
