@@ -30,6 +30,7 @@ class DataStruct {
         static Tp* GetData(tree_node<Tp>* node);
         static tree_node<Tp>* GetLeft(tree_node<Tp>* node);
         static tree_node<Tp>* GetRight(tree_node<Tp>* node);
+        void PrintCounters() const;
 };
 
 template <class Tp>
@@ -97,9 +98,7 @@ void DataStruct<Tp>::SetRight(tree_node<Tp>* source_node, tree_node<Tp>* dest_no
 
 template <class Tp>
 void DataStruct<Tp>::Reserve(tree_node<Tp>* logical_node) {
-    if (logical_data_.Reserve(logical_node)) {
-        physical_data_.Reserve(logical_node->value);
-    }
+    logical_data_.Reserve(logical_node);
 }
 
 template <class Tp>
@@ -109,14 +108,20 @@ void DataStruct<Tp>::Reserve(Tp* physical_node) {
 
 template <class Tp>
 void DataStruct<Tp>::Unreserve(tree_node<Tp>* logical_node) {
-    if (logical_data_.Unreserve(logical_node)) {
-        physical_data_.Unreserve(logical_node->value);
-    }
+    logical_data_.Unreserve(logical_node);
 }
 
 template <class Tp>
 void DataStruct<Tp>::Unreserve(Tp* physical_node) {
     physical_data_.Unreserve(physical_node);
+}
+
+template <class Tp>
+void DataStruct<Tp>::PrintCounters() const {
+    printf("Logical storage counters\n");
+    logical_data_.PrintCounters();
+    printf("Physical storage counters\n");
+    physical_data_.PrintCounters();
 }
 
 #endif // DATA_STRUCT_H_

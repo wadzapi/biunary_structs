@@ -1,6 +1,7 @@
 #ifndef HEAP_MEM_H_
 #define HEAP_MEM_H_
 #include <cstddef>
+#include <cstdio>
 
 template <class Tp>
 class MemoryHeap {
@@ -30,6 +31,7 @@ class MemoryHeap {
         const Tp* Begin() const;
         Tp* End();
         const Tp* End() const;
+        void PrintCounters() const;
 };
 
 #include <cstring>
@@ -109,7 +111,7 @@ template <class Tp>
 bool MemoryHeap<Tp>::Unreserve(Tp* item) {
     if (!CheckItem(item))
         return false;
-    size_t item_idx = (item - values_) / sizeof(Tp);
+    size_t item_idx = item - values_;
     --counters_[item_idx];
     return true;
 }
@@ -173,6 +175,14 @@ Tp* MemoryHeap<Tp>::End() {
 template <class Tp>
 const Tp* MemoryHeap<Tp>::End() const {
     return (values_ + capacity_);
+}
+
+template <class Tp>
+void MemoryHeap<Tp>::PrintCounters() const {
+    for (size_t i = 0; i < capacity_ - 1; i++) {
+        printf("%i ", counters_[i]);
+    }
+    printf("%i\n", counters_[capacity_ - 1]);
 }
 
 #endif // HEAP_MEM_H_

@@ -36,11 +36,9 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp>* builder, s
         for (size_t i = 1; i < num_nodes; i++) {
             new_node2 = builder->AddNode(this->struct_);
             builder->ConnectNode(this->struct_, new_node1, new_node2);
-            this->struct_->Unreserve(new_node2);
             new_node1 = new_node2;
         }
         this->struct_->SetRight(root_node, new_node1);
-        this->struct_->Unreserve(new_node1);
     } 
     return root_node;
 }
@@ -56,11 +54,9 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, c
         for (size_t i = 1; i < num_nodes; i++) {
             new_node2 = builder->AddNode(this->struct_, values[i]);
             builder->ConnectNode(this->struct_, new_node1, new_node2);
-            this->struct_->Unreserve(new_node2);
             new_node1 = new_node2;
         }
         this->struct_->SetRight(root_node, new_node1);
-        this->struct_->Unreserve(new_node1);
     } 
     return root_node;
 }
@@ -80,6 +76,7 @@ template <class Tp>
 void SequenceDirector<Tp>::DeleteNode(tree_node<Tp>* node) {
     this->struct_->SetLeft(node, NULL);
     this->struct_->SetRight(node, NULL);
+    this->struct_->Unreserve(node->value);
 }
 
 template <class Tp>

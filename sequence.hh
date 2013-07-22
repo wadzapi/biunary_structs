@@ -103,6 +103,7 @@ template <class Tp>
 void Sequence<Tp>::PushFront(const Tp& val) {
     tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
     director_->Connect(root_node_, new_node);
+    ///struct_->PrintCounters(); //for debug
 }
 
 template <class Tp>
@@ -119,6 +120,7 @@ void Sequence<Tp>::PopFront() {
     struct_->SetRight(root_node_, old_node->left);
     struct_->SetRight(root_node_->right, root_node_->right);
     director_->DeleteNode(old_node);
+    ///struct_->PrintCounters(); //for debug
 }
 
 #endif // SEQUENCE_H_
