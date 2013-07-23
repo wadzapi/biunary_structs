@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <unistd.h>
-#include "sequence.hh"
+#include "queue.hh"
 
 
 int main(int argc, char** argv) {
@@ -33,14 +33,13 @@ int main(int argc, char** argv) {
             exit(1);
         }
     }*/
-    ///like stack
-    Sequence<int> q(10);
+    Queue<int> q(10);
     for (int i = 1; i < 11; i++) {
-        q.PushFront(i);
+        q.Push(i);
     }
     for (int i = 1; i < 11; i++) {
         int k = *(q.Front());
-        q.PopFront();
+        q.Pop();
     }
     return 0;
 }

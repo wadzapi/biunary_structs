@@ -74,51 +74,56 @@ bool Sequence<Tp>::Empty() {
 
 template <class Tp>
 Tp* Sequence<Tp>::Front() {
-    return (root_node_->right)->value;
+    return ((root_node_->left)->right)->value;
 }
 
 template <class Tp>
 const Tp* Sequence<Tp>::Front() const {
-    return (root_node_->right)->value;
+    return ((root_node_->left)->right)->value;
 }
 
 template <class Tp>
 Tp* Sequence<Tp>::Back() {
-    return (root_node_->left)->value;
+    return (root_node_->right)->value;
 }
 
 template <class Tp>
 const Tp* Sequence<Tp>::Back() const {
-    return (root_node_->left)->value;
+    return (root_node_->right)->value;
 }
 
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
-    tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
-    director_->Connect(new_node, root_node_);
-    root_node_ = new_node;
-}
-
-template <class Tp>
-void Sequence<Tp>::PushFront(const Tp& val) {
     tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
     director_->Connect(root_node_, new_node);
     ///struct_->PrintCounters(); //for debug
 }
 
 template <class Tp>
-void Sequence<Tp>::PopBack() {
-    tree_node<Tp>* old_node = root_node_->left;
-    struct_->SetLeft(root_node_, old_node->right);
+void Sequence<Tp>::PushFront(const Tp& val) {
+    tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
+    director_->Connect(new_node, root_node_);
+    struct_->SetRight((root_node_->left)->left, (root_node_->left)->right);
+    struct_->SetLeft((root_node_->left)->right, (root_node_->left)->left);
     struct_->SetLeft(root_node_->left, root_node_->left);
+    struct_->SetRight(root_node_->left, new_node->left);
+    ///struct_->PrintCounters(); //for debug
+}
+
+template <class Tp>
+void Sequence<Tp>::PopBack() {
+    tree_node<Tp>* old_node = root_node_->right;
+    struct_->SetRight(root_node_, old_node->left);
+    struct_->SetRight(root_node_->right, root_node_->right);
     director_->DeleteNode(old_node);
+    ///struct_->PrintCounters(); //for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopFront() {
-    tree_node<Tp>* old_node = root_node_->right;
-    struct_->SetRight(root_node_, old_node->left);
-    struct_->SetRight(root_node_->right, root_node_->right);
+    tree_node<Tp>* old_node = (root_node_->left)->right;
+    struct_->SetRight(root_node_->left, old_node->right);
+    struct_->SetLeft(old_node->right, root_node_->left);
     director_->DeleteNode(old_node);
     ///struct_->PrintCounters(); //for debug
 }
