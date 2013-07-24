@@ -41,14 +41,12 @@ Sequence<Tp>::Sequence(size_t max_capacity) : is_built_(false) {
 template <class Tp>
 void Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
     struct_ = new DataStruct<Tp>(max_capacity, max_capacity + 3);
-    builder_ = new SequenceBuilder<Tp>();
+    builder_ = new SequenceBuilder<Tp>(stryct_);
     director_ = new SequenceDirector<Tp>(struct_);
     if (prebuilt && max_capacity > 0) {
         root_node_ = director_->Construct(builder_, max_capacity);
     } else {
-        root_node_ = director_->Construct(builder_, 1);
-        struct_->Unreserve((root_node_->left)->value);
-        (root_node_->left)->value = NULL;
+        root_node_ = director_->Construct(builder_, 0);
     }
     is_built_ = true;
 }
@@ -65,7 +63,7 @@ Sequence<Tp>::~Sequence() {
 template <class Tp>
 bool Sequence<Tp>::Empty() {
     if (root_node_->left == root_node_->right) {
-        if (root_node_->value == NULL) {
+        if ((root_node_->left)->value == NULL) {
             return true;
         }
     }
@@ -95,18 +93,14 @@ const Tp* Sequence<Tp>::Back() const {
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
     tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
-    director_->Connect(root_node_, new_node);
+    director_->ConnectRight(root_node_, new_node);
     ///struct_->PrintCounters(); //for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PushFront(const Tp& val) {
     tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
-    director_->Connect(new_node, root_node_);
-    struct_->SetRight((root_node_->left)->left, (root_node_->left)->right);
-    struct_->SetLeft((root_node_->left)->right, (root_node_->left)->left);
-    struct_->SetLeft(root_node_->left, root_node_->left);
-    struct_->SetRight(root_node_->left, new_node->left);
+    director_->ConnectLeft(root_node_, new_node);
     ///struct_->PrintCounters(); //for debug
 }
 
