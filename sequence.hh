@@ -41,7 +41,7 @@ Sequence<Tp>::Sequence(size_t max_capacity) : is_built_(false) {
 template <class Tp>
 void Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
     struct_ = new DataStruct<Tp>(max_capacity, max_capacity + 3);
-    builder_ = new SequenceBuilder<Tp>(stryct_);
+    builder_ = new SequenceBuilder<Tp>(struct_);
     director_ = new SequenceDirector<Tp>(struct_);
     if (prebuilt && max_capacity > 0) {
         root_node_ = director_->Construct(builder_, max_capacity);
@@ -93,33 +93,31 @@ const Tp* Sequence<Tp>::Back() const {
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
     tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
-    director_->ConnectRight(root_node_, new_node);
-    ///struct_->PrintCounters(); //for debug
+    director_->ConnectRight(builder_, root_node_, new_node);
+    ///for debug 
+    struct_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PushFront(const Tp& val) {
     tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
-    director_->ConnectLeft(root_node_, new_node);
-    ///struct_->PrintCounters(); //for debug
+    director_->ConnectLeft(builder_, root_node_, new_node);
+    ///for debug
+    struct_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopBack() {
-    tree_node<Tp>* old_node = root_node_->right;
-    struct_->SetRight(root_node_, old_node->left);
-    struct_->SetRight(root_node_->right, root_node_->right);
-    director_->DeleteNode(old_node);
-    ///struct_->PrintCounters(); //for debug
+    director_->RemoveNode(builder_, root_node_, root_node_->right);
+    ///for debug
+    struct_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopFront() {
-    tree_node<Tp>* old_node = (root_node_->left)->right;
-    struct_->SetRight(root_node_->left, old_node->right);
-    struct_->SetLeft(old_node->right, root_node_->left);
-    director_->DeleteNode(old_node);
-    ///struct_->PrintCounters(); //for debug
+    director_->RemoveNode(builder_, root_node_, (root_node_->left)->right);
+    ///for debug
+    struct_->PrintCounters(); ///for debug
 }
 
 #endif // SEQUENCE_H_
