@@ -37,10 +37,10 @@ class StructDirectorBase {
         virtual ~StructDirectorBase() {};
         virtual tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes) = 0;
         virtual tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes) = 0;
-        virtual void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, tree_node<Tp>* new_node) = 0;
-        virtual void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, tree_node<Tp>* new_node) = 0;
-        virtual void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp>* node) = 0;
-        virtual void DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp>* node) = 0;
+        virtual void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) = 0;
+        virtual void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) = 0;
+        virtual void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) = 0;
+        virtual void DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) = 0;
         virtual void RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) = 0;
         virtual void RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *node) = 0;
         virtual void Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) = 0;
