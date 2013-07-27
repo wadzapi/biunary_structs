@@ -40,7 +40,7 @@ Sequence<Tp>::Sequence(size_t max_capacity) : is_built_(false) {
 
 template <class Tp>
 void Sequence<Tp>::Construct(size_t max_capacity, bool prebuilt) {
-    struct_ = new DataStruct<Tp>(max_capacity + 2, max_capacity + 3);
+    struct_ = new DataStruct<Tp>(max_capacity + 2, max_capacity + 2);
     builder_ = new SequenceBuilder<Tp>(struct_);
     director_ = new SequenceDirector<Tp>(struct_);
     if (prebuilt && max_capacity > 0) {
@@ -92,7 +92,9 @@ const Tp* Sequence<Tp>::Back() const {
 
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
+    struct_->PrintCounters(); ///for debug
     tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
+    struct_->PrintCounters(); ///for debug
     director_->ConnectRight(builder_, root_node_, new_node);
     ///for debug 
     struct_->PrintCounters(); ///for debug

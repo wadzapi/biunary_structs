@@ -54,8 +54,8 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp>* builder, s
             builder->ConnectRight(new_node1, new_node2);
             new_node1 = new_node2;
         }
-        this->struct_->SetRight(root_node, new_node1);
     } 
+    this->struct_->SetRight(root_node, new_node1);
     return root_node;
 }
 
@@ -78,8 +78,8 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, c
             builder->ConnectRight(new_node1, new_node2);
             new_node1 = new_node2;
         }
-        this->struct_->SetRight(root_node, new_node1);
     } 
+    this->struct_->SetRight(root_node, new_node1);
     return root_node;
 }
 
@@ -87,18 +87,25 @@ template <class Tp>
 void SequenceDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp>* root_node, tree_node<Tp> *node) {
     if (root_node->right == node) {
         this->struct_->SetRight(root_node, node->left);
+        builder->DisconnectLeft(node);
     } else if (root_node->left == node) {
         this->struct_->SetLeft(root_node, node->right);
+        builder->DisconnectRight(node);
     } else {
-        builder->ConnectRight(node->left, node->right);
+        tree_node<Tp> *l_node = node->left;
+        tree_node<Tp> *r_node = node->right;
+        builder->DisconnectLeft(node);
+        builder->DisconnectRight(node);
+        builder->ConnectRight(l_node, r_node);
     }
     builder->DeleteNode(node);
 }
 
 template <class Tp>
 void SequenceDirector<Tp>::RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) {
-    RemoveNode(builder, root_node, node->left);
+    tree_node<Tp>* old_null = node->left;
     builder->DeleteRoot(node);
+    RemoveNode(builder, root_node, old_null);
 }
    
 template <class Tp>
@@ -111,10 +118,11 @@ void SequenceDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, tree_node
 
 template <class Tp>
 void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) {
+    tree_node<Tp>* r_node = (new_node->left)->right;
     //connect to the right side of other nodes in sequence
-    builder->ConnectRight(node->right, (new_node->left)->right);
-    this->struct_->SetRight(node, new_node->right); 
+    this->struct_->SetRight(node, new_node->right);
     RemoveRootNode(builder, node, new_node);
+    builder->ConnectRight(node->right, r_node);
 }
 
 template <class Tp>

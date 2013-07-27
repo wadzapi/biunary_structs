@@ -90,8 +90,6 @@ void SequenceBuilder<Tp>::DisconnectRight(tree_node<Tp> *node) {
 
 template <class Tp>
 void SequenceBuilder<Tp>::DeleteNode(tree_node<Tp>* node) {
-    DisconnectLeft(node);
-    DisconnectRight(node);
     //delete links
     this->struct_->SetLeft(node, NULL);
     this->struct_->SetRight(node, NULL);

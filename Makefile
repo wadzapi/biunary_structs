@@ -2,7 +2,7 @@ all: main
 	g++ -o run main.o
 
 main: sequence main.cpp
-	g++ -c -o main.o
+	g++ -c -o main.o main.cpp
 
 sequence: sequence.hh
 	g++ -c -o sequence.gch sequence.hh
@@ -19,3 +19,4 @@ sequenced: sequence.hh
 clean:
 	rm ./*.gch
 	rm ./*.o
+	rm ./run*
