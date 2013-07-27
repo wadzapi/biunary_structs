@@ -42,7 +42,7 @@ class StructDirectorBase {
         virtual void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) = 0;
         virtual void DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) = 0;
         virtual void RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) = 0;
-        virtual void RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *node) = 0;
+        virtual void RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) = 0;
         virtual void Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) = 0;
         virtual void Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) = 0;
 };

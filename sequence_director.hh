@@ -18,7 +18,7 @@ class SequenceDirector : public StructDirectorBase<Tp> {
         void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
         void DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
         void RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node);
-        void RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *node);
+        void RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node);
         void Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node);
         void Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node);
 };
@@ -85,16 +85,19 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, c
 
 template <class Tp>
 void SequenceDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp>* root_node, tree_node<Tp> *node) {
-    builder->ConnectRight(node->left, node->right);
     if (root_node->right == node) {
-        root_node->right = node->left;
+        this->struct_->SetRight(root_node, node->left);
+    } else if (root_node->left == node) {
+        this->struct_->SetLeft(root_node, node->right);
+    } else {
+        builder->ConnectRight(node->left, node->right);
     }
     builder->DeleteNode(node);
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *node) {
-    RemoveNode(builder, node, node->left);
+void SequenceDirector<Tp>::RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) {
+    RemoveNode(builder, root_node, node->left);
     builder->DeleteRoot(node);
 }
    
@@ -102,16 +105,16 @@ template <class Tp>
 void SequenceDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) {
     ConnectRight(builder, new_node, node);
     this->struct_->SetLeft(new_node, node->left);
-    RemoveRootNode(builder, node);
+    RemoveRootNode(builder, new_node, node);
     node = new_node;
 }
 
 template <class Tp>
 void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) {
     //connect to the right side of other nodes in sequence
-    builder->ConnectRight(node->right, new_node->left);
+    builder->ConnectRight(node->right, (new_node->left)->right);
     this->struct_->SetRight(node, new_node->right); 
-    RemoveRootNode(builder, new_node);
+    RemoveRootNode(builder, node, new_node);
 }
 
 template <class Tp>
@@ -135,7 +138,7 @@ void SequenceDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *
 template <class Tp>
 void SequenceDirector<Tp>::Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) {
     Clear(builder, root_node);
-    RemoveRootNode(builder, root_node);
+    RemoveRootNode(builder, root_node, root_node);
 }
 
 #endif //SEQUENCE_DIRECTOR_H_
