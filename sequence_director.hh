@@ -40,9 +40,7 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp>* builder, s
     //allocate root node 
     tree_node<Tp>* root_node = builder->AddRoot();
     ///Add null node
-    tree_node<Tp>* new_node1 = builder->AddNode();
-    this->struct_->Unreserve(new_node1->value);
-    new_node1->value = NULL;
+    tree_node<Tp>* new_node1 = this->struct_->AddLogic();
     this->struct_->SetLeft(root_node, new_node1);
     ///Construct and connect other nodes
     if (num_nodes > 0) {
