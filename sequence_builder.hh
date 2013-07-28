@@ -14,7 +14,7 @@ class SequenceBuilder : public StructBuilderBase<Tp> {
         tree_node<Tp> *AddNode();
         tree_node<Tp> *AddNode(const Tp& value);
         tree_node<Tp> *AddRoot();
-        void SetNodeValue(tree_node<Tp>* node, const Tp& value);
+        void SetNodeValue(tree_node<Tp> *&node, const Tp& value);
         void ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node);
         void ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node);
         void DisconnectLeft(tree_node<Tp> *node);
@@ -58,7 +58,7 @@ tree_node<Tp>* SequenceBuilder<Tp>::AddRoot() {
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::SetNodeValue(tree_node<Tp>* node, const Tp& value) {
+void SequenceBuilder<Tp>::SetNodeValue(tree_node<Tp> *&node, const Tp& value) {
     Tp* new_val = this->struct_->AddData(value);
     this->struct_->SetData(node, new_val);
     this->struct_->Unreserve(new_val);

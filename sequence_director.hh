@@ -62,9 +62,7 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, c
     //allocate root node 
     tree_node<Tp>* root_node = builder->AddRoot();
     ///Add null node
-    tree_node<Tp>* new_node1 = builder->AddNode();
-    this->struct_->Unreserve(new_node1->value);
-    new_node1->value = NULL;
+    tree_node<Tp>* new_node1 = this->struct_->AddLogic();
     this->struct_->SetLeft(root_node, new_node1);
     ///Construct and connect other nodes
     if (num_nodes > 0) {
@@ -117,10 +115,10 @@ void SequenceDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, tree_node
 template <class Tp>
 void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) {
     tree_node<Tp>* r_node = (new_node->left)->right;
-    //connect to the right side of other nodes in sequence
+    tree_node<Tp>* l_node = node->right;
     this->struct_->SetRight(node, new_node->right);
     RemoveRootNode(builder, node, new_node);
-    builder->ConnectRight(node->right, r_node);
+    builder->ConnectRight(l_node, r_node);
 }
 
 template <class Tp>

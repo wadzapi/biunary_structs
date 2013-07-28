@@ -16,7 +16,7 @@ class StructBuilderBase {
         virtual tree_node<Tp> *AddNode() = 0;
         virtual tree_node<Tp> *AddNode(const Tp& value) = 0;
         virtual tree_node<Tp> *AddRoot() = 0;
-        virtual void SetNodeValue(tree_node<Tp>* node, const Tp& value) = 0;
+        virtual void SetNodeValue(tree_node<Tp> *&node, const Tp& value) = 0;
         virtual void ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node) = 0;
         virtual void ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node) = 0;
         virtual void DisconnectLeft(tree_node<Tp> *node) = 0;

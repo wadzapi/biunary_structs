@@ -92,9 +92,7 @@ const Tp* Sequence<Tp>::Back() const {
 
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
-    struct_->PrintCounters(); ///for debug
     tree_node<Tp>* new_node = director_->Construct(builder_, &val, 1);
-    struct_->PrintCounters(); ///for debug
     director_->ConnectRight(builder_, root_node_, new_node);
     ///for debug 
     struct_->PrintCounters(); ///for debug
