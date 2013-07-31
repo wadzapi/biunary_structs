@@ -4,13 +4,13 @@
 #include "struct_builder.hh"
 
 template <class Tp>
-class SequenceDirector : public StructDirectorBase<Tp> {
+class BinaryTreeDirector : public StructDirectorBase<Tp> {
     private:
     protected:
     public:
-        SequenceDirector();
-        SequenceDirector(DataStruct<Tp>* _struct);
-        ~SequenceDirector();
+        BinaryTreeDirector();
+        BinaryTreeDirector(DataStruct<Tp>* _struct);
+        ~BinaryTreeDirector();
         tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes);
         tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes);
         void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
@@ -24,27 +24,26 @@ class SequenceDirector : public StructDirectorBase<Tp> {
 };
 
 template <class Tp>
-SequenceDirector<Tp>::SequenceDirector() {
+BinaryTreeDirector<Tp>::BinaryTreeDirector() {
 }
 
 template <class Tp>
-SequenceDirector<Tp>::SequenceDirector(DataStruct<Tp>* _struct) : StructDirectorBase<Tp>(_struct) {
+BinaryTreeDirector<Tp>::BinaryTreeDirector(DataStruct<Tp>* _struct) : StructDirectorBase<Tp>(_struct) {
 }
 
 template <class Tp>
-SequenceDirector<Tp>::~SequenceDirector() {
+BinaryTreeDirector<Tp>::~BinaryTreeDirector() {
 }
 
 template <class Tp>
-tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp>* builder, size_t num_nodes) {
+tree_node<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp>* builder, size_t num_nodes) {
     //allocate root node 
     tree_node<Tp>* root_node = builder->AddRoot();
-    ///Add null node
-    tree_node<Tp>* new_node1 = this->struct_->AddLogic();
-    this->struct_->SetLeft(root_node, new_node1);
     ///Construct and connect other nodes
     if (num_nodes > 0) {
-        new_node1 = builder->AddNode();
+        tree_node<Tp>* new_node1 = builder->AddNode();
+        this->struct_->SetLeft(root_node, new_node1);
+        this->struct_->SetRight(root_node, new_node1);
         builder->ConnectRight(root_node->left, new_node1);
         tree_node<Tp>* new_node2;
         for (size_t i = 1; i < num_nodes; i++) {
@@ -53,12 +52,11 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp>* builder, s
             new_node1 = new_node2;
         }
     } 
-    this->struct_->SetRight(root_node, new_node1);
     return root_node;
 }
 
 template <class Tp>
-tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes) {
+tree_node<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes) {
     //allocate root node 
     tree_node<Tp>* root_node = builder->AddRoot();
     ///Add null node
@@ -80,7 +78,7 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, c
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp>* root_node, tree_node<Tp> *node) {
+void BinaryTreeDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp>* root_node, tree_node<Tp> *node) {
     if (root_node->right == node) {
         this->struct_->SetRight(root_node, node->left);
         builder->DisconnectLeft(node);
@@ -98,14 +96,14 @@ void SequenceDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) {
+void BinaryTreeDirector<Tp>::RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) {
     tree_node<Tp>* old_null = node->left;
     builder->DeleteRoot(node);
     RemoveNode(builder, root_node, old_null);
 }
    
 template <class Tp>
-void SequenceDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) {
+void BinaryTreeDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) {
     ConnectRight(builder, new_node, node);
     this->struct_->SetLeft(new_node, node->left);
     RemoveRootNode(builder, new_node, node);
@@ -113,7 +111,7 @@ void SequenceDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, tree_node
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) {
+void BinaryTreeDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) {
     tree_node<Tp>* r_node = (new_node->left)->right;
     tree_node<Tp>* l_node = node->right;
     this->struct_->SetRight(node, new_node->right);
@@ -122,17 +120,17 @@ void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, tree_nod
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) {
+void BinaryTreeDirector<Tp>::DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) {
     builder->DisconnectLeft(node);
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) {
+void BinaryTreeDirector<Tp>::DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) {
     builder->DisconnectRight(node);
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) {
+void BinaryTreeDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) {
     tree_node<Tp> old_node;
     while ((root_node->left)->right != root_node->right) {
         RemoveNode(builder, root_node, root_node->right);
@@ -140,7 +138,7 @@ void SequenceDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) {
+void BinaryTreeDirector<Tp>::Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) {
     Clear(builder, root_node);
     RemoveRootNode(builder, root_node, root_node);
 }

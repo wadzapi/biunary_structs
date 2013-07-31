@@ -22,7 +22,7 @@ class BinaryTreeBuilder : public StructBuilderBase<Tp> {
 };
 
 template <class Tp>
-BinaryTreeBuilder<Tp>::SequenceBuilder() { 
+BinaryTreeBuilder<Tp>::BinaryTreeBuilder() { 
 }
 
 template <class Tp>
@@ -35,7 +35,7 @@ BinaryTreeBuilder<Tp>::~BinaryTreeBuilder() {
 }
 
 template <class Tp>
-tree_node<Tp>* SequenceBuilder<Tp>::AddNodeLogic() {
+tree_node<Tp>* BinaryTreeBuilder<Tp>::AddNodeLogic() {
     tree_node<Tp>* new_node = this->struct_->AddLogic();
     return new_node;
 }
@@ -46,25 +46,22 @@ void BinaryTreeBuilder<Tp>::ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node) {
+void BinaryTreeBuilder<Tp>::ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node) {
     this->struct_->SetRight(node, new_node);
-    this->struct_->SetLeft(new_node, node);
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::DisconnectLeft(tree_node<Tp> *node) {
-    this->struct_->SetRight(node->left, node->left);
+void BinaryTreeBuilder<Tp>::DisconnectLeft(tree_node<Tp> *node) {
     this->struct_->SetLeft(node, node);
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::DisconnectRight(tree_node<Tp> *node) {
-    this->struct_->SetLeft(node->right, node->right);
+void BinaryTreeBuilder<Tp>::DisconnectRight(tree_node<Tp> *node) {
     this->struct_->SetRight(node, node);
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::DeleteNode(tree_node<Tp>* node) {
+void BinaryTreeBuilder<Tp>::DeleteNode(tree_node<Tp>* node) {
     //delete links
     this->struct_->SetLeft(node, NULL);
     this->struct_->SetRight(node, NULL);

@@ -17,7 +17,6 @@ class BinaryTree {
         BinaryTree();
         BinaryTree(bin_tree_node<Tp>* root_node);
         ~BinaryTree();
-        
 };
 
 #endif //BIN_TREE_H_
