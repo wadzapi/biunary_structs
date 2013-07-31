@@ -1,14 +1,15 @@
 #ifndef SEQUENCE_H_
 #define SEQUENCE_H_
 
+#include "sequence_builder.hh"
 #include "sequence_director.hh"
 
 template <class Tp>
 class Sequence {
     private:
         DataStruct<Tp>* struct_;
-        SequenceBuilder<Tp>* builder_;
         SequenceDirector<Tp>* director_;
+        SequenceBuilder<Tp>* builder_;
         tree_node<Tp>* root_node_;
         bool is_built_;
 
