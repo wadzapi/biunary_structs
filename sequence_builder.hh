@@ -7,6 +7,7 @@ template <class Tp>
 class SequenceBuilder : public StructBuilderBase<Tp> {
     private:
     protected:
+        tree_node<Tp> *AddNodeLogic();
     public:
         SequenceBuilder();
         SequenceBuilder(DataStruct<Tp>* _struct);
@@ -34,16 +35,8 @@ SequenceBuilder<Tp>::~SequenceBuilder() {
 }
 
 template <class Tp>
-tree_node<Tp>* SequenceBuilder<Tp>::AddNode() {
+tree_node<Tp>* SequenceBuilder<Tp>::AddNodeLogic() {
     tree_node<Tp>* new_node = this->struct_->AddLogic();
-    AddNodeValue(new_node, Tp());
-    return new_node;
-}
-
-template <class Tp>
-tree_node<Tp>* SequenceBuilder<Tp>::AddNode(const Tp& value) {
-    tree_node<Tp>* new_node = this->struct_->AddLogic();
-    AddNodeValue(new_node, value);
     return new_node;
 }
 
