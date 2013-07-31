@@ -20,7 +20,11 @@ class StructBuilderBase {
             struct_->Reserve(root_node);
             return root_node;
         }
-        virtual void SetNodeValue(tree_node<Tp> *&node, const Tp& value) = 0;
+        void AddNodeValue(tree_node<Tp> *&node, const Tp& value) {
+            Tp* new_val = struct_->AddData(value);
+            struct_->SetData(node, new_val);
+            struct_->Unreserve(new_val);
+        }
         virtual void ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node) = 0;
         virtual void ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node) = 0;
         virtual void DisconnectLeft(tree_node<Tp> *node) = 0;

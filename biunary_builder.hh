@@ -37,7 +37,13 @@ BiunaryBuilder::~BiunaryBuilder() {
 template <class Tp>
 tree_node<Tp>* BiunaryBuilder::AddNode() {
     tree_node<Tp>* new_node = this->struct_->AddLogic();
-    tree_node
+    this->struct_->Reserve(new_node);
+    SetNodeValue(new_node, Tp());
+    tree_node<Tp>* left_subnode = this->struct_->AddLogic();
+    this->struct_->SetLeft(new_node, left_subnode);
+    tree_node<Tp>* right_subnode = this->struct_->AddLogic();
+    this->struct_->SetRight(new_node, right_subnode);
+    return new_node;
 }
 
 template <class Tp>
