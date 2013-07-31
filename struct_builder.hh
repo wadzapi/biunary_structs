@@ -15,14 +15,22 @@ class StructBuilderBase {
         virtual ~StructBuilderBase() {}
         virtual tree_node<Tp> *AddNode() = 0;
         virtual tree_node<Tp> *AddNode(const Tp& value) = 0;
-        virtual tree_node<Tp> *AddRoot() = 0;
+        tree_node<Tp> *AddRoot() {
+            tree_node<Tp>* root_node = struct_->AddLogic();
+            struct_->Reserve(root_node);
+            return root_node;
+        }
         virtual void SetNodeValue(tree_node<Tp> *&node, const Tp& value) = 0;
         virtual void ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node) = 0;
         virtual void ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node) = 0;
         virtual void DisconnectLeft(tree_node<Tp> *node) = 0;
         virtual void DisconnectRight(tree_node<Tp> *node) = 0;
         virtual void DeleteNode(tree_node<Tp>* node) = 0;
-        virtual void DeleteRoot(tree_node<Tp>* node) = 0;
+        void DeleteRoot(tree_node<Tp>* node) {
+            struct_->SetLeft(node, NULL);
+            struct_->SetRight(node, NULL);
+            struct_->Unreserve(node);
+        }
 };
 
 template <class Tp>

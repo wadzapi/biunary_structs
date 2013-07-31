@@ -13,14 +13,12 @@ class SequenceBuilder : public StructBuilderBase<Tp> {
         ~SequenceBuilder(); 
         tree_node<Tp> *AddNode();
         tree_node<Tp> *AddNode(const Tp& value);
-        tree_node<Tp> *AddRoot();
         void SetNodeValue(tree_node<Tp> *&node, const Tp& value);
         void ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node);
         void ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node);
         void DisconnectLeft(tree_node<Tp> *node);
         void DisconnectRight(tree_node<Tp> *node);
         void DeleteNode(tree_node<Tp>* node);
-        void DeleteRoot(tree_node<Tp>* node);
 };
 
 template <class Tp>
@@ -29,7 +27,7 @@ SequenceBuilder<Tp>::SequenceBuilder() {
 
 template <class Tp>
 SequenceBuilder<Tp>::SequenceBuilder(DataStruct<Tp>* _struct) : 
-    StructBuilderBase<Tp>(_struct, 1) {
+    StructBuilderBase<Tp>(_struct, 2) {
 }
 
 template <class Tp>
@@ -48,13 +46,6 @@ tree_node<Tp>* SequenceBuilder<Tp>::AddNode(const Tp& value) {
     tree_node<Tp>* new_node = this->struct_->AddLogic();
     SetNodeValue(new_node, value);
     return new_node;
-}
-
-template <class Tp>
-tree_node<Tp>* SequenceBuilder<Tp>::AddRoot() {
-    tree_node<Tp>* root_node = this->struct_->AddLogic();
-    this->struct_->Reserve(root_node);
-    return root_node;
 }
 
 template <class Tp>
@@ -95,12 +86,6 @@ void SequenceBuilder<Tp>::DeleteNode(tree_node<Tp>* node) {
     this->struct_->SetRight(node, NULL);
     //delete value
     this->struct_->Unreserve(node->value);
-}
-
-template <class Tp>
-void SequenceBuilder<Tp>::DeleteRoot(tree_node<Tp>* node) {
-    DeleteNode(node);
-    this->struct_->Unreserve(node);
 }
 
 #endif //SEQUENCE_BUILDER_H_
