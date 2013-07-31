@@ -1,5 +1,5 @@
-#ifndef BIUN_H_
-#define BIUN_H_
+#ifndef BIN_TREE_H_
+#define BIN_TREE_H_
 /* Basic data structure - classic binary tree */
 
 template <class Value>
@@ -9,4 +9,4 @@ struct tree_node {
     Value* value;
 };
 
-#endif //BIUN_H_
+#endif //BIN_TREE_H_

@@ -27,7 +27,7 @@ SequenceBuilder<Tp>::SequenceBuilder() {
 
 template <class Tp>
 SequenceBuilder<Tp>::SequenceBuilder(DataStruct<Tp>* _struct) : 
-    StructBuilderBase<Tp>(_struct, 2) {
+    StructBuilderBase<Tp>(_struct, 1) {
 }
 
 template <class Tp>

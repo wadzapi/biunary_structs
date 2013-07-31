@@ -7,12 +7,12 @@ class StructBuilderBase {
     private:
     protected:
         DataStruct<Tp>* struct_;
-        size_t num_links_;
+        size_t num_connections_;
         void SetStruct(DataStruct<Tp> *_struct) { struct_ = _struct; }
         virtual tree_node<Tp> *AddNodeLogic() = 0;
     public:
         StructBuilderBase() : struct_(NULL) {}
-        StructBuilderBase(DataStruct<Tp> *_struct, size_t num_links): struct_(_struct), num_links_(num_links) {}
+        StructBuilderBase(DataStruct<Tp> *_struct, size_t num_connections): struct_(_struct), num_connections_(num_connections) {}
         virtual ~StructBuilderBase() {}
         tree_node<Tp>* AddNode() {
             tree_node<Tp>* new_node = AddNodeLogic();

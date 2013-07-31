@@ -7,9 +7,10 @@ template <class Tp>
 class BiunaryBuilder : public StructBuilderBase<Tp> {
     private:
     protected:
+        tree_node<Tp> *AddNodeLogic();
     public:
         BiunaryBuilder();
-        BiunaryBuilder(DataStruct<Tp> *_struct, size_t num_links);
+        BiunaryBuilder(DataStruct<Tp> *_struct, size_t num_connections);
         ~BiunaryBuilder();
         tree_node<Tp> *AddNode();
         tree_node<Tp> *AddNode(const Tp& value);
@@ -26,8 +27,8 @@ BiunaryBuilder::BiunaryBuilder() {
 }
 
 template <class Tp>
-BiunaryBuilder::BiunaryBuilder(DataStruct<Tp> *_struct, size_t num_links) :
-    StructBuilderBase(_struct, num_links) {
+BiunaryBuilder::BiunaryBuilder(DataStruct<Tp> *_struct, size_t num_connections) :
+    StructBuilderBase(_struct, num_connections) {
 }
 
 template <class Tp>
@@ -35,23 +36,14 @@ BiunaryBuilder::~BiunaryBuilder() {
 }
 
 template <class Tp>
-tree_node<Tp>* BiunaryBuilder::AddNode() {
+tree_node<Tp>* BiunaryBuilder<Tp>::AddNodeLogic() {
     tree_node<Tp>* new_node = this->struct_->AddLogic();
     this->struct_->Reserve(new_node);
-    SetNodeValue(new_node, Tp());
     tree_node<Tp>* left_subnode = this->struct_->AddLogic();
     this->struct_->SetLeft(new_node, left_subnode);
     tree_node<Tp>* right_subnode = this->struct_->AddLogic();
     this->struct_->SetRight(new_node, right_subnode);
     return new_node;
-}
-
-template <class Tp>
-tree_node<Tp>* BiunaryBuilder::AddNode(const Tp& value) {
-}
-
-template <class Tp>
-void BiunaryBuilder::SetNodeValue(tree_node<Tp> *&node, const Tp& value) {
 }
 
 template <class Tp>
