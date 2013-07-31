@@ -1,7 +1,6 @@
 #ifndef SEQUENCE_H_
 #define SEQUENCE_H_
 
-#include "sequence_builder.hh"
 #include "sequence_director.hh"
 
 template <class Tp>
