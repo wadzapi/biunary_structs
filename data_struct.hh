@@ -2,7 +2,7 @@
 #define DATA_STRUCT_H_
 
 #include "memory_heap.hh"
-#include "biun.hh"
+#include "bin_tree.hh"
 
 /* Class-container for logical and phisical storage                       */
 /* functions to set phisical data, and to link for logical structure data */
