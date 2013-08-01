@@ -2,8 +2,8 @@
 #include <cstdlib>
 #include <cstdio>
 #include <unistd.h>
-#include "queue.hh"
 
+#include "struct_factory.hh"
 
 int main(int argc, char** argv) {
     /*FILE *inputFile = stdin;
@@ -33,6 +33,7 @@ int main(int argc, char** argv) {
             exit(1);
         }
     }*/
+    /*
     Queue<int> q(10);
     for (int i = 1; i < 11; i++) {
         q.Push(i);
@@ -40,6 +41,8 @@ int main(int argc, char** argv) {
     for (int i = 1; i < 11; i++) {
         int k = *(q.Front());
         q.Pop();
-    }
+    }*/
+    StructFactory<int> struct_factory(10, 12);
+    Sequence<int> *seq = struct_factory.MakeSequence();
     return 0;
 }
