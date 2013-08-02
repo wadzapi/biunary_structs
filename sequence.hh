@@ -86,30 +86,30 @@ const Tp* Sequence<Tp>::Back() const {
 
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
-    tree_node<Tp>* new_node = this->director->Construct(this->builder_, &val, 1);
-    this->director->ConnectRight(this->builder_, this->root_node_, new_node);
+    tree_node<Tp>* new_node = this->director_->Construct(this->builder_, &val, 1);
+    this->director_->ConnectRight(this->builder_, this->root_node_, new_node);
     ///for debug 
     this->struct_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PushFront(const Tp& val) {
-    tree_node<Tp>* new_node = this->director->Construct(this->builder_, &val, 1);
-    this->director->ConnectLeft(this->builder_, this->root_node_, new_node);
+    tree_node<Tp>* new_node = this->director_->Construct(this->builder_, &val, 1);
+    this->director_->ConnectLeft(this->builder_, this->root_node_, new_node);
     ///for debug
     this->struct_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopBack() {
-    this->director->RemoveNode(this->builder_, this->root_node_, this->root_node_->right);
+    this->director_->RemoveNode(this->builder_, this->root_node_, this->root_node_->right);
     ///for debug
     this->struct_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopFront() {
-    this->director->RemoveNode(this->builder_, this->root_node_, (this->root_node_->left)->right);
+    this->director_->RemoveNode(this->builder_, this->root_node_, (this->root_node_->left)->right);
     ///for debug
     this->struct_->PrintCounters(); ///for debug
 }

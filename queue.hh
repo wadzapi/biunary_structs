@@ -37,7 +37,7 @@ Queue<Tp>::Queue(tree_node<Tp>* root_node, DataStruct<Tp>* _struct) {
 template <class Tp>
 Queue<Tp>::Queue(DataStruct<Tp>* _struct) {
     Construct(_struct);
-    tree_node<Tp>* new_root = this->director_->Construct(this->builder, 0);
+    tree_node<Tp>* new_root = sequence_.GetRoot();
     SetRoot(new_root);
 }
 
@@ -47,7 +47,7 @@ Queue<Tp>::~Queue() {
         
 template <class Tp>
 void Queue<Tp>::Construct(DataStruct<Tp>* _struct) {
-    sequence_.Construct(_struct);
+    sequence_ = Sequence<Tp>(_struct);
     this->struct_ = _struct;
 }
 

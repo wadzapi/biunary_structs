@@ -35,7 +35,7 @@ Stack<Tp>::Stack(tree_node<Tp>* root_node, DataStruct<Tp>* _struct) {
 template <class Tp>
 Stack<Tp>::Stack(DataStruct<Tp>* _struct) {
     Construct(_struct);
-    tree_node<Tp>* new_root = this->director_->Construct(this->builder_, 0);
+    tree_node<Tp>* new_root = sequence_.GetRoot();
     SetRoot(new_root);
 }
 
@@ -45,7 +45,7 @@ Stack<Tp>::~Stack() {
 
 template <class Tp>
 void Stack<Tp>::Construct(DataStruct<Tp>* _struct) {
-    sequence_.Construct(_struct);
+    sequence_ = Sequence<Tp>(_struct);
     this->struct_ = _struct;
 } 
 

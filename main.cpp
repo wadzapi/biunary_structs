@@ -44,5 +44,12 @@ int main(int argc, char** argv) {
     }*/
     StructFactory<int> struct_factory(10, 12);
     Stack<int>* stack = struct_factory.MakeStack();
+    for (int i = 1; i < 11; i++) {
+        stack->Push(i);
+    }
+    for (int i = 1; i < 11; i++) {
+        int k = *(stack->Top());
+        stack->Pop();
+    }
     return 0;
 }
