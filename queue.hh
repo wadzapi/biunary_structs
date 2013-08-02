@@ -4,15 +4,17 @@
 #include "sequence.hh"
 
 template <class Tp>
-class Queue {
+class Queue : public StructBase<Tp> {
     private:
         
     protected:
         Sequence<Tp> sequence_;
     public:
         Queue();
-        Queue(size_t capacity);
+        Queue(tree_node<Tp>* root_node, DataStruct<Tp>* _struct);
+        Queue(DataStruct<Tp>* _struct);
         ~Queue();
+        void Construct(DataStruct<Tp>* _struct);
         Tp* Front();
         const Tp* Front() const;
         Tp* Back();
@@ -25,14 +27,28 @@ class Queue {
 template <class Tp>
 Queue<Tp>::Queue() {
 }
+        
+template <class Tp>
+Queue<Tp>::Queue(tree_node<Tp>* root_node, DataStruct<Tp>* _struct) {
+    Construct(_struct);
+    SetRoot(_struct);
+}
 
 template <class Tp>
-Queue<Tp>::Queue(size_t capacity) {
-    sequence_.Construct(capacity, false);
+Queue<Tp>::Queue(DataStruct<Tp>* _struct) {
+    Construct(_struct);
+    tree_node<Tp>* new_root = this->director_->Construct(this->builder, 0);
+    SetRoot(new_root);
 }
 
 template <class Tp>
 Queue<Tp>::~Queue() {
+}
+        
+template <class Tp>
+void Queue<Tp>::Construct(DataStruct<Tp>* _struct) {
+    sequence_.Construct(_struct);
+    this->struct_ = _struct;
 }
 
 template <class Tp>

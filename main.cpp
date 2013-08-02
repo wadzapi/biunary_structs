@@ -43,6 +43,6 @@ int main(int argc, char** argv) {
         q.Pop();
     }*/
     StructFactory<int> struct_factory(10, 12);
-    Sequence<int> *seq = struct_factory.MakeSequence();
+    Stack<int>* stack = struct_factory.MakeStack();
     return 0;
 }

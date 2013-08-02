@@ -33,13 +33,14 @@ Sequence<Tp>::Sequence() {
 template <class Tp>
 Sequence<Tp>::Sequence(tree_node<Tp>* root_node, DataStruct<Tp>* _struct) {
     Construct(_struct);
-    this->root_node_ = root_node;
+    SetRoot(root_node);
 }
 
 template <class Tp>
 Sequence<Tp>::Sequence(DataStruct<Tp>* _struct) {
     Construct(_struct);
-    this->root_node_ = this->director_->Construct(this->builder_, 0);
+    tree_node<Tp>* new_root = this->director_->Construct(this->builder_, 0);
+    SetRoot(new_root);
 }
 
 template <class Tp>

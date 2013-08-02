@@ -4,15 +4,17 @@
 #include "sequence.hh"
 
 template <class Tp>
-class Stack {
+class Stack : public StructBase<Tp> {
     private:
          
     protected:
         Sequence<Tp> sequence_;
     public:
         Stack();
-        Stack(size_t capacity);
+        Stack(tree_node<Tp>* root_node, DataStruct<Tp>* _struct);
+        Stack(DataStruct<Tp>* _struct);
         ~Stack();
+        void Construct(DataStruct<Tp>* _struct); 
         bool Empty();
         void Push(const Tp& value);
         void Pop();
@@ -25,13 +27,27 @@ Stack<Tp>::Stack() {
 }
 
 template <class Tp>
-Stack<Tp>::Stack(size_t capacity) {
-    sequence_.Construct(capacity, false);
-} 
+Stack<Tp>::Stack(tree_node<Tp>* root_node, DataStruct<Tp>* _struct) {
+    Construct(_struct);
+    SetRoot(root_node);
+}
+
+template <class Tp>
+Stack<Tp>::Stack(DataStruct<Tp>* _struct) {
+    Construct(_struct);
+    tree_node<Tp>* new_root = this->director_->Construct(this->builder_, 0);
+    SetRoot(new_root);
+}
 
 template <class Tp>
 Stack<Tp>::~Stack() {
 }
+
+template <class Tp>
+void Stack<Tp>::Construct(DataStruct<Tp>* _struct) {
+    sequence_.Construct(_struct);
+    this->struct_ = _struct;
+} 
 
 template <class Tp>
 bool Stack<Tp>::Empty() {

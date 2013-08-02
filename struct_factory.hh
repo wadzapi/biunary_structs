@@ -2,6 +2,8 @@
 #define STRUCT_FACTORY_H_
 
 #include "sequence.hh"
+#include "stack.hh"
+#include "queue.hh"
 
 template <class Tp>
 class StructFactory {
@@ -14,7 +16,10 @@ class StructFactory {
         StructFactory(size_t phys_capacity, size_t logical_capacity);
         ~StructFactory();
         void Construct(size_t phys_capacity, size_t logical_capacity);
+        //Make structure methods
         Sequence<Tp>* MakeSequence();
+        Stack<Tp>* MakeStack();
+        Queue<Tp>* MakeQueue();
 };
 
 template <class Tp>
@@ -43,8 +48,20 @@ StructFactory<Tp>::~StructFactory() {
 
 template <class Tp>
 Sequence<Tp>* StructFactory<Tp>::MakeSequence() {
-    Sequence<Tp>* seq = new Sequence<Tp>(struct_);
-    return seq;
+    Sequence<Tp>* sequence = new Sequence<Tp>(struct_);
+    return sequence;
+}
+
+template <class Tp>
+Stack<Tp>* StructFactory<Tp>::MakeStack() {
+    Stack<Tp>* stack = new Stack<Tp>(struct_);
+    return stack;
+}
+
+template <class Tp>
+Queue<Tp>* StructFactory<Tp>::MakeQueue() {
+    Queue<Tp>* queue = new Queue<Tp>(struct_);
+    return queue;
 }
 
 #endif //STRUCT_FACTORY_H_

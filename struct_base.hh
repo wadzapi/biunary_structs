@@ -17,15 +17,19 @@ class StructBase {
         virtual void Construct(DataStruct<Tp>* _struct) = 0;
         virtual ~StructBase() {
             if (is_built_) {
+                Delete();
                 delete builder_;
                 builder_ = NULL;
                 delete director_;
                 director_ = NULL;
             }
-            Delete();
         }
-        void SetRoot(tree_node<Tp>* root_node);
-        tree_node<Tp>* GetRoot();
+        void SetRoot(tree_node<Tp>* root_node) {
+            this->root_node_ = root_node;
+        }
+        tree_node<Tp>* GetRoot() {
+            return this->root_node_;
+        }
         void Delete() {
             director_->Delete(builder_, root_node_);
         }
