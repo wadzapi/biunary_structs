@@ -14,7 +14,7 @@ class StructBase {
         bool is_built_;
     public:
         StructBase() : struct_(NULL), root_node_(NULL), builder_(NULL), director_(NULL), is_built_(false) { }
-        virtual void Construct(DataStruct<Tp>* _struct) = 0;
+        virtual void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL) = 0;
         virtual ~StructBase() {
             if (is_built_) {
                 Delete();

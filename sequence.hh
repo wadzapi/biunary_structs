@@ -14,7 +14,7 @@ class Sequence : public StructBase<Tp> {
         Sequence(tree_node<Tp>* root_node, DataStruct<Tp>* _struct);
         Sequence(DataStruct<Tp>* _struct);
         ~Sequence();
-        void Construct(DataStruct<Tp>* _struct);
+        void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL);
         bool Empty();
         Tp* Front();
         const Tp* Front() const;
@@ -32,23 +32,24 @@ Sequence<Tp>::Sequence() {
 
 template <class Tp>
 Sequence<Tp>::Sequence(tree_node<Tp>* root_node, DataStruct<Tp>* _struct) {
-    Construct(_struct);
-    SetRoot(root_node);
+    Construct(_struct, root_node);
 }
 
 template <class Tp>
 Sequence<Tp>::Sequence(DataStruct<Tp>* _struct) {
     Construct(_struct);
-    tree_node<Tp>* new_root = this->director_->Construct(this->builder_, 0);
-    SetRoot(new_root);
 }
 
 template <class Tp>
-void Sequence<Tp>::Construct(DataStruct<Tp>* _struct) {
+void Sequence<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node) {
     this->builder_ = new SequenceBuilder<Tp>(_struct);
     this->director_ = new SequenceDirector<Tp>(_struct);
     this->struct_ = _struct;
     this->is_built_ = true;
+    if (root_node == NULL) {
+        root_node = this->director_->Construct(this->builder_, 0);
+    }
+    SetRoot(root_node);
 }
 
 template <class Tp>

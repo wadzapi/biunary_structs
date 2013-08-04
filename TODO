@@ -1,0 +1,3 @@
+- Create iterators for diff. structures.
+- Using iterators should be realized copy constructors (it's annoying bug sources usually).
+- Create unit tests for main functions and specs..

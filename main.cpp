@@ -33,16 +33,8 @@ int main(int argc, char** argv) {
             exit(1);
         }
     }*/
-    /*
-    Queue<int> q(10);
-    for (int i = 1; i < 11; i++) {
-        q.Push(i);
-    }
-    for (int i = 1; i < 11; i++) {
-        int k = *(q.Front());
-        q.Pop();
-    }*/
-    StructFactory<int> struct_factory(10, 12);
+    StructFactory<int> struct_factory(10, 14);
+    /*/// Stack test
     Stack<int>* stack = struct_factory.MakeStack();
     for (int i = 1; i < 11; i++) {
         stack->Push(i);
@@ -50,6 +42,26 @@ int main(int argc, char** argv) {
     for (int i = 1; i < 11; i++) {
         int k = *(stack->Top());
         stack->Pop();
+    }*/
+    //// Queue test
+    Queue<int> *queue = struct_factory.MakeQueue();
+    for (int i = 1; i < 11; i++) {
+        queue->Push(i);
     }
+    for (int i = 1; i < 11; i++) {
+        int k = *(queue->Front());
+        queue->Pop();
+    }
+
+    /*//// Sequence test
+    Sequence<int> *seq = struct_factory.MakeSequence();
+    //like stack
+    for (int i = 1; i < 11; i++) {
+        seq->PushBack(i);
+    }
+    for (int i = 1; i < 11; i++) {
+        int k = *(seq->Back());
+        seq->PopBack();
+    }*/
     return 0;
 }
