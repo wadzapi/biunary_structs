@@ -87,7 +87,7 @@ const Tp* Sequence<Tp>::Back() const {
 
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
-    tree_node<Tp>* new_node = this->director_->Construct(this->builder_, &val, 1);
+    tree_node<Tp>* new_node = this->director_->Construct(this->builder_, 1, &val);
     this->director_->ConnectRight(this->builder_, this->root_node_, new_node);
     ///for debug 
     this->struct_->PrintCounters(); ///for debug
@@ -95,7 +95,7 @@ void Sequence<Tp>::PushBack(const Tp& val) {
 
 template <class Tp>
 void Sequence<Tp>::PushFront(const Tp& val) {
-    tree_node<Tp>* new_node = this->director_->Construct(this->builder_, &val, 1);
+    tree_node<Tp>* new_node = this->director_->Construct(this->builder_, 1 , &val);
     this->director_->ConnectLeft(this->builder_, this->root_node_, new_node);
     ///for debug
     this->struct_->PrintCounters(); ///for debug

@@ -9,6 +9,7 @@ class StructBase {
     protected:
         DataStruct<Tp>* struct_;
         tree_node<Tp>* root_node_;
+        tree_node<Tp>* spec_node_;
         StructBuilderBase<Tp>* builder_;
         StructDirectorBase<Tp>* director_;
         bool is_built_;

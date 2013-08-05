@@ -11,8 +11,7 @@ class SequenceDirector : public StructDirectorBase<Tp> {
         SequenceDirector();
         SequenceDirector(DataStruct<Tp>* _struct);
         ~SequenceDirector();
-        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes);
-        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes);
+        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, const Tp* values = NULL);
         void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
@@ -36,29 +35,7 @@ SequenceDirector<Tp>::~SequenceDirector() {
 }
 
 template <class Tp>
-tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp>* builder, size_t num_nodes) {
-    //allocate root node 
-    tree_node<Tp>* root_node = builder->AddRoot();
-    ///Add null node
-    tree_node<Tp>* new_node1 = this->struct_->AddLogic();
-    this->struct_->SetLeft(root_node, new_node1);
-    ///Construct and connect other nodes
-    if (num_nodes > 0) {
-        new_node1 = builder->AddNode();
-        builder->ConnectRight(root_node->left, new_node1);
-        tree_node<Tp>* new_node2;
-        for (size_t i = 1; i < num_nodes; i++) {
-            new_node2 = builder->AddNode();
-            builder->ConnectRight(new_node1, new_node2);
-            new_node1 = new_node2;
-        }
-    } 
-    this->struct_->SetRight(root_node, new_node1);
-    return root_node;
-}
-
-template <class Tp>
-tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes) {
+tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, const Tp* values) {
     //allocate root node 
     tree_node<Tp>* root_node = builder->AddRoot();
     ///Add null node
@@ -68,11 +45,14 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, c
     if (num_nodes > 0) {
         new_node1 = builder->AddNode(values[0]);
         builder->ConnectRight(root_node->left, new_node1);
-        tree_node<Tp>* new_node2;
-        for (size_t i = 1; i < num_nodes; i++) {
-            new_node2 = builder->AddNode(values[i]);
-            builder->ConnectRight(new_node1, new_node2);
-            new_node1 = new_node2;
+        if (values == NULL) {
+            for (size_t i = 1; i < num_nodes; i++) {
+                new_node1 = AddRight(builder, new_node1);
+            }
+        } else {
+            for (size_t i = 1; i < num_nodes; i++) {
+                new_node1 = AddRight(builder, new_node1, (values + i));
+            }
         }
     } 
     this->struct_->SetRight(root_node, new_node1);

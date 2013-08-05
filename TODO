@@ -1,3 +1,4 @@
 - Create iterators for diff. structures.
 - Using iterators should be realized copy constructors (it's annoying bug sources usually).
+- Explore realization of copy constructors in stl.
 - Create unit tests for main functions and specs..

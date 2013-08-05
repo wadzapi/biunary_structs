@@ -2,6 +2,7 @@
 #define SEQUENCE_DIRECTOR_H_
 
 #include "struct_builder.hh"
+#include "stack.hh"
 
 template <class Tp>
 class BinaryTreeDirector : public StructDirectorBase<Tp> {
@@ -11,8 +12,7 @@ class BinaryTreeDirector : public StructDirectorBase<Tp> {
         BinaryTreeDirector();
         BinaryTreeDirector(DataStruct<Tp>* _struct);
         ~BinaryTreeDirector();
-        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes);
-        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes);
+        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, const Tp* values = NULL); 
         void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
@@ -36,44 +36,45 @@ BinaryTreeDirector<Tp>::~BinaryTreeDirector() {
 }
 
 template <class Tp>
-tree_node<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp>* builder, size_t num_nodes) {
-    //allocate root node 
-    tree_node<Tp>* root_node = builder->AddRoot();
-    ///Construct and connect other nodes
-    if (num_nodes > 0) {
-        tree_node<Tp>* new_node1 = builder->AddNode();
-        this->struct_->SetLeft(root_node, new_node1);
-        this->struct_->SetRight(root_node, new_node1);
-        builder->ConnectRight(root_node->left, new_node1);
-        tree_node<Tp>* new_node2;
-        for (size_t i = 1; i < num_nodes; i++) {
-            new_node2 = builder->AddNode();
-            builder->ConnectRight(new_node1, new_node2);
-            new_node1 = new_node2;
-        }
-    } 
-    return root_node;
-}
+tree_node<Tp>* BinaryTreeDirector<Tp>::AddLeft(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* values = NULL) {
+
+template<class Tp>
+tree_node<Tp>* BinaryTreeDirector<Tp>::AddRight(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* values = NULL) {
 
 template <class Tp>
-tree_node<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes) {
+tree_node<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, const Tp* values = NULL) {
     //allocate root node 
     tree_node<Tp>* root_node = builder->AddRoot();
-    ///Add null node
-    tree_node<Tp>* new_node1 = this->struct_->AddLogic();
+    //add null node
+    tree_node<Tp>* new_node1 = builder->AddNode();
     this->struct_->SetLeft(root_node, new_node1);
     ///Construct and connect other nodes
     if (num_nodes > 0) {
-        new_node1 = builder->AddNode(values[0]);
-        builder->ConnectRight(root_node->left, new_node1);
-        tree_node<Tp>* new_node2;
-        for (size_t i = 1; i < num_nodes; i++) {
-            new_node2 = builder->AddNode(values[i]);
-            builder->ConnectRight(new_node1, new_node2);
-            new_node1 = new_node2;
+        Queue<tree_node<Tp>*> connect_queue(this->struct_);
+        connect_queue.Push(new_node1);
+        size_t i;
+        if (values == NULL) {
+            for (i = 0; i < num_nodes - 1; i+=2) { 
+                connect_queue.Push(AddLeft(builder, connect_queue->Top()));
+                connect_queue.Push(AddRight(builder, connect_queue->Top()));
+                connect_queue->Pop();
+            }
+            if ( i == num_nodes) { //odd
+                connect_queue.Push(AddLeft(builder, connect_queue->Top()));
+                connect_queue->Pop();
+            }
+        } else {
+            for (i = 0; i < num_nodes - 1; i+=2) { 
+                connect_queue.Push(AddLeft(builder, connect_queue->Top(), values[i]));
+                connect_queue.Push(AddRight(builder, connect_queue->Top(), values[i+1]));
+                connect_queue->Pop();
+            }
+            if ( i == num_nodes) { //odd
+                connect_queue.Push(AddLeft(builder, connect_queue->Top(), values[i-1]));
+                connect_queue->Pop();
+            }
         }
-    } 
-    this->struct_->SetRight(root_node, new_node1);
+    }
     return root_node;
 }
 
