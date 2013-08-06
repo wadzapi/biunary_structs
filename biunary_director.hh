@@ -11,8 +11,7 @@ class BiunaryDirector : public StructDirectorVase<Tp> {
         BiunaryDirector();
         BiunaryDirector(DataStruct<Tp>* struct_);
         ~BiunaryDirector();
-        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes);
-        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes);
+        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL);
         void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
@@ -36,11 +35,8 @@ BiunaryDirector::~BiunaryDirector() {
 }
 
 template <class Tp>
-tree_node<Tp>* BiunaryDirector::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes) {
-}
-
-template <class Tp>
-tree_node<Tp>* BiunaryDirector::Construct(StructBuilderBase<Tp> *builder, const Tp* values, size_t num_nodes) {
+tree_node<Tp>* BiunaryDirector::
+Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL) {
 }
 
 template <class Tp>

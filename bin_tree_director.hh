@@ -12,7 +12,7 @@ class BinaryTreeDirector : public StructDirectorBase<Tp> {
         BinaryTreeDirector();
         BinaryTreeDirector(DataStruct<Tp>* _struct);
         ~BinaryTreeDirector();
-        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, const Tp* values = NULL); 
+        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL);
         void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
@@ -42,16 +42,17 @@ template<class Tp>
 tree_node<Tp>* BinaryTreeDirector<Tp>::AddRight(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* values = NULL) {
 
 template <class Tp>
-tree_node<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, const Tp* values = NULL) {
-    //allocate root node 
-    tree_node<Tp>* spec_node = builder->AddRoot();
-    //add null node
-    tree_node<Tp>* new_node1 = builder->AddNode();
-    this->struct_->SetLeft(spec_node, new_node1);
+tree_node<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL) {
+    if (spec_node == NULL) { 
+        spec_node = builder->AddRoot();
+    }
+    if (root_node == NULL) {
+        root_node = builder->AddNode();
+    }
     ///Construct and connect other nodes
     if (num_nodes > 0) {
         Queue<tree_node<Tp>*> connect_queue(this->struct_);
-        connect_queue.Push(new_node1);
+        connect_queue.Push(root_node);
         size_t i;
         if (values == NULL) {
             for (i = 0; i < num_nodes - 1; i+=2) { 

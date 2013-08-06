@@ -11,7 +11,7 @@ class SequenceDirector : public StructDirectorBase<Tp> {
         SequenceDirector();
         SequenceDirector(DataStruct<Tp>* _struct);
         ~SequenceDirector();
-        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, const Tp* values = NULL);
+        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL); 
         void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
@@ -35,22 +35,23 @@ SequenceDirector<Tp>::~SequenceDirector() {
 }
 
 template <class Tp>
-tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, const Tp* values) {
-    //allocate root node 
-    tree_node<Tp>* spec_node = builder->AddRoot();
-    ///Add null node
-    tree_node<Tp>* new_node1 = this->struct_->AddLogic();
-    this->struct_->SetLeft(spec_node, new_node1);
+tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>*& spec_node, tree_node<Tp>*& root_node, const Tp* values) {
+    if (spec_node == NULL) {
+        spec_node = builder->AddRoot();
+    }
+    if (root_node == NULL) {
+        root_node = this->struct_->AddLogic();
+    }
+    this->struct_->SetLeft(spec_node, root_node);
     ///Construct and connect other nodes
+    tree_node<Tp>* new_node1 = root_node;
     if (num_nodes > 0) {
-        new_node1 = builder->AddNode(values[0]);
-        builder->ConnectRight(spec_node->left, new_node1);
         if (values == NULL) {
-            for (size_t i = 1; i < num_nodes; i++) {
+            for (size_t i = 0; i < num_nodes; i++) {
                 new_node1 = AddRight(builder, new_node1);
             }
         } else {
-            for (size_t i = 1; i < num_nodes; i++) {
+            for (size_t i = 0; i < num_nodes; i++) {
                 new_node1 = AddRight(builder, new_node1, (values + i));
             }
         }

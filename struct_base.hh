@@ -15,7 +15,7 @@ class StructBase {
         bool is_built_;
     public:
         StructBase() : struct_(NULL), spec_node_(NULL), builder_(NULL), director_(NULL), is_built_(false) { }
-        virtual void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* spec_node = NULL) = 0;
+        virtual void Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL) = 0;
         virtual ~StructBase() {
             if (is_built_) {
                 Delete();
@@ -25,8 +25,19 @@ class StructBase {
                 director_ = NULL;
             }
         }
+        void SetRootNode(tree_node<Tp>* root_node) {
+            if (this->root_node_ != root_node) {
+                this->root_node_ = root_node;
+                UpdateSpecNode();
+            }
+        }
+        tree_node<Tp>* GetRootNode() {
+            return this->root_node_;
+        }
         void SetSpecNode(tree_node<Tp>* spec_node) {
-            this->spec_node_ = spec_node;
+            if (this->spec_node_ != spec_node) {
+                this->spec_node_ = spec_node;
+            }
         }
         tree_node<Tp>* GetSpecNode() {
             return this->spec_node_;
@@ -34,6 +45,7 @@ class StructBase {
         void Delete() {
             director_->Delete(builder_, spec_node_);
         }
+        virtual void UpdateSpecNode() = 0;
 };
 
 #endif //STRUCT_BASE_H_
