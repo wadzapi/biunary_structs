@@ -17,10 +17,10 @@ class BinaryTreeDirector : public StructDirectorBase<Tp> {
         void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
         void DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
-        void RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node);
-        void RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node);
-        void Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node);
-        void Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node);
+        void RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node, tree_node<Tp> *node);
+        void RemoveSpecRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node, tree_node<Tp> *node);
+        void Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node);
+        void Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node);
 };
 
 template <class Tp>
@@ -44,10 +44,10 @@ tree_node<Tp>* BinaryTreeDirector<Tp>::AddRight(StructBuilderBase<Tp> *builder, 
 template <class Tp>
 tree_node<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, const Tp* values = NULL) {
     //allocate root node 
-    tree_node<Tp>* root_node = builder->AddRoot();
+    tree_node<Tp>* spec_node = builder->AddRoot();
     //add null node
     tree_node<Tp>* new_node1 = builder->AddNode();
-    this->struct_->SetLeft(root_node, new_node1);
+    this->struct_->SetLeft(spec_node, new_node1);
     ///Construct and connect other nodes
     if (num_nodes > 0) {
         Queue<tree_node<Tp>*> connect_queue(this->struct_);
@@ -75,16 +75,16 @@ tree_node<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp> *builder,
             }
         }
     }
-    return root_node;
+    return spec_node;
 }
 
 template <class Tp>
-void BinaryTreeDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp>* root_node, tree_node<Tp> *node) {
-    if (root_node->right == node) {
-        this->struct_->SetRight(root_node, node->left);
+void BinaryTreeDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp>* spec_node, tree_node<Tp> *node) {
+    if (spec_node->right == node) {
+        this->struct_->SetRight(spec_node, node->left);
         builder->DisconnectLeft(node);
-    } else if (root_node->left == node) {
-        this->struct_->SetLeft(root_node, node->right);
+    } else if (spec_node->left == node) {
+        this->struct_->SetLeft(spec_node, node->right);
         builder->DisconnectRight(node);
     } else {
         tree_node<Tp> *l_node = node->left;
@@ -97,17 +97,17 @@ void BinaryTreeDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, tree_nod
 }
 
 template <class Tp>
-void BinaryTreeDirector<Tp>::RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) {
+void BinaryTreeDirector<Tp>::RemoveSpecRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node, tree_node<Tp> *node) {
     tree_node<Tp>* old_null = node->left;
     builder->DeleteRoot(node);
-    RemoveNode(builder, root_node, old_null);
+    RemoveNode(builder, spec_node, old_null);
 }
    
 template <class Tp>
 void BinaryTreeDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) {
     ConnectRight(builder, new_node, node);
     this->struct_->SetLeft(new_node, node->left);
-    RemoveRootNode(builder, new_node, node);
+    RemoveSpecRootNode(builder, new_node, node);
     node = new_node;
 }
 
@@ -116,7 +116,7 @@ void BinaryTreeDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, tree_n
     tree_node<Tp>* r_node = (new_node->left)->right;
     tree_node<Tp>* l_node = node->right;
     this->struct_->SetRight(node, new_node->right);
-    RemoveRootNode(builder, node, new_node);
+    RemoveSpecRootNode(builder, node, new_node);
     builder->ConnectRight(l_node, r_node);
 }
 
@@ -131,17 +131,17 @@ void BinaryTreeDirector<Tp>::DisconnectRight(StructBuilderBase<Tp> *builder, tre
 }
 
 template <class Tp>
-void BinaryTreeDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) {
+void BinaryTreeDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node) {
     tree_node<Tp> old_node;
-    while ((root_node->left)->right != root_node->right) {
-        RemoveNode(builder, root_node, root_node->right);
+    while ((spec_node->left)->right != spec_node->right) {
+        RemoveNode(builder, spec_node, spec_node->right);
     }
 }
 
 template <class Tp>
-void BinaryTreeDirector<Tp>::Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) {
-    Clear(builder, root_node);
-    RemoveRootNode(builder, root_node, root_node);
+void BinaryTreeDirector<Tp>::Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node) {
+    Clear(builder, spec_node);
+    RemoveSpecRootNode(builder, spec_node, spec_node);
 }
 
 #endif //SEQUENCE_DIRECTOR_H_

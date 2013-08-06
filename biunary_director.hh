@@ -17,10 +17,10 @@ class BiunaryDirector : public StructDirectorVase<Tp> {
         void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
         void DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
-        void RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node);
-        void RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node);
-        void Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node);
-        void Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node);
+        void RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node, tree_node<Tp> *node);
+        void RemoveSpecRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node, tree_node<Tp> *node);
+        void Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node);
+        void Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node);
 };
       
 template <class Tp>
@@ -60,19 +60,19 @@ void BiunaryDirector::DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<
 }
 
 template <class Tp>
-void BiunaryDirector::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) {
+void BiunaryDirector::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node, tree_node<Tp> *node) {
 }
 
 template <class Tp>
-void BiunaryDirector::RemoveRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node, tree_node<Tp> *node) {
+void BiunaryDirector::RemoveSpecRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node, tree_node<Tp> *node) {
 }
 
 template <class Tp>
-void BiunaryDirector::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) {
+void BiunaryDirector::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node) {
 }
 
 template <class Tp>
-void BiunaryDirector::Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *root_node) {
+void BiunaryDirector::Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node) {
 }
 
 #endif //BIUNARY_DIRECTOR_H_

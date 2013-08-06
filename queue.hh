@@ -11,10 +11,10 @@ class Queue : public StructBase<Tp> {
         Sequence<Tp> sequence_;
     public:
         Queue();
-        Queue(tree_node<Tp>* root_node, DataStruct<Tp>* _struct);
+        Queue(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct);
         Queue(DataStruct<Tp>* _struct);
         ~Queue();
-        void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL);
+        void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* spec_node = NULL);
         Tp* Front();
         const Tp* Front() const;
         Tp* Back();
@@ -29,8 +29,8 @@ Queue<Tp>::Queue() {
 }
         
 template <class Tp>
-Queue<Tp>::Queue(tree_node<Tp>* root_node, DataStruct<Tp>* _struct) : sequence_(root_node, _struct) {
-    Construct(_struct, root_node);
+Queue<Tp>::Queue(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct) : sequence_(spec_node, _struct) {
+    Construct(_struct, spec_node);
 }
 
 template <class Tp>
@@ -43,10 +43,10 @@ Queue<Tp>::~Queue() {
 }
         
 template <class Tp>
-void Queue<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node) {
+void Queue<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* spec_node) {
     this->struct_ = _struct; 
-    tree_node<Tp>* new_root = sequence_.GetRoot();
-    SetRoot(new_root);
+    tree_node<Tp>* new_root = sequence_.GetSpecNode();
+    SetSpecNode(new_root);
 }
 
 template <class Tp>

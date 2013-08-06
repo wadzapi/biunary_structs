@@ -11,10 +11,10 @@ class Sequence : public StructBase<Tp> {
     protected:
     public:
         Sequence();
-        Sequence(tree_node<Tp>* root_node, DataStruct<Tp>* _struct);
+        Sequence(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct);
         Sequence(DataStruct<Tp>* _struct);
         ~Sequence();
-        void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL);
+        void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* spec_node = NULL);
         bool Empty();
         Tp* Front();
         const Tp* Front() const;
@@ -31,8 +31,8 @@ Sequence<Tp>::Sequence() {
 }
 
 template <class Tp>
-Sequence<Tp>::Sequence(tree_node<Tp>* root_node, DataStruct<Tp>* _struct) {
-    Construct(_struct, root_node);
+Sequence<Tp>::Sequence(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct) {
+    Construct(_struct, spec_node);
 }
 
 template <class Tp>
@@ -41,15 +41,15 @@ Sequence<Tp>::Sequence(DataStruct<Tp>* _struct) {
 }
 
 template <class Tp>
-void Sequence<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node) {
+void Sequence<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* spec_node) {
     this->builder_ = new SequenceBuilder<Tp>(_struct);
     this->director_ = new SequenceDirector<Tp>(_struct);
     this->struct_ = _struct;
     this->is_built_ = true;
-    if (root_node == NULL) {
-        root_node = this->director_->Construct(this->builder_, 0);
+    if (spec_node == NULL) {
+        spec_node = this->director_->Construct(this->builder_, 0);
     }
-    SetRoot(root_node);
+    SetSpecNode(spec_node);
 }
 
 template <class Tp>
@@ -57,8 +57,8 @@ Sequence<Tp>::~Sequence() {}
 
 template <class Tp>
 bool Sequence<Tp>::Empty() {
-    if (this->root_node_->left == this->root_node_->right) {
-        if ((this->root_node_->left)->value == NULL) {
+    if (this->spec_node_->left == this->spec_node_->right) {
+        if ((this->spec_node_->left)->value == NULL) {
             return true;
         }
     }
@@ -67,28 +67,28 @@ bool Sequence<Tp>::Empty() {
 
 template <class Tp>
 Tp* Sequence<Tp>::Front() {
-    return ((this->root_node_->left)->right)->value;
+    return ((this->spec_node_->left)->right)->value;
 }
 
 template <class Tp>
 const Tp* Sequence<Tp>::Front() const {
-    return ((this->root_node_->left)->right)->value;
+    return ((this->spec_node_->left)->right)->value;
 }
 
 template <class Tp>
 Tp* Sequence<Tp>::Back() {
-    return (this->root_node_->right)->value;
+    return (this->spec_node_->right)->value;
 }
 
 template <class Tp>
 const Tp* Sequence<Tp>::Back() const {
-    return (this->root_node_->right)->value;
+    return (this->spec_node_->right)->value;
 }
 
 template <class Tp>
 void Sequence<Tp>::PushBack(const Tp& val) {
     tree_node<Tp>* new_node = this->director_->Construct(this->builder_, 1, &val);
-    this->director_->ConnectRight(this->builder_, this->root_node_, new_node);
+    this->director_->ConnectRight(this->builder_, this->spec_node_, new_node);
     ///for debug 
     this->struct_->PrintCounters(); ///for debug
 }
@@ -96,21 +96,21 @@ void Sequence<Tp>::PushBack(const Tp& val) {
 template <class Tp>
 void Sequence<Tp>::PushFront(const Tp& val) {
     tree_node<Tp>* new_node = this->director_->Construct(this->builder_, 1 , &val);
-    this->director_->ConnectLeft(this->builder_, this->root_node_, new_node);
+    this->director_->ConnectLeft(this->builder_, this->spec_node_, new_node);
     ///for debug
     this->struct_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopBack() {
-    this->director_->RemoveNode(this->builder_, this->root_node_, this->root_node_->right);
+    this->director_->RemoveNode(this->builder_, this->spec_node_, this->spec_node_->right);
     ///for debug
     this->struct_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopFront() {
-    this->director_->RemoveNode(this->builder_, this->root_node_, (this->root_node_->left)->right);
+    this->director_->RemoveNode(this->builder_, this->spec_node_, (this->spec_node_->left)->right);
     ///for debug
     this->struct_->PrintCounters(); ///for debug
 }
