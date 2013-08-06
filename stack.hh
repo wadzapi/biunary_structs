@@ -11,10 +11,10 @@ class Stack : public StructBase<Tp> {
         Sequence<Tp> sequence_;
     public:
         Stack();
-        Stack(tree_node<Tp>* root_node, DataStruct<Tp>* _struct);
+        Stack(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct);
         Stack(DataStruct<Tp>* _struct);
         ~Stack();
-        void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL);
+        void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* spec_node = NULL);
         bool Empty();
         void Push(const Tp& value);
         void Pop();
@@ -27,8 +27,8 @@ Stack<Tp>::Stack() {
 }
 
 template <class Tp>
-Stack<Tp>::Stack(tree_node<Tp>* root_node, DataStruct<Tp>* _struct) : sequence_(root_node, _struct) {
-    Construct(_struct, root_node);
+Stack<Tp>::Stack(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct) : sequence_(spec_node, _struct) {
+    Construct(_struct, spec_node);
 }
 
 template <class Tp>
@@ -41,10 +41,10 @@ Stack<Tp>::~Stack() {
 }
 
 template <class Tp>
-void Stack<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node) {
+void Stack<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* spec_node) {
     this->struct_ = _struct; 
-    tree_node<Tp>* new_root = sequence_.GetRoot();
-    SetRoot(new_root);
+    tree_node<Tp>* new_root = sequence_.GetSpecNode();
+    SetSpecNode(new_root);
 } 
 
 template <class Tp>
