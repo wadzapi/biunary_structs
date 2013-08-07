@@ -52,7 +52,7 @@ class StructDirectorBase {
     protected:
         DataStruct<Tp>* struct_;
         void SetStruct(DataStruct<Tp> *_struct) { struct_ = _struct; }
-        tree_node<Tp>* AddLeft(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* value = NULL) {
+        tree_node<Tp>* AddLeft(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* value = (Tp*)NULL) {
             tree_node<Tp>* new_node; 
             if (value == NULL) {
                 new_node = builder->AddNode();
@@ -61,7 +61,7 @@ class StructDirectorBase {
             }
             builder->ConnectLeft(node, new_node);
         }
-        tree_node<Tp>* AddRight(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* value = NULL) {
+        tree_node<Tp>* AddRight(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* value = (Tp*)NULL) {
             tree_node<Tp>* new_node; 
             if (value == NULL) {
                 new_node = builder->AddNode();
@@ -74,7 +74,7 @@ class StructDirectorBase {
         StructDirectorBase() : struct_(NULL) {}
         StructDirectorBase(DataStruct<Tp> *_struct): struct_(_struct) {}
         virtual ~StructDirectorBase() {};
-        virtual tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL) = 0;
+        virtual tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL) = 0;
         virtual void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) = 0;
         virtual void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) = 0;
         virtual void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) = 0;

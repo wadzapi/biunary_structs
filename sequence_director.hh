@@ -11,7 +11,7 @@ class SequenceDirector : public StructDirectorBase<Tp> {
         SequenceDirector();
         SequenceDirector(DataStruct<Tp>* _struct);
         ~SequenceDirector();
-        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL); 
+        tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL);
         void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
         void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node);
@@ -35,10 +35,7 @@ SequenceDirector<Tp>::~SequenceDirector() {
 }
 
 template <class Tp>
-tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>*& spec_node, tree_node<Tp>*& root_node, const Tp* values) {
-    if (spec_node == NULL) {
-        spec_node = builder->AddRoot();
-    }
+tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node, tree_node<Tp>* root_node, const Tp* values) {
     if (root_node == NULL) {
         root_node = this->struct_->AddLogic();
     }
@@ -57,7 +54,7 @@ tree_node<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, s
         }
     } 
     this->struct_->SetRight(spec_node, new_node1);
-    return spec_node;
+    return root_node;
 }
 
 template <class Tp>

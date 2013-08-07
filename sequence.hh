@@ -15,7 +15,7 @@ class Sequence : public StructBase<Tp> {
         Sequence(DataStruct<Tp>* _struct);
         ~Sequence();
         void UpdateSpecNode();
-        void Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL); 
+        void Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL);
         bool Empty();
         Tp* Front();
         const Tp* Front() const;
@@ -43,13 +43,16 @@ Sequence<Tp>::Sequence(DataStruct<Tp>* _struct) {
 }
 
 template <class Tp>
-void Sequence<Tp>::Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>*& spec_node, tree_node<Tp>*& root_node, const Tp* values) {
+void Sequence<Tp>::Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>* spec_node, tree_node<Tp>* root_node, const Tp* values) {
     this->builder_ = new SequenceBuilder<Tp>(_struct);
     this->director_ = new SequenceDirector<Tp>(_struct);
     this->struct_ = _struct;
     this->is_built_ = true;
+    if (spec_node == NULL) {
+        spec_node = this->builder_->AddNode();
+        SetSpecNode(spec_node);
+    }
     this->director_->Construct(this->builder_, num_nodes, spec_node, root_node, values);
-    SetSpecNode(spec_node);
     SetRootNode(root_node);
 }
 

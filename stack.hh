@@ -14,7 +14,7 @@ class Stack : public StructBase<Tp> {
         Stack(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct);
         Stack(DataStruct<Tp>* _struct);
         ~Stack();
-        void Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>*& spec_node = NULL, tree_node<Tp>*& root_node = NULL, const Tp* values = NULL);
+        void Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL);
         bool Empty();
         void Push(const Tp& value);
         void Pop();
@@ -42,7 +42,7 @@ Stack<Tp>::~Stack() {
 }
 
 template <class Tp>
-void Stack<Tp>::Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>*& spec_node, tree_node<Tp>*& root_node, const Tp* values) {
+void Stack<Tp>::Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>* spec_node, tree_node<Tp>* root_node, const Tp* values) {
     this->struct_ = _struct; 
     tree_node<Tp>* new_root = sequence_.GetSpecNode();
     SetSpecNode(new_root);
@@ -74,8 +74,8 @@ const Tp* Stack<Tp>::Top() const {
 }
 
 template <class Tp>
-const Tp* Stack<Tp>::UpdateSpecNode() {
-    this->sequence_->UpdateSpecNode();
+void Stack<Tp>::UpdateSpecNode() {
+    this->sequence_.UpdateSpecNode();
 }
 
 #endif //STACK_H_
