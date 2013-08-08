@@ -2,6 +2,7 @@
 #define BIUNARY_DIRECTOR_H_
 
 #include "struct_builder.hh"
+#include "strut_director.hh"
 
 template <class Tp>
 class BiunaryDirector : public StructDirectorVase<Tp> {

@@ -1,13 +1,10 @@
 #ifndef BIN_TREE_H_
 #define BIN_TREE_H_
 
-#include "struct_base.hh"
-#include "bin_tree_builder.hh"
-#include "bin_tree_director.hh"
-
+#include "struct.hh"
 
 template <class Tp>
-class BinaryTree :  StructBase<Tp> {
+class BinaryTree :  Struct<Tp> {
     private:
     protected:
     public:

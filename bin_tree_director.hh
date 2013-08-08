@@ -1,7 +1,7 @@
 #ifndef SEQUENCE_DIRECTOR_H_
 #define SEQUENCE_DIRECTOR_H_
 
-#include "struct_builder.hh"
+#include "bin_tree.hh"
 #include "stack.hh"
 
 template <class Tp>

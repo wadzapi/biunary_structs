@@ -1,5 +1,6 @@
 #ifndef STRUCT_BUILDER_H_
 #define STRUCT_BUILDER_H_
+
 #include "data_struct.hh"
 
 template <class Tp>
@@ -44,45 +45,6 @@ class StructBuilderBase {
             struct_->SetRight(node, NULL);
             struct_->Unreserve(node);
         }
-};
-
-template <class Tp>
-class StructDirectorBase {
-    private:
-    protected:
-        DataStruct<Tp>* struct_;
-        void SetStruct(DataStruct<Tp> *_struct) { struct_ = _struct; }
-        tree_node<Tp>* AddLeft(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* value = (Tp*)NULL) {
-            tree_node<Tp>* new_node; 
-            if (value == NULL) {
-                new_node = builder->AddNode();
-            } else {
-                new_node = builder->AddNode(*value);
-            }
-            builder->ConnectLeft(node, new_node);
-        }
-        tree_node<Tp>* AddRight(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* value = (Tp*)NULL) {
-            tree_node<Tp>* new_node; 
-            if (value == NULL) {
-                new_node = builder->AddNode();
-            } else {
-                new_node = builder->AddNode(*value);
-            }
-            builder->ConnectRight(node, new_node);
-        }
-    public:
-        StructDirectorBase() : struct_(NULL) {}
-        StructDirectorBase(DataStruct<Tp> *_struct): struct_(_struct) {}
-        virtual ~StructDirectorBase() {};
-        virtual tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL) = 0;
-        virtual void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) = 0;
-        virtual void ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node) = 0;
-        virtual void DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) = 0;
-        virtual void DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node) = 0;
-        virtual void RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node, tree_node<Tp> *node) = 0;
-        virtual void RemoveSpecRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node, tree_node<Tp> *node) = 0;
-        virtual void Clear(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node) = 0;
-        virtual void Delete(StructBuilderBase<Tp> *builder, tree_node<Tp> *spec_node) = 0;
 };
 
 #endif //STRUCT_BUILDER_H_
