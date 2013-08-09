@@ -112,7 +112,7 @@ void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, StructBa
     this->struct_->SetRight(spec_left, spec_right->right);
     DisconnectNode(builder, struct_right, root_right);
     //RemoveSpecRootNode(builder, struct_right);
-    builder->ConnectRight(root_left->right, root_right->left);
+    builder->ConnectRight(root_left->right, root_right->right);
 }
 
 template <class Tp>

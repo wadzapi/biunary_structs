@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
             exit(1);
         }
     }*/
-    StructFactory<int> struct_factory(10, 14);
+    StructFactory<int> struct_factory(10, 16);
     /*/// Stack test
     Stack<int>* stack = struct_factory.MakeStack();
     for (int i = 1; i < 11; i++) {

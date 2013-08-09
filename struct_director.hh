@@ -17,6 +17,7 @@ class StructDirectorBase {
                 new_node = builder->AddNode(*value);
             }
             builder->ConnectLeft(node, new_node);
+            return new_node;
         }
         tree_node<Tp>* AddRight(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* value = (Tp*)NULL) {
             tree_node<Tp>* new_node; 
@@ -26,6 +27,7 @@ class StructDirectorBase {
                 new_node = builder->AddNode(*value);
             }
             builder->ConnectRight(node, new_node);
+            return new_node;
         }
     public:
         StructDirectorBase() : struct_(NULL) {}
