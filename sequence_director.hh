@@ -105,14 +105,12 @@ void SequenceDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, StructBas
 
 template <class Tp>
 void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right) {
-    tree_node<Tp>* root_left = struct_left->GetRootNode();
     tree_node<Tp>* root_right = struct_right->GetRootNode();
     tree_node<Tp>* spec_left = struct_left->GetSpecNode();
     tree_node<Tp>* spec_right = struct_right->GetSpecNode();
+    builder->ConnectRight(spec_left->right, root_right);
     this->struct_->SetRight(spec_left, spec_right->right);
-    DisconnectNode(builder, struct_right, root_right);
-    //RemoveSpecRootNode(builder, struct_right);
-    builder->ConnectRight(root_left->right, root_right->right);
+    DisconnectNode(builder, struct_left, root_right);
 }
 
 template <class Tp>

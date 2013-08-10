@@ -74,23 +74,27 @@ bool Sequence<Tp>::Empty() {
 template <class Tp>
 Tp* Sequence<Tp>::Front() {
     //return ((this->spec_node_->left)->right)->value;
-    return (this->root_node_->right)->value;
+    Tp* front_val = (this->root_node_->right)->value;
+    return front_val;
 }
 
 template <class Tp>
 const Tp* Sequence<Tp>::Front() const {
     //return ((this->spec_node_->left)->right)->value;
-    return (this->root_node_->right)->value;
+    Tp* front_val = (this->root_node_->right)->value;
+    return front_val;
 }
 
 template <class Tp>
 Tp* Sequence<Tp>::Back() {
-    return (this->spec_node_->right)->value;
+    Tp* back_val = (this->spec_node_->right)->value;
+    return back_val;
 }
 
 template <class Tp>
 const Tp* Sequence<Tp>::Back() const {
-    return (this->spec_node_->right)->value;
+    Tp* back_val = (this->spec_node_->right)->value;
+    return back_val;
 }
 
 template <class Tp>
