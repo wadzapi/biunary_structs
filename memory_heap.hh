@@ -180,9 +180,9 @@ const Tp* MemoryHeap<Tp>::End() const {
 template <class Tp>
 void MemoryHeap<Tp>::PrintCounters() const {
     for (size_t i = 0; i < capacity_ - 1; i++) {
-        printf("%i ", counters_[i]);
+        printf("%li ", counters_[i]);
     }
-    printf("%i\n", counters_[capacity_ - 1]);
+    printf("%li\n", counters_[capacity_ - 1]);
 }
 
 #endif // HEAP_MEM_H_
