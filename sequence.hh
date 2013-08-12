@@ -9,11 +9,10 @@ class Sequence : public Struct<Tp> {
     protected:
     public:
         Sequence();
-        Sequence(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL);
-        Sequence(DataStruct<Tp>* _struct);
+        Sequence(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL, StructBuilderBase<Tp>* builder = NULL, StructDirectorBase<Tp>* director = NULL);
         ~Sequence();
         void UpdateSpecNode();
-        void Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL);
+        void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL);
         bool Empty();
         Tp* Front();
         const Tp* Front() const;
@@ -34,21 +33,19 @@ Sequence<Tp>::Sequence() {
 }
 
 template <class Tp>
-Sequence<Tp>::Sequence(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct, tree_node<Tp>* root_node) {
-    Construct(_struct, 0, spec_node, root_node);
-}
-
-
-template <class Tp>
-Sequence<Tp>::Sequence(DataStruct<Tp>* _struct) {
-    Construct(_struct, 0);
+Sequence<Tp>::Sequence(DataStruct<Tp>* _struct, tree_node<Tp>* root_node, tree_node<Tp>* spec_node, StructBuilderBase<Tp>* builder, StructDirectorBase<Tp>* director) : Struct<Tp>(_struct, root_node, spec_node, builder, director) {
+    Construct(_struct, root_node, spec_node);
 }
 
 template <class Tp>
-void Sequence<Tp>::Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>* spec_node, tree_node<Tp>* root_node, const Tp* values) {
-    this->builder_ = new SequenceBuilder<Tp>(_struct);
-    this->director_ = new SequenceDirector<Tp>(_struct);
+void Sequence<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node, tree_node<Tp>* spec_node) {
     this->struct_ = _struct;
+    if (this->director_ == NULL) {
+        this->director_ = new SequenceDirector<Tp>(_struct);
+    }
+    if (this->builder_ == NULL) {
+        this->builder_ = new SequenceBuilder<Tp>(_struct);
+    }
     if (spec_node == NULL) {
         spec_node = this->builder_->AddRoot();
     }

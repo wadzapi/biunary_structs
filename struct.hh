@@ -13,6 +13,7 @@ class Struct : public StructBase<Tp> {
         StructDirectorBase<Tp>* director_;
     public:
         Struct(): builder_(NULL), director_(NULL) {};
+        Struct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node, tree_node<Tp>* spec_node, StructBuilderBase<Tp>* builder, StructDirectorBase<Tp>* director) : StructBase<Tp>(_struct, root_node, spec_node),  builder_(builder), director_(director) {};
         virtual ~Struct() {
             if (this->is_built_) {
                 Delete();
@@ -22,6 +23,7 @@ class Struct : public StructBase<Tp> {
                 director_ = NULL;
             }
         }
+        virtual void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL) = 0;
         void Delete() {
             director_->Delete(builder_, this);
         }

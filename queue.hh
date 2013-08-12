@@ -1,20 +1,20 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
-#include "sequence.hh"
+#include "sequence_director.hh"
+#include "sequence_builder.hh"
 
 template <class Tp>
-class Queue : public StructBase<Tp> {
+class Queue {
     private:
-        
     protected:
-        Sequence<Tp> sequence_;
+        Sequence<Tp>* sequence_; 
+        SequenceDirector<Tp>* seq_director_;
+        SequenceBuilder<Tp>* seq_builder_;        
     public:
         Queue();
-        Queue(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct);
-        Queue(DataStruct<Tp>* _struct);
+        Queue(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL);
         ~Queue();
-        void Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL);
         Tp* Front();
         const Tp* Front() const;
         Tp* Back();
@@ -22,7 +22,6 @@ class Queue : public StructBase<Tp> {
         bool Empty();
         void Push(const Tp& value);
         void Pop();
-        void UpdateSpecNode();
 };
 
 template <class Tp>
@@ -30,64 +29,52 @@ Queue<Tp>::Queue() {
 }
         
 template <class Tp>
-Queue<Tp>::Queue(tree_node<Tp>* spec_node, DataStruct<Tp>* _struct) : sequence_(spec_node, _struct) {
-    Construct(_struct, 0, spec_node);
-}
-
-template <class Tp>
-Queue<Tp>::Queue(DataStruct<Tp>* _struct) : sequence_(_struct) {
-    Construct(_struct, 0);
+Queue<Tp>::Queue(DataStruct<Tp>* _struct, tree_node<Tp>* root_node, tree_node<Tp>* spec_node) { 
+    this->seq_builder_ = new SequenceBuilder<Tp>(_struct);
+    this->seq_director_ = new SequenceDirector<Tp>(_struct);
+    this->sequence_ = (Sequence<Tp>*)seq_director_->Construct(seq_builder_, 0, spec_node, root_node);
 }
 
 template <class Tp>
 Queue<Tp>::~Queue() {
+    delete sequence_;
+    delete seq_director_;
+    delete seq_builder_;
 }
         
 template <class Tp>
-void Queue<Tp>::Construct(DataStruct<Tp>* _struct, size_t num_nodes, tree_node<Tp>* spec_node, tree_node<Tp>* root_node, const Tp* values) {
-    this->struct_ = _struct; 
-    SetSpecNode(sequence_.GetSpecNode());
-    SetRootNode(sequence_.GetRootNode());
-}
-
-template <class Tp>
 Tp* Queue<Tp>::Front() {
-    return sequence_.Front();
+    return sequence_->Front();
 }
 
 template <class Tp>
 const Tp* Queue<Tp>::Front() const {
-    return sequence_.Front();
+    return sequence_->Front();
 }
 
 template <class Tp>
 Tp* Queue<Tp>::Back() {
-    return sequence_.Back();
+    return sequence_->Back();
 }
 
 template <class Tp>
 const Tp* Queue<Tp>::Back() const {
-    return sequence_.Back();
+    return sequence_->Back();
 }
 
 template <class Tp>
 bool Queue<Tp>::Empty() {
-    return sequence_.Empty();
+    return sequence_->Empty();
 }
 
 template <class Tp>
 void Queue<Tp>::Push(const Tp& value) {
-    sequence_.PushBack(value);
+    sequence_->PushBack(value);
 }
 
 template <class Tp>
 void Queue<Tp>::Pop() {
-    sequence_.PopFront();
-}
-
-template <class Tp>
-void Queue<Tp>::UpdateSpecNode() {
-    this->sequence_.UpdateSpecNode();
+    sequence_->PopFront();
 }
 
 #endif //QUEUE_H_

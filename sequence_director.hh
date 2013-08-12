@@ -62,7 +62,7 @@ StructBase<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, 
     }
     this->struct_->SetRight(spec_node, new_node1);
     //sequence->UpdateSpecNode();
-    sequence = new Sequence<Tp>(spec_node, this->struct_, root_node);
+    sequence = new Sequence<Tp>(this->struct_, root_node, spec_node, builder, this);
     return sequence;
 }
 
@@ -126,8 +126,10 @@ void SequenceDirector<Tp>::DisconnectRight(StructBuilderBase<Tp> *builder, Struc
 template <class Tp>
 void SequenceDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct) {
     tree_node<Tp>* spec_node = _struct->GetSpecNode();
-    while ((spec_node->left)->right != spec_node->right) {
-        RemoveNode(builder, _struct, spec_node->right);
+    if (spec_node != NULL) {
+        while ((spec_node->left)->right != spec_node->right) {
+            RemoveNode(builder, _struct, spec_node->right);
+        }
     }
 }
 
