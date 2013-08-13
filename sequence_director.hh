@@ -9,7 +9,7 @@ class SequenceDirector : public StructDirectorBase<Tp> {
     protected:
     public:
         SequenceDirector();
-        SequenceDirector(DataStruct<Tp>* _struct);
+        SequenceDirector(DataStorage<Tp>* _storage);
         ~SequenceDirector();
         StructBase<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL);
         void ConnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right);
@@ -30,7 +30,7 @@ SequenceDirector<Tp>::SequenceDirector() {
 }
 
 template <class Tp>
-SequenceDirector<Tp>::SequenceDirector(DataStruct<Tp>* _struct) : StructDirectorBase<Tp>(_struct) {
+SequenceDirector<Tp>::SequenceDirector(DataStorage<Tp>* _storage) : StructDirectorBase<Tp>(_storage) {
 }
 
 template <class Tp>
@@ -44,9 +44,9 @@ StructBase<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, 
         spec_node = builder->AddRoot();
     }
     if (root_node == NULL) {
-        root_node = this->struct_->AddLogic();
+        root_node = this->storage_->AddLogic();
     }
-    this->struct_->SetLeft(spec_node, root_node);
+    this->storage_->SetLeft(spec_node, root_node);
     ///Construct and connect other nodes
     tree_node<Tp>* new_node1 = root_node;
     if (num_nodes > 0) {
@@ -60,9 +60,9 @@ StructBase<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, 
             }
         }
     }
-    this->struct_->SetRight(spec_node, new_node1);
+    this->storage_->SetRight(spec_node, new_node1);
     //sequence->UpdateSpecNode();
-    sequence = new Sequence<Tp>(this->struct_, root_node, spec_node, builder, this);
+    sequence = new Sequence<Tp>(this->storage_, root_node, spec_node, builder, this);
     return sequence;
 }
 
@@ -70,10 +70,10 @@ template <class Tp>
 void SequenceDirector<Tp>::DisconnectNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp> *node) {
     tree_node<Tp>* spec_node = _struct->GetSpecNode();
     if (spec_node->right == node) {
-        this->struct_->SetRight(spec_node, node->left);
+        this->storage_->SetRight(spec_node, node->left);
         builder->DisconnectLeft(node);
     } else if (spec_node->left == node) {
-        this->struct_->SetLeft(spec_node, node->right);
+        this->storage_->SetLeft(spec_node, node->right);
         builder->DisconnectRight(node);
     } else {
         tree_node<Tp> *l_node = node->left;
@@ -109,7 +109,7 @@ void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, StructBa
     tree_node<Tp>* spec_left = struct_left->GetSpecNode();
     tree_node<Tp>* spec_right = struct_right->GetSpecNode();
     builder->ConnectRight(spec_left->right, root_right);
-    this->struct_->SetRight(spec_left, spec_right->right);
+    this->storage_->SetRight(spec_left, spec_right->right);
     DisconnectNode(builder, struct_left, root_right);
 }
 

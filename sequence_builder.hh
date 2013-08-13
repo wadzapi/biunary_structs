@@ -10,7 +10,7 @@ class SequenceBuilder : public StructBuilderBase<Tp> {
         tree_node<Tp> *AddNodeLogic();
     public:
         SequenceBuilder();
-        SequenceBuilder(DataStruct<Tp>* _struct);
+        SequenceBuilder(DataStorage<Tp>* _storage);
         ~SequenceBuilder(); 
         tree_node<Tp> *AddNode();
         tree_node<Tp> *AddNode(const Tp& value);
@@ -26,8 +26,8 @@ SequenceBuilder<Tp>::SequenceBuilder() {
 }
 
 template <class Tp>
-SequenceBuilder<Tp>::SequenceBuilder(DataStruct<Tp>* _struct) : 
-    StructBuilderBase<Tp>(_struct, 1) {
+SequenceBuilder<Tp>::SequenceBuilder(DataStorage<Tp>* _storage) : 
+    StructBuilderBase<Tp>(_storage, 1) {
 }
 
 template <class Tp>
@@ -36,41 +36,41 @@ SequenceBuilder<Tp>::~SequenceBuilder() {
 
 template <class Tp>
 tree_node<Tp>* SequenceBuilder<Tp>::AddNodeLogic() {
-    tree_node<Tp>* new_node = this->struct_->AddLogic();
+    tree_node<Tp>* new_node = this->storage_->AddLogic();
     return new_node;
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node) {
-    this->struct_->SetLeft(node, new_node);
-    this->struct_->SetRight(new_node, node);
+    this->storage_->SetLeft(node, new_node);
+    this->storage_->SetRight(new_node, node);
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node) {
-    this->struct_->SetRight(node, new_node);
-    this->struct_->SetLeft(new_node, node);
+    this->storage_->SetRight(node, new_node);
+    this->storage_->SetLeft(new_node, node);
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::DisconnectLeft(tree_node<Tp> *node) {
-    this->struct_->SetRight(node->left, node->left);
-    this->struct_->SetLeft(node, node);
+    this->storage_->SetRight(node->left, node->left);
+    this->storage_->SetLeft(node, node);
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::DisconnectRight(tree_node<Tp> *node) {
-    this->struct_->SetLeft(node->right, node->right);
-    this->struct_->SetRight(node, node);
+    this->storage_->SetLeft(node->right, node->right);
+    this->storage_->SetRight(node, node);
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::DeleteNode(tree_node<Tp>* node) {
     //delete links
-    this->struct_->SetLeft(node, NULL);
-    this->struct_->SetRight(node, NULL);
+    this->storage_->SetLeft(node, NULL);
+    this->storage_->SetRight(node, NULL);
     //delete value
-    this->struct_->Unreserve(node->value);
+    this->storage_->Unreserve(node->value);
 }
 
 #endif //SEQUENCE_BUILDER_H_

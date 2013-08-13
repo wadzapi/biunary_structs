@@ -6,7 +6,7 @@
 #include "biunary_director.hh"
 
 template <class Tp>
-class Biunary : Struct<TP> {
+class Biunary : Struct<Tp> {
     private:
     protected:
     public:

@@ -10,7 +10,7 @@ class BiunaryBuilder : public StructBuilderBase<Tp> {
         tree_node<Tp> *AddNodeLogic();
     public:
         BiunaryBuilder();
-        BiunaryBuilder(DataStruct<Tp> *_struct, size_t num_connections);
+        BiunaryBuilder(DataStorage<Tp> *_storage, size_t num_connections);
         ~BiunaryBuilder();
         tree_node<Tp> *AddNode();
         tree_node<Tp> *AddNode(const Tp& value);
@@ -27,8 +27,8 @@ BiunaryBuilder::BiunaryBuilder() {
 }
 
 template <class Tp>
-BiunaryBuilder::BiunaryBuilder(DataStruct<Tp> *_struct, size_t num_connections) :
-    StructBuilderBase(_struct, num_connections) {
+BiunaryBuilder::BiunaryBuilder(DataStorage<Tp> *_storage, size_t num_connections) :
+    StructBuilderBase(_storage, num_connections) {
 }
 
 template <class Tp>
@@ -37,12 +37,12 @@ BiunaryBuilder::~BiunaryBuilder() {
 
 template <class Tp>
 tree_node<Tp>* BiunaryBuilder<Tp>::AddNodeLogic() {
-    tree_node<Tp>* new_node = this->struct_->AddLogic();
-    this->struct_->Reserve(new_node);
-    tree_node<Tp>* left_subnode = this->struct_->AddLogic();
-    this->struct_->SetLeft(new_node, left_subnode);
-    tree_node<Tp>* right_subnode = this->struct_->AddLogic();
-    this->struct_->SetRight(new_node, right_subnode);
+    tree_node<Tp>* new_node = this->storage_->AddLogic();
+    this->storage_->Reserve(new_node);
+    tree_node<Tp>* left_subnode = this->storage_->AddLogic();
+    this->storage_->SetLeft(new_node, left_subnode);
+    tree_node<Tp>* right_subnode = this->storage_->AddLogic();
+    this->storage_->SetRight(new_node, right_subnode);
     return new_node;
 }
 

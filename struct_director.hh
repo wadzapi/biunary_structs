@@ -7,8 +7,8 @@ template <class Tp>
 class StructDirectorBase {
     private:
     protected:
-        DataStruct<Tp>* struct_;
-        void SetStruct(DataStruct<Tp> *_struct) { struct_ = _struct; }
+        DataStorage<Tp>* storage_;
+        void SetStruct(DataStorage<Tp> *_storage) { storage_ = _storage; }
         tree_node<Tp>* AddLeft(StructBuilderBase<Tp> *builder, tree_node<Tp>* node, const Tp* value = (Tp*)NULL) {
             tree_node<Tp>* new_node; 
             if (value == NULL) {
@@ -30,8 +30,8 @@ class StructDirectorBase {
             return new_node;
         }
     public:
-        StructDirectorBase() : struct_(NULL) {}
-        StructDirectorBase(DataStruct<Tp> *_struct): struct_(_struct) {}
+        StructDirectorBase() : storage_(NULL) {}
+        StructDirectorBase(DataStorage<Tp> *_storage): storage_(_storage) {}
         virtual ~StructDirectorBase() {};
         virtual StructBase<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL) = 0;
         virtual void ConnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right) = 0;

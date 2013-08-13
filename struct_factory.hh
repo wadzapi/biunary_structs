@@ -8,7 +8,7 @@
 template <class Tp>
 class StructFactory {
     private:
-        DataStruct<Tp>* struct_;
+        DataStorage<Tp>* storage_;
         bool is_built_;
 
     public:
@@ -33,34 +33,34 @@ StructFactory<Tp>::StructFactory(size_t phys_capacity, size_t logical_capacity) 
 
 template <class Tp>
 void StructFactory<Tp>::Construct(size_t phys_capacity, size_t logic_capacity) {
-    struct_ = new DataStruct<Tp>(phys_capacity, logic_capacity);
+    storage_ = new DataStorage<Tp>(phys_capacity, logic_capacity);
     is_built_ = true;
 }
 
 template <class Tp>
 StructFactory<Tp>::~StructFactory() {
     if (is_built_) {
-        delete struct_;
-        struct_ = NULL;
+        delete storage_;
+        storage_ = NULL;
         is_built_ = false;
     }
 }
 
 template <class Tp>
 Sequence<Tp>* StructFactory<Tp>::MakeSequence() {
-    Sequence<Tp>* sequence = new Sequence<Tp>(struct_);
+    Sequence<Tp>* sequence = new Sequence<Tp>(storage_);
     return sequence;
 }
 
 template <class Tp>
 Stack<Tp>* StructFactory<Tp>::MakeStack() {
-    Stack<Tp>* stack = new Stack<Tp>(struct_);
+    Stack<Tp>* stack = new Stack<Tp>(storage_);
     return stack;
 }
 
 template <class Tp>
 Queue<Tp>* StructFactory<Tp>::MakeQueue() {
-    Queue<Tp>* queue = new Queue<Tp>(struct_);
+    Queue<Tp>* queue = new Queue<Tp>(storage_);
     return queue;
 }
 

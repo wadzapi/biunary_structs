@@ -9,10 +9,10 @@ class Sequence : public Struct<Tp> {
     protected:
     public:
         Sequence();
-        Sequence(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL, StructBuilderBase<Tp>* builder = NULL, StructDirectorBase<Tp>* director = NULL);
+        Sequence(DataStorage<Tp>* _storage, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL, StructBuilderBase<Tp>* builder = NULL, StructDirectorBase<Tp>* director = NULL);
         ~Sequence();
         void UpdateSpecNode();
-        void Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL);
+        void Construct(DataStorage<Tp>* _storage, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL);
         bool Empty();
         Tp* Front();
         const Tp* Front() const;
@@ -33,18 +33,18 @@ Sequence<Tp>::Sequence() {
 }
 
 template <class Tp>
-Sequence<Tp>::Sequence(DataStruct<Tp>* _struct, tree_node<Tp>* root_node, tree_node<Tp>* spec_node, StructBuilderBase<Tp>* builder, StructDirectorBase<Tp>* director) : Struct<Tp>(_struct, root_node, spec_node, builder, director) {
-    Construct(_struct, root_node, spec_node);
+Sequence<Tp>::Sequence(DataStorage<Tp>* _storage, tree_node<Tp>* root_node, tree_node<Tp>* spec_node, StructBuilderBase<Tp>* builder, StructDirectorBase<Tp>* director) : Struct<Tp>(_storage, root_node, spec_node, builder, director) {
+    Construct(_storage, root_node, spec_node);
 }
 
 template <class Tp>
-void Sequence<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node, tree_node<Tp>* spec_node) {
-    this->struct_ = _struct;
+void Sequence<Tp>::Construct(DataStorage<Tp>* _storage, tree_node<Tp>* root_node, tree_node<Tp>* spec_node) {
+    this->storage_ = _storage;
     if (this->director_ == NULL) {
-        this->director_ = new SequenceDirector<Tp>(_struct);
+        this->director_ = new SequenceDirector<Tp>(_storage);
     }
     if (this->builder_ == NULL) {
-        this->builder_ = new SequenceBuilder<Tp>(_struct);
+        this->builder_ = new SequenceBuilder<Tp>(_storage);
     }
     if (spec_node == NULL) {
         spec_node = this->builder_->AddRoot();
@@ -100,7 +100,7 @@ void Sequence<Tp>::PushBack(const Tp& val) {
     this->director_->ConnectRight(this->builder_, this, new_node);
     this->director_->RemoveSpecRootNode(this->builder_, new_node);
     ///for debug 
-    this->struct_->PrintCounters(); ///for debug
+    this->storage_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
@@ -109,21 +109,21 @@ void Sequence<Tp>::PushFront(const Tp& val) {
     this->director_->ConnectLeft(this->builder_, this, new_node);
     this->director_->RemoveSpecRootNode(this->builder_, new_node);
     ///for debug
-    this->struct_->PrintCounters(); ///for debug
+    this->storage_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopBack() {
     this->director_->RemoveNode(this->builder_, this, this->spec_node_->right);
     ///for debug
-    this->struct_->PrintCounters(); ///for debug
+    this->storage_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopFront() {
     this->director_->RemoveNode(this->builder_, this, this->root_node_->right);
     ///for debug
-    this->struct_->PrintCounters(); ///for debug
+    this->storage_->PrintCounters(); ///for debug
 }
 
 template <class Tp>

@@ -10,7 +10,7 @@ class BinaryTreeBuilder : public StructBuilderBase<Tp> {
         tree_node<Tp> *AddNodeLogic();
     public:
         BinaryTreeBuilder();
-        BinaryTreeBuilder(DataStruct<Tp>* _struct);
+        BinaryTreeBuilder(DataStorage<Tp>* storage);
         ~BinaryTreeBuilder(); 
         tree_node<Tp> *AddNode();
         tree_node<Tp> *AddNode(const Tp& value);
@@ -26,8 +26,8 @@ BinaryTreeBuilder<Tp>::BinaryTreeBuilder() {
 }
 
 template <class Tp>
-BinaryTreeBuilder<Tp>::BinaryTreeBuilder(DataStruct<Tp>* _struct) : 
-    StructBuilderBase<Tp>(_struct, 1) {
+BinaryTreeBuilder<Tp>::BinaryTreeBuilder(DataStorage<Tp>* storage) : 
+    StructBuilderBase<Tp>(storage, 1) {
 }
 
 template <class Tp>
@@ -36,37 +36,37 @@ BinaryTreeBuilder<Tp>::~BinaryTreeBuilder() {
 
 template <class Tp>
 tree_node<Tp>* BinaryTreeBuilder<Tp>::AddNodeLogic() {
-    tree_node<Tp>* new_node = this->struct_->AddLogic();
+    tree_node<Tp>* new_node = this->storage_->AddLogic();
     return new_node;
 }
 
 template <class Tp>
 void BinaryTreeBuilder<Tp>::ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node) {
-    this->struct_->SetLeft(node, new_node);
+    this->storage_->SetLeft(node, new_node);
 }
 
 template <class Tp>
 void BinaryTreeBuilder<Tp>::ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node) {
-    this->struct_->SetRight(node, new_node);
+    this->storage_->SetRight(node, new_node);
 }
 
 template <class Tp>
 void BinaryTreeBuilder<Tp>::DisconnectLeft(tree_node<Tp> *node) {
-    this->struct_->SetLeft(node, node);
+    this->storage_->SetLeft(node, node);
 }
 
 template <class Tp>
 void BinaryTreeBuilder<Tp>::DisconnectRight(tree_node<Tp> *node) {
-    this->struct_->SetRight(node, node);
+    this->storage_->SetRight(node, node);
 }
 
 template <class Tp>
 void BinaryTreeBuilder<Tp>::DeleteNode(tree_node<Tp>* node) {
     //delete links
-    this->struct_->SetLeft(node, NULL);
-    this->struct_->SetRight(node, NULL);
+    this->storage_->SetLeft(node, NULL);
+    this->storage_->SetRight(node, NULL);
     //delete value
-    this->struct_->Unreserve(node->value);
+    this->storage_->Unreserve(node->value);
 }
 
 #endif //SEQUENCE_BUILDER_H_

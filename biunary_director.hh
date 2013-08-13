@@ -2,7 +2,7 @@
 #define BIUNARY_DIRECTOR_H_
 
 #include "struct_builder.hh"
-#include "strut_director.hh"
+#include "struct_director.hh"
 
 template <class Tp>
 class BiunaryDirector : public StructDirectorVase<Tp> {
@@ -10,7 +10,7 @@ class BiunaryDirector : public StructDirectorVase<Tp> {
     protected:
     public:
         BiunaryDirector();
-        BiunaryDirector(DataStruct<Tp>* struct_);
+        BiunaryDirector(DataStorage<Tp>* storage_);
         ~BiunaryDirector();
         tree_node<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL);        
         void ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp> *&node, tree_node<Tp> *&new_node);
@@ -28,7 +28,7 @@ BiunaryDirector::BiunaryDirector() {
 }
 
 template <class Tp>
-BiunaryDirector::BiunaryDirector(DataStruct<Tp>* struct_) {
+BiunaryDirector::BiunaryDirector(DataStorage<Tp>* storage_) {
 }
 
 template <class Tp>
