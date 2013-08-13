@@ -33,7 +33,7 @@ class StructDirectorBase {
         StructDirectorBase() : storage_(NULL) {}
         StructDirectorBase(DataStorage<Tp> *_storage): storage_(_storage) {}
         virtual ~StructDirectorBase() {};
-        virtual StructBase<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL) = 0;
+        virtual StructBase<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = NULL, tree_node<Tp>* root_node = NULL, const Tp* values = NULL) = 0;
         virtual void ConnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right) = 0;
         virtual void ConnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right) = 0;
         virtual void DisconnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp>* node) = 0;

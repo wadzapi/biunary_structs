@@ -12,8 +12,6 @@ class BinaryTreeBuilder : public StructBuilderBase<Tp> {
         BinaryTreeBuilder();
         BinaryTreeBuilder(DataStorage<Tp>* storage);
         ~BinaryTreeBuilder(); 
-        tree_node<Tp> *AddNode();
-        tree_node<Tp> *AddNode(const Tp& value);
         void ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node);
         void ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node);
         void DisconnectLeft(tree_node<Tp> *node);
@@ -27,7 +25,7 @@ BinaryTreeBuilder<Tp>::BinaryTreeBuilder() {
 
 template <class Tp>
 BinaryTreeBuilder<Tp>::BinaryTreeBuilder(DataStorage<Tp>* storage) : 
-    StructBuilderBase<Tp>(storage, 1) {
+    StructBuilderBase<Tp>(storage, 2) {
 }
 
 template <class Tp>

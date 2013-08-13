@@ -4,16 +4,15 @@
 #include "struct.hh"
 
 template <class Tp>
-class BinaryTree :  Struct<Tp> {
+class BinaryTree : public Struct<Tp> {
     private:
     protected:
     public:
         BinaryTree();
         BinaryTree(tree_node<Tp>* spec_node, DataStorage<Tp>* _storage);
-        BinaryTree(DataStorage<Tp>* _storage);
         ~BinaryTree();
-        void Construct(DataStorage<Tp>* _storage, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>*& root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL);
         void UpdateSpecNode();
+        void Construct(DataStorage<Tp>* _storage, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL);
 };
 
 template <class Tp>

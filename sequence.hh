@@ -51,7 +51,7 @@ void Sequence<Tp>::Construct(DataStorage<Tp>* _storage, tree_node<Tp>* root_node
         SetSpecNode(spec_node);
     }
     if (root_node == NULL) {
-        root_node = this->builder_->AddRoot();
+        root_node = this->builder_->AddNodeLogic();
         SetRootNode(root_node);
     }
     this->is_built_ = true;

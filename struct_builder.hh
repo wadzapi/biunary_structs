@@ -10,11 +10,11 @@ class StructBuilderBase {
         DataStorage<Tp>* storage_;
         size_t num_connections_;
         void SetStruct(DataStorage<Tp> *_storage) { storage_ = _storage; }
-        virtual tree_node<Tp> *AddNodeLogic() = 0;
     public:
         StructBuilderBase() : storage_(NULL) {}
         StructBuilderBase(DataStorage<Tp> *_storage, size_t num_connections): storage_(_storage), num_connections_(num_connections) {}
         virtual ~StructBuilderBase() {}
+        virtual tree_node<Tp> *AddNodeLogic() = 0;
         tree_node<Tp>* AddNode() {
             tree_node<Tp>* new_node = AddNodeLogic();
             AddNodeValue(new_node, Tp());

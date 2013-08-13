@@ -11,7 +11,7 @@ class SequenceDirector : public StructDirectorBase<Tp> {
         SequenceDirector();
         SequenceDirector(DataStorage<Tp>* _storage);
         ~SequenceDirector();
-        StructBase<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = (tree_node<Tp>*)NULL, tree_node<Tp>* root_node = (tree_node<Tp>*)NULL, const Tp* values = (Tp*)NULL);
+        StructBase<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = NULL, tree_node<Tp>* root_node = NULL, const Tp* values = NULL);
         void ConnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right);
         void ConnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right);
         void DisconnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp>* node);
@@ -44,7 +44,7 @@ StructBase<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, 
         spec_node = builder->AddRoot();
     }
     if (root_node == NULL) {
-        root_node = this->storage_->AddLogic();
+        root_node = builder->AddNodeLogic();
     }
     this->storage_->SetLeft(spec_node, root_node);
     ///Construct and connect other nodes

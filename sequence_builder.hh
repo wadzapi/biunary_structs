@@ -7,13 +7,11 @@ template <class Tp>
 class SequenceBuilder : public StructBuilderBase<Tp> {
     private:
     protected:
-        tree_node<Tp> *AddNodeLogic();
     public:
         SequenceBuilder();
         SequenceBuilder(DataStorage<Tp>* _storage);
         ~SequenceBuilder(); 
-        tree_node<Tp> *AddNode();
-        tree_node<Tp> *AddNode(const Tp& value);
+        tree_node<Tp> *AddNodeLogic();
         void ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node);
         void ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node);
         void DisconnectLeft(tree_node<Tp> *node);
