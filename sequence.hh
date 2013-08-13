@@ -48,12 +48,12 @@ void Sequence<Tp>::Construct(DataStruct<Tp>* _struct, tree_node<Tp>* root_node, 
     }
     if (spec_node == NULL) {
         spec_node = this->builder_->AddRoot();
+        SetSpecNode(spec_node);
     }
-    SetSpecNode(spec_node);
     if (root_node == NULL) {
         root_node = this->builder_->AddRoot();
+        SetRootNode(root_node);
     }
-    SetRootNode(root_node);
     this->is_built_ = true;
 }
 

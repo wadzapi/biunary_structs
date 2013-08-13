@@ -1,8 +1,9 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
-#include "sequence_director.hh"
+#include "sequence.hh"
 #include "sequence_builder.hh"
+#include "sequence_director.hh"
 
 template <class Tp>
 class Queue {
