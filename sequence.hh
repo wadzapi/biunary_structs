@@ -9,10 +9,10 @@ class Sequence : public Struct<Tp> {
     protected:
     public:
         Sequence();
-        Sequence(DataStorage<Tp>* _storage, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL, StructBuilderBase<Tp>* builder = NULL, StructDirectorBase<Tp>* director = NULL);
+        Sequence(DataStorage<Tp>* _storage, tree_node<Tp, 2>* root_node = NULL, tree_node<Tp, 2>* spec_node = NULL, StructBuilderBase<Tp>* builder = NULL, StructDirectorBase<Tp>* director = NULL);
         ~Sequence();
         void UpdateSpecNode();
-        void Construct(DataStorage<Tp>* _storage, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL);
+        void Construct(DataStorage<Tp>* _storage, tree_node<Tp, 2>* root_node = NULL, tree_node<Tp, 2>* spec_node = NULL);
         bool Empty();
         Tp* Front();
         const Tp* Front() const;
@@ -33,12 +33,12 @@ Sequence<Tp>::Sequence() {
 }
 
 template <class Tp>
-Sequence<Tp>::Sequence(DataStorage<Tp>* _storage, tree_node<Tp>* root_node, tree_node<Tp>* spec_node, StructBuilderBase<Tp>* builder, StructDirectorBase<Tp>* director) : Struct<Tp>(_storage, root_node, spec_node, builder, director) {
+Sequence<Tp>::Sequence(DataStorage<Tp>* _storage, tree_node<Tp, 2>* root_node, tree_node<Tp, 2>* spec_node, StructBuilderBase<Tp>* builder, StructDirectorBase<Tp>* director) : Struct<Tp>(_storage, root_node, spec_node, builder, director) {
     Construct(_storage, root_node, spec_node);
 }
 
 template <class Tp>
-void Sequence<Tp>::Construct(DataStorage<Tp>* _storage, tree_node<Tp>* root_node, tree_node<Tp>* spec_node) {
+void Sequence<Tp>::Construct(DataStorage<Tp>* _storage, tree_node<Tp, 2>* root_node, tree_node<Tp, 2>* spec_node) {
     this->storage_ = _storage;
     if (this->director_ == NULL) {
         this->director_ = new SequenceDirector<Tp>(_storage);

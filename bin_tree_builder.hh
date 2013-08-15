@@ -7,16 +7,16 @@ template <class Tp>
 class BinaryTreeBuilder : public StructBuilderBase<Tp> {
     private:
     protected:
-        tree_node<Tp> *AddNodeLogic();
+        tree_node<Tp, 2> *AddNodeLogic();
     public:
         BinaryTreeBuilder();
         BinaryTreeBuilder(DataStorage<Tp>* storage);
         ~BinaryTreeBuilder(); 
-        void ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node);
-        void ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node);
-        void DisconnectLeft(tree_node<Tp> *node);
-        void DisconnectRight(tree_node<Tp> *node);
-        void DeleteNode(tree_node<Tp>* node);
+        void ConnectLeft(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node);
+        void ConnectRight(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node);
+        void DisconnectLeft(tree_node<Tp, 2> *node);
+        void DisconnectRight(tree_node<Tp, 2> *node);
+        void DeleteNode(tree_node<Tp, 2>* node);
 };
 
 template <class Tp>
@@ -33,33 +33,33 @@ BinaryTreeBuilder<Tp>::~BinaryTreeBuilder() {
 }
 
 template <class Tp>
-tree_node<Tp>* BinaryTreeBuilder<Tp>::AddNodeLogic() {
-    tree_node<Tp>* new_node = this->storage_->AddLogic();
+tree_node<Tp, 2>* BinaryTreeBuilder<Tp>::AddNodeLogic() {
+    tree_node<Tp, 2>* new_node = this->storage_->AddLogic();
     return new_node;
 }
 
 template <class Tp>
-void BinaryTreeBuilder<Tp>::ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node) {
+void BinaryTreeBuilder<Tp>::ConnectLeft(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node) {
     this->storage_->SetLeft(node, new_node);
 }
 
 template <class Tp>
-void BinaryTreeBuilder<Tp>::ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node) {
+void BinaryTreeBuilder<Tp>::ConnectRight(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node) {
     this->storage_->SetRight(node, new_node);
 }
 
 template <class Tp>
-void BinaryTreeBuilder<Tp>::DisconnectLeft(tree_node<Tp> *node) {
+void BinaryTreeBuilder<Tp>::DisconnectLeft(tree_node<Tp, 2> *node) {
     this->storage_->SetLeft(node, node);
 }
 
 template <class Tp>
-void BinaryTreeBuilder<Tp>::DisconnectRight(tree_node<Tp> *node) {
+void BinaryTreeBuilder<Tp>::DisconnectRight(tree_node<Tp, 2> *node) {
     this->storage_->SetRight(node, node);
 }
 
 template <class Tp>
-void BinaryTreeBuilder<Tp>::DeleteNode(tree_node<Tp>* node) {
+void BinaryTreeBuilder<Tp>::DeleteNode(tree_node<Tp, 2>* node) {
     //delete links
     this->storage_->SetLeft(node, NULL);
     this->storage_->SetRight(node, NULL);

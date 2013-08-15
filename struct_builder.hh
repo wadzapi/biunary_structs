@@ -14,33 +14,33 @@ class StructBuilderBase {
         StructBuilderBase() : storage_(NULL) {}
         StructBuilderBase(DataStorage<Tp> *_storage, size_t num_connections): storage_(_storage), num_connections_(num_connections) {}
         virtual ~StructBuilderBase() {}
-        virtual tree_node<Tp> *AddNodeLogic() = 0;
-        tree_node<Tp>* AddNode() {
-            tree_node<Tp>* new_node = AddNodeLogic();
+        virtual tree_node<Tp, 2> *AddNodeLogic() = 0;
+        tree_node<Tp, 2>* AddNode() {
+            tree_node<Tp, 2>* new_node = AddNodeLogic();
             AddNodeValue(new_node, Tp());
             return new_node;
         }
-        tree_node<Tp>* AddNode(const Tp& value) {
-            tree_node<Tp>* new_node = AddNodeLogic();
+        tree_node<Tp, 2>* AddNode(const Tp& value) {
+            tree_node<Tp, 2>* new_node = AddNodeLogic();
             AddNodeValue(new_node, value);
             return new_node;
         }
-        tree_node<Tp> *AddRoot() {
-            tree_node<Tp>* root_node = storage_->AddLogic();
+        tree_node<Tp, 2> *AddRoot() {
+            tree_node<Tp, 2>* root_node = storage_->AddLogic();
             storage_->Reserve(root_node);
             return root_node;
         }
-        void AddNodeValue(tree_node<Tp> *&node, const Tp& value) {
+        void AddNodeValue(tree_node<Tp, 2> *&node, const Tp& value) {
             Tp* new_val = storage_->AddData(value);
             storage_->SetData(node, new_val);
             storage_->Unreserve(new_val);
         }
-        virtual void ConnectLeft(tree_node<Tp> *node, tree_node<Tp> *new_node) = 0;
-        virtual void ConnectRight(tree_node<Tp> *node, tree_node<Tp> *new_node) = 0;
-        virtual void DisconnectLeft(tree_node<Tp> *node) = 0;
-        virtual void DisconnectRight(tree_node<Tp> *node) = 0;
-        virtual void DeleteNode(tree_node<Tp>* node) = 0;
-        void DeleteRoot(tree_node<Tp>* node) {
+        virtual void ConnectLeft(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node) = 0;
+        virtual void ConnectRight(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node) = 0;
+        virtual void DisconnectLeft(tree_node<Tp, 2> *node) = 0;
+        virtual void DisconnectRight(tree_node<Tp, 2> *node) = 0;
+        virtual void DeleteNode(tree_node<Tp, 2>* node) = 0;
+        void DeleteRoot(tree_node<Tp, 2>* node) {
             storage_->SetLeft(node, NULL);
             storage_->SetRight(node, NULL);
             storage_->Unreserve(node);

@@ -11,13 +11,13 @@ class BinaryTreeDirector : public StructDirectorBase<Tp> {
         BinaryTreeDirector();
         BinaryTreeDirector(DataStorage<Tp>* _storage);
         ~BinaryTreeDirector();
-        StructBase<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node = NULL, tree_node<Tp>* root_node = NULL, const Tp* values = NULL);
+        StructBase<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp, 2>* spec_node = NULL, tree_node<Tp, 2>* root_node = NULL, const Tp* values = NULL);
         void ConnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right);
         void ConnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right);
-        void DisconnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp>* node);
-        void DisconnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp>* node);
-        void DisconnectNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp> *node);
-        void RemoveNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp> *node);
+        void DisconnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2>* node);
+        void DisconnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2>* node);
+        void DisconnectNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2> *node);
+        void RemoveNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2> *node);
         void RemoveSpecRootNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct);
         void Clear(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct);
         void Delete(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct);
@@ -39,14 +39,14 @@ BinaryTreeDirector<Tp>::~BinaryTreeDirector() {
 }
 
 template <class Tp>
-StructBase<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp>* spec_node, tree_node<Tp>* root_node, const Tp* values) {
+StructBase<Tp>* BinaryTreeDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp, 2>* spec_node, tree_node<Tp, 2>* root_node, const Tp* values) {
     BinaryTree<Tp>* bin_tree;
     if (root_node == NULL) {
         root_node = builder->AddNode();
     }
     ///Construct and connect other nodes
     if (num_nodes > 0) {
-        Queue<tree_node<Tp>*> connect_queue(this->storage_);
+        Queue<tree_node<Tp, 2>*> connect_queue(this->storage_);
         connect_queue.Push(root_node);
         size_t i;
         if (values == NULL) {
@@ -84,45 +84,45 @@ void BinaryTreeDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, StructB
 
 template <class Tp>
 void BinaryTreeDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right) {
-    tree_node<Tp>* r_node = (new_node->left)->right;
-    tree_node<Tp>* l_node = node->right;
+    tree_node<Tp, 2>* r_node = (new_node->left)->right;
+    tree_node<Tp, 2>* l_node = node->right;
     this->storage_->SetRight(node, new_node->right);
     RemoveSpecRootNode(builder, node, new_node);
     builder->ConnectRight(l_node, r_node);
 }
 
 template <class Tp>
-void BinaryTreeDirector<Tp>::DisconnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp>* node) {
+void BinaryTreeDirector<Tp>::DisconnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2>* node) {
     builder->DisconnectLeft(node);
 }
 
 template <class Tp>
-void BinaryTreeDirector<Tp>::DisconnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp>* node);
+void BinaryTreeDirector<Tp>::DisconnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2>* node);
     builder->DisconnectRight(node);
 }
         
 template <class Tp>
-void BinaryTreeDirector::DisconnectNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp> *node) {
+void BinaryTreeDirector::DisconnectNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2> *node) {
     DisconnectLeft();
     DisconnectRight();
 }
 
 template <class Tp>
-void BinaryTreeDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp> *node) {
+void BinaryTreeDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2> *node) {
     DisconnectNode(builder, _struct, node);
     builder->DeleteNode(node);
 }
 
 template <class Tp>
 void BinaryTreeDirector<Tp>::RemoveSpecRootNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct) {
-    tree_node<Tp>* old_null = node->left;
+    tree_node<Tp, 2>* old_null = node->left;
     builder->DeleteRoot(node);
     RemoveNode(builder, spec_node, old_null);
 }
    
 template <class Tp>
 void BinaryTreeDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct) {
-    tree_node<Tp> old_node;
+    tree_node<Tp, 2> old_node;
     while ((spec_node->left)->right != spec_node->right) {
         RemoveNode(builder, spec_node, spec_node->right);
     }

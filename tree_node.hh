@@ -1,10 +1,9 @@
 #ifndef TREE_NODE_H_
 #define TREE_NODE_H_
 
-template <class Tp>
+template <class Tp, size_t NUM_LINKS>
 struct tree_node {
-    tree_node* left;
-    tree_node* right;
+    tree_node*[NUM_LINKS];
     Tp* value;
 };
 

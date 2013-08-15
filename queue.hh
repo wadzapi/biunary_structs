@@ -14,7 +14,7 @@ class Queue {
         SequenceBuilder<Tp>* seq_builder_;        
     public:
         Queue();
-        Queue(DataStorage<Tp>* _storage, tree_node<Tp>* root_node = NULL, tree_node<Tp>* spec_node = NULL);
+        Queue(DataStorage<Tp>* _storage, tree_node<Tp, 2>* root_node = NULL, tree_node<Tp, 2>* spec_node = NULL);
         ~Queue();
         Tp* Front();
         const Tp* Front() const;
@@ -30,7 +30,7 @@ Queue<Tp>::Queue() {
 }
         
 template <class Tp>
-Queue<Tp>::Queue(DataStorage<Tp>* _storage, tree_node<Tp>* root_node, tree_node<Tp>* spec_node) { 
+Queue<Tp>::Queue(DataStorage<Tp>* _storage, tree_node<Tp, 2>* root_node, tree_node<Tp, 2>* spec_node) { 
     this->seq_builder_ = new SequenceBuilder<Tp>(_storage);
     this->seq_director_ = new SequenceDirector<Tp>(_storage);
     this->sequence_ = (Sequence<Tp>*)seq_director_->Construct(seq_builder_, 0, spec_node, root_node);

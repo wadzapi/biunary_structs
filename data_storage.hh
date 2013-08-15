@@ -11,7 +11,7 @@ template <class Tp>
 class DataStorage {
     private:
         MemoryHeap<Tp> physical_data_;
-        MemoryHeap<tree_node<Tp> > logical_data_;
+        MemoryHeap<tree_node<Tp, 2> > logical_data_;
     public:
         DataStorage();
         DataStorage(size_t phys_size, size_t logic_size);
@@ -19,17 +19,17 @@ class DataStorage {
         void Allocate(size_t phys_size, size_t logic_size);
         void Free();
         Tp* AddData(const Tp& val);
-        tree_node<Tp>* AddLogic();
-        void SetData(tree_node<Tp>* node, Tp* value);
-        void SetLeft(tree_node<Tp>* source_node, tree_node<Tp>* dest_node);
-        void SetRight(tree_node<Tp>* source_node, tree_node<Tp>* dest_node);
-        void Reserve(tree_node<Tp>* logical_node);
+        tree_node<Tp, 2>* AddLogic();
+        void SetData(tree_node<Tp, 2>* node, Tp* value);
+        void SetLeft(tree_node<Tp, 2>* source_node, tree_node<Tp, 2>* dest_node);
+        void SetRight(tree_node<Tp, 2>* source_node, tree_node<Tp, 2>* dest_node);
+        void Reserve(tree_node<Tp, 2>* logical_node);
         void Reserve(Tp* physical_node);
         void Unreserve(Tp* physical_node);
-        void Unreserve(tree_node<Tp>* logical_node);
-        static Tp* GetData(tree_node<Tp>* node);
-        static tree_node<Tp>* GetLeft(tree_node<Tp>* node);
-        static tree_node<Tp>* GetRight(tree_node<Tp>* node);
+        void Unreserve(tree_node<Tp, 2>* logical_node);
+        static Tp* GetData(tree_node<Tp, 2>* node);
+        static tree_node<Tp, 2>* GetLeft(tree_node<Tp, 2>* node);
+        static tree_node<Tp, 2>* GetRight(tree_node<Tp, 2>* node);
         void PrintCounters() const;
 };
 
@@ -67,8 +67,8 @@ Tp* DataStorage<Tp>::AddData(const Tp& val) {
 }
 
 template <class Tp>
-tree_node<Tp>* DataStorage<Tp>::AddLogic() {
-    tree_node<Tp>* logic = logical_data_.GetVacant();
+tree_node<Tp, 2>* DataStorage<Tp>::AddLogic() {
+    tree_node<Tp, 2>* logic = logical_data_.GetVacant();
     SetLeft(logic, logic);
     SetRight(logic, logic);
     logic->value = NULL;
@@ -76,28 +76,28 @@ tree_node<Tp>* DataStorage<Tp>::AddLogic() {
 }
 
 template <class Tp>
-void DataStorage<Tp>::SetData(tree_node<Tp>* node, Tp* value) {
+void DataStorage<Tp>::SetData(tree_node<Tp, 2>* node, Tp* value) {
     Unreserve(node->value);
     node->value = value;
     Reserve(value); 
 }
 
 template <class Tp>
-void DataStorage<Tp>::SetLeft(tree_node<Tp>* source_node, tree_node<Tp>* dest_node) {
+void DataStorage<Tp>::SetLeft(tree_node<Tp, 2>* source_node, tree_node<Tp, 2>* dest_node) {
     Unreserve(source_node->left);
     source_node->left = dest_node;
     Reserve(dest_node);
 }
 
 template <class Tp>
-void DataStorage<Tp>::SetRight(tree_node<Tp>* source_node, tree_node<Tp>* dest_node) {
+void DataStorage<Tp>::SetRight(tree_node<Tp, 2>* source_node, tree_node<Tp, 2>* dest_node) {
     Unreserve(source_node->right);
     source_node->right = dest_node;
     Reserve(dest_node);
 }
 
 template <class Tp>
-void DataStorage<Tp>::Reserve(tree_node<Tp>* logical_node) {
+void DataStorage<Tp>::Reserve(tree_node<Tp, 2>* logical_node) {
     logical_data_.Reserve(logical_node);
 }
 
@@ -107,7 +107,7 @@ void DataStorage<Tp>::Reserve(Tp* physical_node) {
 }
 
 template <class Tp>
-void DataStorage<Tp>::Unreserve(tree_node<Tp>* logical_node) {
+void DataStorage<Tp>::Unreserve(tree_node<Tp, 2>* logical_node) {
     logical_data_.Unreserve(logical_node);
 }
 
