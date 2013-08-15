@@ -4,7 +4,7 @@
 #include "struct.hh"
 
 template <class Tp>
-class BinaryTreeDirector : public StructDirectorBase<Tp> {
+class BinaryTreeDirector : public StructDirectorBase<Tp, 2> {
     private:
     protected:
     public:

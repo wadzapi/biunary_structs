@@ -4,23 +4,23 @@
 #include "struct.hh"
 
 template <class Tp>
-class SequenceDirector : public StructDirectorBase<Tp> {
+class SequenceDirector : public StructDirectorBase<Tp, 2> {
     private:
     protected:
     public:
         SequenceDirector();
-        SequenceDirector(DataStorage<Tp>* _storage);
+        SequenceDirector(DataStorage<Tp, 2>* _storage);
         ~SequenceDirector();
-        StructBase<Tp>* Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp, 2>* spec_node = NULL, tree_node<Tp, 2>* root_node = NULL, const Tp* values = NULL);
-        void ConnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right);
-        void ConnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right);
-        void DisconnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2>* node);
-        void DisconnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2>* node);
-        void DisconnectNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2> *node);
-        void RemoveNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2> *node);
-        void RemoveSpecRootNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct);
-        void Clear(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct);
-        void Delete(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct);
+        StructBase<Tp, 2>* Construct(StructBuilderBase<Tp, 2> *builder, size_t num_nodes, tree_node<Tp, 2>* spec_node = NULL, tree_node<Tp, 2>* root_node = NULL, const Tp* values = NULL);
+        void ConnectLeft(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* struct_left, StructBase<Tp, 2>* struct_right);
+        void ConnectRight(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* struct_left, StructBase<Tp, 2>* struct_right);
+        void DisconnectLeft(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct, tree_node<Tp, 2>* node);
+        void DisconnectRight(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct, tree_node<Tp, 2>* node);
+        void DisconnectNode(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct, tree_node<Tp, 2> *node);
+        void RemoveNode(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct, tree_node<Tp, 2> *node);
+        void RemoveSpecRootNode(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct);
+        void Clear(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct);
+        void Delete(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct);
 };
 
 #include "sequence.hh"
@@ -30,7 +30,7 @@ SequenceDirector<Tp>::SequenceDirector() {
 }
 
 template <class Tp>
-SequenceDirector<Tp>::SequenceDirector(DataStorage<Tp>* _storage) : StructDirectorBase<Tp>(_storage) {
+SequenceDirector<Tp>::SequenceDirector(DataStorage<Tp, 2>* _storage) : StructDirectorBase<Tp, 2>(_storage) {
 }
 
 template <class Tp>
@@ -38,8 +38,8 @@ SequenceDirector<Tp>::~SequenceDirector() {
 }
 
 template <class Tp>
-StructBase<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp, 2>* spec_node, tree_node<Tp, 2>* root_node, const Tp* values) {
-    StructBase<Tp>* sequence;
+StructBase<Tp, 2>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp, 2> *builder, size_t num_nodes, tree_node<Tp, 2>* spec_node, tree_node<Tp, 2>* root_node, const Tp* values) {
+    StructBase<Tp, 2>* sequence;
     if (spec_node == NULL) {
         spec_node = builder->AddRoot();
     }
@@ -67,7 +67,7 @@ StructBase<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, 
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::DisconnectNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2> *node) {
+void SequenceDirector<Tp>::DisconnectNode(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct, tree_node<Tp, 2> *node) {
     tree_node<Tp, 2>* spec_node = _struct->GetSpecNode();
     if (spec_node->links[1] == node) {
         this->storage_->SetRight(spec_node, node->links[0]);
@@ -85,13 +85,13 @@ void SequenceDirector<Tp>::DisconnectNode(StructBuilderBase<Tp> *builder, Struct
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::RemoveNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2> *node) {
+void SequenceDirector<Tp>::RemoveNode(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct, tree_node<Tp, 2> *node) {
     DisconnectNode(builder, _struct, node);
     builder->DeleteNode(node);
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::RemoveSpecRootNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct) {
+void SequenceDirector<Tp>::RemoveSpecRootNode(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct) {
     tree_node<Tp, 2>* old_spec = _struct->GetSpecNode();
     tree_node<Tp, 2>* old_root = _struct->GetRootNode();
     builder->DeleteRoot(old_spec);
@@ -99,12 +99,12 @@ void SequenceDirector<Tp>::RemoveSpecRootNode(StructBuilderBase<Tp> *builder, St
 }
    
 template <class Tp>
-void SequenceDirector<Tp>::ConnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right) {
+void SequenceDirector<Tp>::ConnectLeft(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* struct_left, StructBase<Tp, 2>* struct_right) {
     ConnectRight(builder, struct_right, struct_left);
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right) {
+void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* struct_left, StructBase<Tp, 2>* struct_right) {
     tree_node<Tp, 2>* root_right = struct_right->GetRootNode();
     tree_node<Tp, 2>* spec_left = struct_left->GetSpecNode();
     tree_node<Tp, 2>* spec_right = struct_right->GetSpecNode();
@@ -114,17 +114,17 @@ void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, StructBa
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::DisconnectLeft(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2>* node) {
+void SequenceDirector<Tp>::DisconnectLeft(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct, tree_node<Tp, 2>* node) {
     builder->DisconnectLeft(node);
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::DisconnectRight(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2>* node) {
+void SequenceDirector<Tp>::DisconnectRight(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct, tree_node<Tp, 2>* node) {
     builder->DisconnectRight(node);
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct) {
+void SequenceDirector<Tp>::Clear(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct) {
     tree_node<Tp, 2>* spec_node = _struct->GetSpecNode();
     if (spec_node != NULL) {
         while ((spec_node->links[0])->links[1] != spec_node->links[1]) {
@@ -134,7 +134,7 @@ void SequenceDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, StructBase<Tp>*
 }
 
 template <class Tp>
-void SequenceDirector<Tp>::Delete(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct) {
+void SequenceDirector<Tp>::Delete(StructBuilderBase<Tp, 2> *builder, StructBase<Tp, 2>* _struct) {
     Clear(builder, _struct);
     RemoveSpecRootNode(builder, _struct);
 }

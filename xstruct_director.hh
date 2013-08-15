@@ -3,8 +3,8 @@
 
 #include "struct.hh"
 
-template <class Tp>
-class XStructDirector : public StructDirectorBase<Tp> {
+template <class Tp, size_t NUM_LINKS>
+class XStructDirector : public StructDirectorBase<Tp, NUM_LINKS> {
     private:
     protected:
     public:
@@ -24,53 +24,53 @@ class XStructDirector : public StructDirectorBase<Tp> {
 
 #include "xstruct.hh"
       
-template <class Tp>
-XStructDirector::XStructDirector() {
+template <class Tp, size_t NUM_LINKS>
+XStructDirector<Tp, NUM_LINKS>::XStructDirector() {
 }
 
-template <class Tp>
-XStructDirector::XStructDirector(DataStorage<Tp>* storage_) {
+template <class Tp, size_t NUM_LINKS>
+XStructDirector<Tp, NUM_LINKS>::XStructDirector(DataStorage<Tp>* storage_) {
 }
 
-template <class Tp>
-XStructDirector::~XStructDirector() {
+template <class Tp, size_t NUM_LINKS>
+XStructDirector<Tp, NUM_LINKS>::~XStructDirector() {
 }
 
-template <class Tp>
-tree_node<Tp, 2>* XStructDirector::
+template <class Tp, size_t NUM_LINKS>
+tree_node<Tp, 2>* XStructDirector<Tp, NUM_LINKS>::
 Construct(StructBuilderBase<Tp> *builder, size_t num_nodes, tree_node<Tp, 2>* spec_node, tree_node<Tp, 2>* root_node, const Tp* values) {
 }
 
-template <class Tp>
-void XStructDirector::ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *&node, tree_node<Tp, 2> *&new_node) {
+template <class Tp, size_t NUM_LINKS>
+void XStructDirector<Tp, NUM_LINKS>::ConnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *&node, tree_node<Tp, 2> *&new_node) {
 }
 
-template <class Tp>
-void XStructDirector::ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *&node, tree_node<Tp, 2> *&new_node) {
+template <class Tp, size_t NUM_LINKS>
+void XStructDirector<Tp, NUM_LINKS>::ConnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *&node, tree_node<Tp, 2> *&new_node) {
 }
 
-template <class Tp>
-void XStructDirector::DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *&node) {
+template <class Tp, size_t NUM_LINKS>
+void XStructDirector<Tp, NUM_LINKS>::DisconnectLeft(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *&node) {
 }
 
-template <class Tp>
-void XStructDirector::DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *&node) {
+template <class Tp, size_t NUM_LINKS>
+void XStructDirector<Tp, NUM_LINKS>::DisconnectRight(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *&node) {
 }
 
-template <class Tp>
-void XStructDirector::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *spec_node, tree_node<Tp, 2> *node) {
+template <class Tp, size_t NUM_LINKS>
+void XStructDirector<Tp, NUM_LINKS>::RemoveNode(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *spec_node, tree_node<Tp, 2> *node) {
 }
 
-template <class Tp>
-void XStructDirector::RemoveSpecRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *spec_node, tree_node<Tp, 2> *node) {
+template <class Tp, size_t NUM_LINKS>
+void XStructDirector<Tp, NUM_LINKS>::RemoveSpecRootNode(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *spec_node, tree_node<Tp, 2> *node) {
 }
 
-template <class Tp>
-void XStructDirector::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *spec_node) {
+template <class Tp, size_t NUM_LINKS>
+void XStructDirector<Tp, NUM_LINKS>::Clear(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *spec_node) {
 }
 
-template <class Tp>
-void XStructDirector::Delete(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *spec_node) {
+template <class Tp, size_t NUM_LINKS>
+void XStructDirector<Tp, NUM_LINKS>::Delete(StructBuilderBase<Tp> *builder, tree_node<Tp, 2> *spec_node) {
 }
 
 #endif //XSTRUCT_DIRECTOR_H_

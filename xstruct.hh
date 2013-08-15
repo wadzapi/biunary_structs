@@ -3,8 +3,8 @@
 
 #include "struct.hh"
 
-template <class Tp>
-class XStruct : Struct<Tp> {
+template <class Tp, size_t NUM_LINKS, size_t LINK_OFFSET>
+class XStruct : Struct<Tp, NUM_LINKS> {
     private:
     protected:
     public:

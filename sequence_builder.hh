@@ -4,12 +4,12 @@
 #include "struct_builder.hh"
 
 template <class Tp>
-class SequenceBuilder : public StructBuilderBase<Tp> {
+class SequenceBuilder : public StructBuilderBase<Tp, 2> {
     private:
     protected:
     public:
         SequenceBuilder();
-        SequenceBuilder(DataStorage<Tp>* _storage);
+        SequenceBuilder(DataStorage<Tp, 2>* _storage);
         ~SequenceBuilder(); 
         tree_node<Tp, 2> *AddNodeLogic();
         void ConnectLeft(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node);
@@ -24,8 +24,8 @@ SequenceBuilder<Tp>::SequenceBuilder() {
 }
 
 template <class Tp>
-SequenceBuilder<Tp>::SequenceBuilder(DataStorage<Tp>* _storage) : 
-    StructBuilderBase<Tp>(_storage, 1) {
+SequenceBuilder<Tp>::SequenceBuilder(DataStorage<Tp, 2>* _storage) : 
+    StructBuilderBase<Tp, 2>(_storage, 1) {
 }
 
 template <class Tp>

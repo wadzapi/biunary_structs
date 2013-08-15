@@ -4,7 +4,7 @@
 #include "struct_builder.hh"
 
 template <class Tp>
-class BinaryTreeBuilder : public StructBuilderBase<Tp> {
+class BinaryTreeBuilder : public StructBuilderBase<Tp, 2> {
     private:
     protected:
         tree_node<Tp, 2> *AddNodeLogic();

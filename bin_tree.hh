@@ -4,7 +4,7 @@
 #include "struct.hh"
 
 template <class Tp>
-class BinaryTree : public Struct<Tp> {
+class BinaryTree : public Struct<Tp, 2> {
     private:
     protected:
     public:

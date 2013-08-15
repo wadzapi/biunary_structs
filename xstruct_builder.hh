@@ -3,8 +3,8 @@
 
 #include "struct_builder.hh"
 
-template <class Tp>
-class XStructBuilder : public StructBuilderBase<Tp> {
+template <class Tp, size_t NUM_LINKS>
+class XStructBuilder : public StructBuilderBase<Tp, NUM_LINKS> {
     private:
     protected:
         tree_node<Tp, 2> *AddNodeLogic();
@@ -22,21 +22,21 @@ class XStructBuilder : public StructBuilderBase<Tp> {
         void DeleteNode(tree_node<Tp, 2>* node);
 };
 
-template <class Tp>
-XStructBuilder::XStructBuilder() {
+template <class Tp, size_t NUM_LINKS>
+XStructBuilder<Tp, NUM_LINKS>::XStructBuilder() {
 }
 
-template <class Tp>
-XStructBuilder::XStructBuilder(DataStorage<Tp> *_storage, size_t num_connections) :
+template <class Tp, size_t NUM_LINKS>
+XStructBuilder<Tp, NUM_LINKS>::XStructBuilder(DataStorage<Tp> *_storage, size_t num_connections) 
     StructBuilderBase(_storage, num_connections) {
 }
 
-template <class Tp>
+template <class Tp, size_t NUM_LINKS>
 XStructBuilder::~XStructBuilder() {
 }
 
-template <class Tp>
-tree_node<Tp, 2>* XStructBuilder<Tp>::AddNodeLogic() {
+template <class Tp, size_t NUM_LINKS>
+tree_node<Tp, 2>* XStructBuilder<Tp, NUM_LINKS>::AddNodeLogic() {
     tree_node<Tp, 2>* new_node = this->storage_->AddLogic();
     this->storage_->Reserve(new_node);
     tree_node<Tp, 2>* left_subnode = this->storage_->AddLogic();
@@ -46,23 +46,23 @@ tree_node<Tp, 2>* XStructBuilder<Tp>::AddNodeLogic() {
     return new_node;
 }
 
-template <class Tp>
-void BiunaryBuildr::ConnectLeft(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node) {
+template <class Tp, size_t NUM_LINKS>
+void XStructBuilder<Tp, NUM_LINKS>::ConnectLeft(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node) {
 }
 
-template <class Tp>
+template <class Tp, size_t NUM_LINKS>
 void XStructBuilder::ConnectRight(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node) {
 }
 
-template <class Tp>
+template <class Tp, size_t NUM_LINKS>
 void XStructBuilder::DisconnectLeft(tree_node<Tp, 2> *node) {
 }
 
-template <class Tp>
+template <class Tp, size_t NUM_LINKS>
 void XStructBuilder::DisconnectRight(tree_node<Tp, 2> *node) {
 }
 
-template <class Tp>
+template <class Tp, size_t NUM_LINKS>
 void XStructBuilder::DeleteNode(tree_node<Tp, 2>* node) {
 }
 

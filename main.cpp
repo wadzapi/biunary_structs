@@ -6,7 +6,7 @@
 #include "struct_factory.hh"
 
 int main(int argc, char** argv) {
-    StructFactory<int> struct_factory(10, 16);
+    StructFactory<int, 2> struct_factory(10, 16);
     
 /*  /// Stack test
     Stack<int>* stack = struct_factory.MakeStack();
