@@ -69,15 +69,15 @@ StructBase<Tp>* SequenceDirector<Tp>::Construct(StructBuilderBase<Tp> *builder, 
 template <class Tp>
 void SequenceDirector<Tp>::DisconnectNode(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct, tree_node<Tp, 2> *node) {
     tree_node<Tp, 2>* spec_node = _struct->GetSpecNode();
-    if (spec_node->right == node) {
-        this->storage_->SetRight(spec_node, node->left);
+    if (spec_node->links[1] == node) {
+        this->storage_->SetRight(spec_node, node->links[0]);
         builder->DisconnectLeft(node);
-    } else if (spec_node->left == node) {
-        this->storage_->SetLeft(spec_node, node->right);
+    } else if (spec_node->links[0] == node) {
+        this->storage_->SetLeft(spec_node, node->links[1]);
         builder->DisconnectRight(node);
     } else {
-        tree_node<Tp, 2> *l_node = node->left;
-        tree_node<Tp, 2> *r_node = node->right;
+        tree_node<Tp, 2> *l_node = node->links[0];
+        tree_node<Tp, 2> *r_node = node->links[1];
         builder->DisconnectLeft(node);
         builder->DisconnectRight(node);
         builder->ConnectRight(l_node, r_node);
@@ -108,8 +108,8 @@ void SequenceDirector<Tp>::ConnectRight(StructBuilderBase<Tp> *builder, StructBa
     tree_node<Tp, 2>* root_right = struct_right->GetRootNode();
     tree_node<Tp, 2>* spec_left = struct_left->GetSpecNode();
     tree_node<Tp, 2>* spec_right = struct_right->GetSpecNode();
-    builder->ConnectRight(spec_left->right, root_right);
-    this->storage_->SetRight(spec_left, spec_right->right);
+    builder->ConnectRight(spec_left->links[1], root_right);
+    this->storage_->SetRight(spec_left, spec_right->links[1]);
     DisconnectNode(builder, struct_left, root_right);
 }
 
@@ -127,8 +127,8 @@ template <class Tp>
 void SequenceDirector<Tp>::Clear(StructBuilderBase<Tp> *builder, StructBase<Tp>* _struct) {
     tree_node<Tp, 2>* spec_node = _struct->GetSpecNode();
     if (spec_node != NULL) {
-        while ((spec_node->left)->right != spec_node->right) {
-            RemoveNode(builder, _struct, spec_node->right);
+        while ((spec_node->links[0])->links[1] != spec_node->links[1]) {
+            RemoveNode(builder, _struct, spec_node->links[1]);
         }
     }
 }

@@ -52,13 +52,13 @@ void SequenceBuilder<Tp>::ConnectRight(tree_node<Tp, 2> *node, tree_node<Tp, 2> 
 
 template <class Tp>
 void SequenceBuilder<Tp>::DisconnectLeft(tree_node<Tp, 2> *node) {
-    this->storage_->SetRight(node->left, node->left);
+    this->storage_->SetRight(node->links[0], node->links[0]);
     this->storage_->SetLeft(node, node);
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::DisconnectRight(tree_node<Tp, 2> *node) {
-    this->storage_->SetLeft(node->right, node->right);
+    this->storage_->SetLeft(node->links[1], node->links[1]);
     this->storage_->SetRight(node, node);
 }
 

@@ -62,7 +62,7 @@ Sequence<Tp>::~Sequence() {}
 
 template <class Tp>
 bool Sequence<Tp>::Empty() {
-    if (this->spec_node_->left == this->spec_node_->right) {
+    if (this->spec_node_->links[0] == this->spec_node_->links[1]) {
         return true;
     }
     return false;
@@ -70,27 +70,27 @@ bool Sequence<Tp>::Empty() {
 
 template <class Tp>
 Tp* Sequence<Tp>::Front() {
-    //return ((this->spec_node_->left)->right)->value;
-    Tp* front_val = (this->root_node_->right)->value;
+    //return ((this->spec_node_->links[0])->links[1])->value;
+    Tp* front_val = (this->root_node_->links[1])->value;
     return front_val;
 }
 
 template <class Tp>
 const Tp* Sequence<Tp>::Front() const {
-    //return ((this->spec_node_->left)->right)->value;
-    Tp* front_val = (this->root_node_->right)->value;
+    //return ((this->spec_node_->links[0])->links[1])->value;
+    Tp* front_val = (this->root_node_->links[1])->value;
     return front_val;
 }
 
 template <class Tp>
 Tp* Sequence<Tp>::Back() {
-    Tp* back_val = (this->spec_node_->right)->value;
+    Tp* back_val = (this->spec_node_->links[1])->value;
     return back_val;
 }
 
 template <class Tp>
 const Tp* Sequence<Tp>::Back() const {
-    Tp* back_val = (this->spec_node_->right)->value;
+    Tp* back_val = (this->spec_node_->links[1])->value;
     return back_val;
 }
 
@@ -114,14 +114,14 @@ void Sequence<Tp>::PushFront(const Tp& val) {
 
 template <class Tp>
 void Sequence<Tp>::PopBack() {
-    this->director_->RemoveNode(this->builder_, this, this->spec_node_->right);
+    this->director_->RemoveNode(this->builder_, this, this->spec_node_->links[1]);
     ///for debug
     this->storage_->PrintCounters(); ///for debug
 }
 
 template <class Tp>
 void Sequence<Tp>::PopFront() {
-    this->director_->RemoveNode(this->builder_, this, this->root_node_->right);
+    this->director_->RemoveNode(this->builder_, this, this->root_node_->links[1]);
     ///for debug
     this->storage_->PrintCounters(); ///for debug
 }

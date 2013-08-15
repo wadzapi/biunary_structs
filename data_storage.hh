@@ -84,15 +84,15 @@ void DataStorage<Tp>::SetData(tree_node<Tp, 2>* node, Tp* value) {
 
 template <class Tp>
 void DataStorage<Tp>::SetLeft(tree_node<Tp, 2>* source_node, tree_node<Tp, 2>* dest_node) {
-    Unreserve(source_node->left);
-    source_node->left = dest_node;
+    Unreserve(source_node->links[0]);
+    source_node->links[0] = dest_node;
     Reserve(dest_node);
 }
 
 template <class Tp>
 void DataStorage<Tp>::SetRight(tree_node<Tp, 2>* source_node, tree_node<Tp, 2>* dest_node) {
-    Unreserve(source_node->right);
-    source_node->right = dest_node;
+    Unreserve(source_node->links[1]);
+    source_node->links[1] = dest_node;
     Reserve(dest_node);
 }
 

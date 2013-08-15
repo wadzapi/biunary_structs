@@ -3,7 +3,7 @@
 
 template <class Tp, size_t NUM_LINKS>
 struct tree_node {
-    tree_node*[NUM_LINKS];
+    tree_node* links[NUM_LINKS];
     Tp* value;
 };
 
