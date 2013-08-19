@@ -21,13 +21,13 @@ class XStructNode {
         XStructNode(size_t num_links, size_t links_offset, Tp* val_ptr = NULL);
         ~XStructNode();
         void SetStogare(DataStorage<Tp>* storage);
+        void SetData(Tp* data_ptr);
         void Reserve();
         void Unreserve 
         void ConnectLeft(tree_node<Tp, NUM_LINKS> *node, tree_node<Tp, NUM_LINKS> *new_node);
         void ConnectRight(tree_node<Tp, NUM_LINKS> *node, tree_node<Tp, NUM_LINKS> *new_node);
         void DisconnectLeft(tree_node<Tp, NUM_LINKS> *node);
         void DisconnectRight(tree_node<Tp, NUM_LINKS> *node);
-        void Delete(tree_node<Tp, NUM_LINKS>* node);
 };
 
 template <class Tp>
@@ -43,13 +43,20 @@ template <class Tp>
 XStructNode<Tp>::~XStructNode() {
     delete[] data_.links_;
     if (is_built_) {
-        delete data_.value_;
+        //delete data_.value_;
     }
 }
 
 template <class Tp>
 void XStructNode<Tp>::SetStogare(DataStorage<Tp>* storage) {
     storage_ = storage;
+}
+
+template <class Tp>
+void XStructNode<Tp>::SetData(Tp* data_ptr) {
+    this->storage_->Unreserve(this->data_.value_);
+    this->data_.value_ = data_ptr;
+    this->storage_->Reserve(data_ptr);
 }
 
 template <class Tp>

@@ -1,47 +1,99 @@
-#ifndef STRUCT_DIRECTOR_H_
-#define STRUCT_DIRECTOR_H_
+#ifndef XSTRUCT_DIRECTOR_H_
+#define XSTRUCT_DIRECTOR_H_
 
 #include "struct_base.hh"
 
-template <class Tp, size_t NUM_LINKS>
-class StructDirectorBase {
+template <class Tp>
+class XStructDirector {
     private:
+        DataStorage<Tp>* storage_;
     protected:
-        DataStorage<Tp, NUM_LINKS>* storage_;
-        void SetStruct(DataStorage<Tp, NUM_LINKS> *_storage) { storage_ = _storage; }
-        tree_node<Tp, NUM_LINKS>* AddLeft(StructBuilderBase<Tp, NUM_LINKS> *builder, tree_node<Tp, NUM_LINKS>* node, const Tp* value = (Tp*)NULL) {
-            tree_node<Tp, NUM_LINKS>* new_node; 
-            if (value == NULL) {
-                new_node = builder->AddNode();
-            } else {
-                new_node = builder->AddNode(*value);
-            }
-            builder->ConnectLeft(node, new_node);
-            return new_node;
-        }
-        tree_node<Tp, NUM_LINKS>* AddRight(StructBuilderBase<Tp, NUM_LINKS> *builder, tree_node<Tp, NUM_LINKS>* node, const Tp* value = (Tp*)NULL) {
-            tree_node<Tp, NUM_LINKS>* new_node; 
-            if (value == NULL) {
-                new_node = builder->AddNode();
-            } else {
-                new_node = builder->AddNode(*value);
-            }
-            builder->ConnectRight(node, new_node);
-            return new_node;
-        }
+        void SetStruct(DataStorage<Tp> *_storage);
+        XStructNode<Tp>* AddLeft(XStructBuilder<Tp> *builder, XStructNode<Tp>* node, const Tp* value = (Tp*)NULL);
+        XStructNode<Tp>* AddRight(XStructBuilder<Tp> *builder, XStructNode<Tp>* node, const Tp* value = (Tp*)NULL);
     public:
-        StructDirectorBase() : storage_(NULL) {}
-        StructDirectorBase(DataStorage<Tp, NUM_LINKS> *_storage): storage_(_storage) {}
-        virtual ~StructDirectorBase() {};
-        virtual StructBase<Tp, NUM_LINKS>* Construct(StructBuilderBase<Tp, NUM_LINKS> *builder, size_t num_nodes, tree_node<Tp, NUM_LINKS>* spec_node = NULL, tree_node<Tp, NUM_LINKS>* root_node = NULL, const Tp* values = NULL) = 0;
-        virtual void ConnectLeft(StructBuilderBase<Tp, NUM_LINKS> *builder, StructBase<Tp, NUM_LINKS>* struct_left, StructBase<Tp, NUM_LINKS>* struct_right) = 0;
-        virtual void ConnectRight(StructBuilderBase<Tp, NUM_LINKS> *builder, StructBase<Tp, NUM_LINKS>* struct_left, StructBase<Tp, NUM_LINKS>* struct_right) = 0;
-        virtual void DisconnectLeft(StructBuilderBase<Tp, NUM_LINKS> *builder, StructBase<Tp, NUM_LINKS>* _struct, tree_node<Tp, NUM_LINKS>* node) = 0;
-        virtual void DisconnectRight(StructBuilderBase<Tp, NUM_LINKS> *builder, StructBase<Tp, NUM_LINKS>* _struct, tree_node<Tp, NUM_LINKS>* node) = 0;
-        virtual void RemoveNode(StructBuilderBase<Tp, NUM_LINKS> *builder, StructBase<Tp, NUM_LINKS>* _struct, tree_node<Tp, NUM_LINKS> *node) = 0;
-        virtual void RemoveSpecRootNode(StructBuilderBase<Tp, NUM_LINKS> *builder, StructBase<Tp, NUM_LINKS>* _struct) = 0;
-        virtual void Clear(StructBuilderBase<Tp, NUM_LINKS> *builder, StructBase<Tp, NUM_LINKS>* _struct) = 0;
-        virtual void Delete(StructBuilderBase<Tp, NUM_LINKS> *builder, StructBase<Tp, NUM_LINKS>* _struct) = 0;
+        XStructDirector();
+        XStructDirector(DataStorage<Tp> *_storage): storage_(_storage) {}
+        ~XStructDirector() {};
+        StructBase<Tp>* Construct(XStructBuilder<Tp> *builder, size_t num_nodes, XStructNode<Tp>* spec_node = NULL, XStructNode<Tp>* root_node = NULL, const Tp* values = NULL);
+        void ConnectLeft(XStructBuilder<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right);
+        void ConnectRight(XStructBuilder<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right);
+        void DisconnectLeft(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct, XStructNode<Tp>* node);
+        void DisconnectRight(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct, XStructNode<Tp>* node);
+        void RemoveNode(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct, XStructNode<Tp> *node);
+        void RemoveSpecRootNode(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct);
+        void Clear(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct);
+        void Delete(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct);
 };
 
-#endif //STRUCT_DIRECTOR_H_
+template <class Tp>
+void XStructDirector<Tp>::SetStruct(DataStorage<Tp> *_storage) {
+    storage_ = _storage;
+}
+
+template <class Tp>
+XStructNode<Tp>* XStructDirector<Tp>::AddLeft(XStructBuilder<Tp> *builder, XStructNode<Tp>* node, const Tp* value = (Tp*)NULL) {
+    XStructNode<Tp>* new_node; 
+    if (value == NULL) {
+        new_node = builder->AddNode();
+    } else {
+        new_node = builder->AddNode(*value);
+    }
+    builder->ConnectLeft(node, new_node);
+    return new_node;
+}
+
+template <class Tp>
+XStructNode<Tp>* XStructDirector<Tp>::AddRight(XStructBuilder<Tp> *builder, XStructNode<Tp>* node, const Tp* value = (Tp*)NULL) {
+    XStructNode<Tp>* new_node; 
+    if (value == NULL) {
+        new_node = builder->AddNode();
+    } else {
+        new_node = builder->AddNode(*value);
+    }
+    builder->ConnectRight(node, new_node);
+    return new_node;
+}
+
+template <class Tp>
+XStructDirector<Tp>::XStructDirector() : storage_(NULL) {}
+
+template <class Tp>
+XStructDirector<Tp>::XStructDirector(DataStorage<Tp> *_storage): storage_(_storage) {}
+
+template <class Tp>
+XStructDirector<Tp>::~XStructDirector() {};
+
+template <class Tp>
+StructBase<Tp>* XStructDirector<Tp>::Construct(XStructBuilder<Tp> *builder, size_t num_nodes, XStructNode<Tp>* spec_node = NULL, XStructNode<Tp>* root_node = NULL, const Tp* values = NULL) {
+}
+
+template <class Tp>
+void XStructDirector<Tp>::ConnectLeft(XStructBuilder<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right){
+}
+
+template <class Tp>
+void XStructDirector<Tp>::ConnectRight(XStructBuilder<Tp> *builder, StructBase<Tp>* struct_left, StructBase<Tp>* struct_right) {
+}
+
+template <class Tp>
+void XStructDirector<Tp>::DisconnectLeft(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct, XStructNode<Tp>* node) {
+}
+
+template <class Tp>
+void XStructDirector<Tp>::DisconnectRight(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct, XStructNode<Tp>* node) {
+}
+
+template <class Tp>
+void XStructDirector<Tp>::RemoveNode(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct, XStructNode<Tp> *node) {
+}
+
+template <class Tp>
+void XStructDirector<Tp>::RemoveSpecRootNode(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct) {
+}
+
+template <class Tp>
+void XStructDirector<Tp>::Clear(XStructBuilder<Tp> *builder, StructBase<Tp>* _struct) {
+}
+
+#endif //XSTRUCT_DIRECTOR_H_
