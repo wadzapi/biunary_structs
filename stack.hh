@@ -15,7 +15,7 @@ class Stack {
         SequenceBuilder<Tp>* seq_builder_;
     public:
         Stack();
-        Stack(DataStorage<Tp, 2>* _storage, tree_node<Tp, 2>* root_node = NULL, tree_node<Tp, 2>* spec_node = NULL);
+        Stack(XStorage<Tp>* _storage, XNode<Tp>* root_node = NULL, XNode<Tp>* spec_node = NULL);
         ~Stack();
         Tp* Top();
         const Tp* Top() const;
@@ -29,7 +29,7 @@ Stack<Tp>::Stack() {
 }
 
 template <class Tp>
-Stack<Tp>::Stack(DataStorage<Tp, 2>* _storage, tree_node<Tp, 2>* root_node, tree_node<Tp, 2>* spec_node) {
+Stack<Tp>::Stack(XStorage<Tp>* _storage, XNode<Tp>* root_node, XNode<Tp>* spec_node) {
     this->seq_builder_ = new SequenceBuilder<Tp>(_storage);
     this->seq_director_ = new SequenceDirector<Tp>(_storage);
     this->sequence_ = (Sequence<Tp>*)seq_director_->Construct(seq_builder_, 0, spec_node, root_node);

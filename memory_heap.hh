@@ -1,5 +1,6 @@
-#ifndef HEAP_MEM_H_
-#define HEAP_MEM_H_
+#ifndef MEMORY_HEAP_H_
+#define MEMORY_HEAP_H_
+
 #include <cstddef>
 #include <cstdio>
 
@@ -185,4 +186,4 @@ void MemoryHeap<Tp>::PrintCounters() const {
     printf("%li\n", counters_[capacity_ - 1]);
 }
 
-#endif // HEAP_MEM_H_
+#endif // MEMORY_HEAP_H_

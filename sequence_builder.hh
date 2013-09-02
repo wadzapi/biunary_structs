@@ -1,22 +1,22 @@
 #ifndef SEQUENCE_BUILDER_H_
 #define SEQUENCE_BUILDER_H_
 
-#include "struct_builder.hh"
+#include "xbuilder.hh"
 
 template <class Tp>
-class SequenceBuilder : public StructBuilderBase<Tp, 2> {
+class SequenceBuilder : public XBuilder<Tp> {
     private:
     protected:
     public:
         SequenceBuilder();
-        SequenceBuilder(DataStorage<Tp, 2>* _storage);
+        SequenceBuilder(XStorage<Tp>* _storage);
         ~SequenceBuilder(); 
-        tree_node<Tp, 2> *AddNodeLogic();
-        void ConnectLeft(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node);
-        void ConnectRight(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node);
-        void DisconnectLeft(tree_node<Tp, 2> *node);
-        void DisconnectRight(tree_node<Tp, 2> *node);
-        void DeleteNode(tree_node<Tp, 2>* node);
+        XNode<Tp> *AddNodeLogic();
+        void ConnectLeft(XNode<Tp> *node, XNode<Tp> *new_node);
+        void ConnectRight(XNode<Tp> *node, XNode<Tp> *new_node);
+        void DisconnectLeft(XNode<Tp> *node);
+        void DisconnectRight(XNode<Tp> *node);
+        void DeleteNode(XNode<Tp>* node);
 };
 
 template <class Tp>
@@ -24,8 +24,8 @@ SequenceBuilder<Tp>::SequenceBuilder() {
 }
 
 template <class Tp>
-SequenceBuilder<Tp>::SequenceBuilder(DataStorage<Tp, 2>* _storage) : 
-    StructBuilderBase<Tp, 2>(_storage, 1) {
+SequenceBuilder<Tp>::SequenceBuilder(XStorage<Tp>* _storage) : 
+    XBuilder<Tp>(_storage, 1) {
 }
 
 template <class Tp>
@@ -33,37 +33,37 @@ SequenceBuilder<Tp>::~SequenceBuilder() {
 }
 
 template <class Tp>
-tree_node<Tp, 2>* SequenceBuilder<Tp>::AddNodeLogic() {
-    tree_node<Tp, 2>* new_node = this->storage_->AddLogic();
+XNode<Tp>* SequenceBuilder<Tp>::AddNodeLogic() {
+    XNode<Tp>* new_node = this->storage_->AddLogic();
     return new_node;
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::ConnectLeft(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node) {
+void SequenceBuilder<Tp>::ConnectLeft(XNode<Tp> *node, XNode<Tp> *new_node) {
     this->storage_->SetLeft(node, new_node);
     this->storage_->SetRight(new_node, node);
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::ConnectRight(tree_node<Tp, 2> *node, tree_node<Tp, 2> *new_node) {
+void SequenceBuilder<Tp>::ConnectRight(XNode<Tp> *node, XNode<Tp> *new_node) {
     this->storage_->SetRight(node, new_node);
     this->storage_->SetLeft(new_node, node);
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::DisconnectLeft(tree_node<Tp, 2> *node) {
+void SequenceBuilder<Tp>::DisconnectLeft(XNode<Tp> *node) {
     this->storage_->SetRight(node->links[0], node->links[0]);
     this->storage_->SetLeft(node, node);
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::DisconnectRight(tree_node<Tp, 2> *node) {
+void SequenceBuilder<Tp>::DisconnectRight(XNode<Tp> *node) {
     this->storage_->SetLeft(node->links[1], node->links[1]);
     this->storage_->SetRight(node, node);
 }
 
 template <class Tp>
-void SequenceBuilder<Tp>::DeleteNode(tree_node<Tp, 2>* node) {
+void SequenceBuilder<Tp>::DeleteNode(XNode<Tp>* node) {
     //delete links
     this->storage_->SetLeft(node, NULL);
     this->storage_->SetRight(node, NULL);
