@@ -9,11 +9,11 @@ class Sequence : public XStruct<Tp> {
     protected:
     public:
         Sequence();
-        Sequence(XStorage<Tp>* _storage, XNode<Tp>* root_node = NULL, XNode<Tp>* spec_node = NULL, XBuilder<Tp>* builder = NULL, XDirector<Tp>* director = NULL);
+        Sequence(XStorage<Tp>* _storage, XBuilder<Tp>* builder, XDirector<Tp>* director);
+        Sequence(XStorage<Tp>* _storage);
         ~Sequence();
-        void UpdateSpecNode();
-        void Construct(XStorage<Tp>* _storage, XNode<Tp>* root_node = NULL, XNode<Tp>* spec_node = NULL);
-        bool Empty();
+        void Construct();
+        bool IsEmpty();
         Tp* Front();
         const Tp* Front() const;
         Tp* Back();
@@ -22,6 +22,7 @@ class Sequence : public XStruct<Tp> {
         void PushFront(const Tp& val);
         void PopBack();
         void PopFront();
+        void Free();
 };
 
 
@@ -33,28 +34,20 @@ Sequence<Tp>::Sequence() {
 }
 
 template <class Tp>
-Sequence<Tp>::Sequence(XStorage<Tp>* _storage, XNode<Tp>* root_node, XNode<Tp>* spec_node, XBuilder<Tp>* builder, XDirector<Tp>* director) : XStruct<Tp>(_storage, root_node, spec_node, builder, director) {
-    Construct(_storage, root_node, spec_node);
+Sequence<Tp>::Sequence(XStorage<Tp>* _storage, XBuilder<Tp>* builder, XDirector<Tp>* director) : XStruct<Tp>(_storage, builder, director) {
+    Construct();
+    is_built_ = false;
 }
 
 template <class Tp>
-void Sequence<Tp>::Construct(XStorage<Tp>* _storage, XNode<Tp>* root_node, XNode<Tp>* spec_node) {
-    this->storage_ = _storage;
-    if (this->director_ == NULL) {
-        this->director_ = new SequenceDirector<Tp>(_storage);
-    }
-    if (this->builder_ == NULL) {
-        this->builder_ = new SequenceBuilder<Tp>(_storage);
-    }
-    if (spec_node == NULL) {
-        spec_node = this->builder_->AddRoot();
-        SetSpecNode(spec_node);
-    }
-    if (root_node == NULL) {
-        root_node = this->builder_->AddNodeLogic();
-        SetRootNode(root_node);
-    }
-    this->is_built_ = true;
+Sequence<Tp>::Sequence(XStorage<Tp>* _storage) : XStruct<Tp>(_storage, new SequenceBuilder(), new SequenceDirector(_storage)) {
+    Construct();
+    is_built_ = true;
+}
+
+template <class Tp>
+void Sequence<Tp>::Construct() {
+    builder->ConnectLeft(spec_node, root_node);
 }
 
 template <class Tp>
@@ -127,7 +120,8 @@ void Sequence<Tp>::PopFront() {
 }
 
 template <class Tp>
-void Sequence<Tp>::UpdateSpecNode() {
+void Sequence<Tp>::Free() {
+    
 }
 
 #endif // SEQUENCE_H_

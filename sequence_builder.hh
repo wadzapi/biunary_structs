@@ -8,14 +8,14 @@ class SequenceBuilder : public XBuilder<Tp> {
     private:
     protected:
     public:
-        SequenceBuilder();
-        SequenceBuilder(XStorage<Tp>* _storage);
-        ~SequenceBuilder(); 
-        XNode<Tp> *AddNodeLogic();
-        void ConnectLeft(XNode<Tp> *node, XNode<Tp> *new_node);
-        void ConnectRight(XNode<Tp> *node, XNode<Tp> *new_node);
-        void DisconnectLeft(XNode<Tp> *node);
-        void DisconnectRight(XNode<Tp> *node);
+        SequenceBuilder() {};
+        ~SequenceBuilder() {};
+        XNode<Tp>* AddSpecNode(XStorage<Tp>* _storage);
+        XNode<Tp>* AddNode(XStorage<Tp>* _storage, const Tp& value = NULL);
+        void ConnectLeft(XNode<Tp>* left_node, XNode<Tp>* right_node);
+        void ConnectRight(XNode<Tp>* left_node, XNode<Tp>* right_node);
+        void DisconnectLeft(XNode<Tp>* node);
+        void DisconnectRight(XNode<Tp>* node);
         void DeleteNode(XNode<Tp>* node);
 };
 
@@ -24,51 +24,45 @@ SequenceBuilder<Tp>::SequenceBuilder() {
 }
 
 template <class Tp>
-SequenceBuilder<Tp>::SequenceBuilder(XStorage<Tp>* _storage) : 
-    XBuilder<Tp>(_storage, 1) {
-}
-
-template <class Tp>
 SequenceBuilder<Tp>::~SequenceBuilder() {
 }
 
 template <class Tp>
-XNode<Tp>* SequenceBuilder<Tp>::AddNodeLogic() {
-    XNode<Tp>* new_node = this->storage_->AddLogic();
+XNode<Tp>* SequenceBuilder<Tp>::AddNode(XStorage<Tp>* _storage, const Tp& value) {
+    XNode<Tp>* new_node = _storage->AddDataLogic(2, 1, value);
     return new_node;
 }
 
 template <class Tp>
+XNode<Tp>* SequenceBuilder<Tp>::AddSpecNode(XStorage<Tp>* _storage) {
+    XNode<Tp>* spec_node = _storage->AddLogic(2, 1);
+    _storage->Reserve(spec_node);
+    return spec_node;
+}
+
+template <class Tp>
 void SequenceBuilder<Tp>::ConnectLeft(XNode<Tp> *node, XNode<Tp> *new_node) {
-    this->storage_->SetLeft(node, new_node);
-    this->storage_->SetRight(new_node, node);
+    node->ConnectLeft(new_node);
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::ConnectRight(XNode<Tp> *node, XNode<Tp> *new_node) {
-    this->storage_->SetRight(node, new_node);
-    this->storage_->SetLeft(new_node, node);
+    node->ConnectRight(new_node);
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::DisconnectLeft(XNode<Tp> *node) {
-    this->storage_->SetRight(node->links[0], node->links[0]);
-    this->storage_->SetLeft(node, node);
+    node->DisconnectLeft();
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::DisconnectRight(XNode<Tp> *node) {
-    this->storage_->SetLeft(node->links[1], node->links[1]);
-    this->storage_->SetRight(node, node);
+    node->DisconnectRight();
 }
 
 template <class Tp>
 void SequenceBuilder<Tp>::DeleteNode(XNode<Tp>* node) {
-    //delete links
-    this->storage_->SetLeft(node, NULL);
-    this->storage_->SetRight(node, NULL);
-    //delete value
-    this->storage_->Unreserve(node->value);
+    delete node;
 }
 
 #endif //SEQUENCE_BUILDER_H_

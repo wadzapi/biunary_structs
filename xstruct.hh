@@ -8,25 +8,26 @@
 template <class Tp>
 class XStruct : public XStructBase<Tp> {
     private:
+        size_t num_elements;
+        bool is_built_;
     protected: 
         XBuilder<Tp>* builder_;
         XDirector<Tp>* director_;
     public:
-        XStruct(): builder_(NULL), director_(NULL) {};
-        XStruct(XStorage<Tp>* _storage, XNode<Tp>* root_node, XNode<Tp>* spec_node, XBuilder<Tp>* builder, XDirector<Tp>* director) : XStructBase<Tp>(_storage, root_node, spec_node),  builder_(builder), director_(director) {};
+        XStruct(): builder_(NULL), director_(NULL), is_built_(false) {};
+        XStruct(XStorage<Tp>* _storage, XBuilder<Tp> _builder, XDirector<Tp> _director) : XStructBase<Tp>(_storage, _builder->AddNode(), _builder->AddSpecNode()), builder_(_builder), director_(_director), is_built_(false) {};
         virtual ~XStruct() {
-            if (this->is_built_) {
-                Delete();
+            Free();
+            if (is_built_) {
                 delete builder_;
                 builder_ = NULL;
                 delete director_;
                 director_ = NULL;
             }
         }
-        virtual void Construct(XStorage<Tp>* _storage, XNode<Tp>* root_node = NULL, XNode<Tp>* spec_node = NULL) = 0;
-        void Delete() {
-            director_->Delete(builder_, this);
-        }
+        virtual void Construct() = 0;
+        virtual bool IsEmpty() = 0;
+        virtual void Free() = 0;
 };
 
 #endif //XSTRUCT_H_

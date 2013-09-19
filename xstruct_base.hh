@@ -10,11 +10,15 @@ class XStructBase {
         XStorage<Tp>* storage_;
         XNode<Tp>* root_node_;
         XNode<Tp>* spec_node_;
-        bool is_built_;
     public:
-        XStructBase() : storage_(NULL), root_node_(NULL), spec_node_(NULL), is_built_(false) {}
-        XStructBase(XStorage<Tp>* _storage, XNode<Tp>* root_node, XNode<Tp>* spec_node) : storage_(_storage), root_node_(root_node), spec_node_(spec_node), is_built_(false) {}
-        virtual ~XStructBase() {}
+        XStructBase() {}
+        XStructBase(XStorage<Tp>* _storage, XNode<Tp>* root_node, XNode<Tp>* spec_node) : storage_(_storage), root_node_(root_node), spec_node_(spec_node) {}
+        virtual ~XStructBase() {
+            delete root_node_;
+            root_node_ = NULL;
+            delete spec_node_;
+            spec_node_ = NULL;
+        }
         void SetRootNode(XNode<Tp>* root_node) {
             if (this->root_node_ != root_node) {
                 this->root_node_ = root_node;
